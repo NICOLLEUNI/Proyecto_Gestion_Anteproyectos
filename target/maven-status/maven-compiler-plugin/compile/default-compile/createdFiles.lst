@@ -1,0 +1,9 @@
+co\unicauca\workflow\domain\entities\tipoRol.class
+co\unicauca\workflow\domain\entities\User.class
+co\unicauca\workflow\access\UserRepository.class
+co\unicauca\workflow\domain\service\Service.class
+co\unicauca\workflow\access\Factory.class
+co\unicauca\workflow\domain\service\ValidateService.class
+co\unicauca\workflow\access\IUserRepository.class
+co\unicauca\workflow\Taller02PrincipiosSolid.class
+co\unicauca\workflow\domain\entities\tipoPrograma.class
