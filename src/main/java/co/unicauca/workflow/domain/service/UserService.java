@@ -9,9 +9,17 @@ package co.unicauca.workflow.domain.service;
  * @author User
  */
 public class UserService {
-     public void saveUser(){}
+    public void saveUser(){}
     public void aunthenticateUser(){}
     public void hashPassword(){}
-     public void validatePassword(){}
+    public void validatePassword(){}
     public void validateEmail(){}
+    private boolean isEmailUnicauca(String email) {
+    return email != null && email.toLowerCase().endsWith("@unicauca.edu.co");
+}
+
+    private boolean isStrongPassword(String pwd) {
+    // ≥6, al menos un dígito, un especial, una mayúscula
+    return pwd != null && pwd.matches("^(?=.*[0-9])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{6,}$");
+}
 }

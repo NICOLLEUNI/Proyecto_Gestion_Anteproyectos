@@ -6,13 +6,22 @@ package co.unicauca.workflow.domain.entities;
  * @author User
  */
 public class User {
+    private int idUsuario;
     private String name;
     private String lastname;
-    private String phone;
+    private int phone;
     private String email;
     private String password;
     private enumRol rol;
     private enumProgram program;
+
+    public int getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(int idUsuario) {
+        this.idUsuario = idUsuario;
+    }
 
     public String getName() {
         return name;
@@ -30,11 +39,11 @@ public class User {
         this.lastname = lastname;
     }
 
-    public String getPhone() {
+    public int getPhone() {
         return phone;
     }
 
-    public void setPhone(String phone) {
+    public void setPhone(int phone) {
         this.phone = phone;
     }
 
@@ -69,8 +78,8 @@ public class User {
     public void setProgram(enumProgram program) {
         this.program = program;
     }
-
-    public User(String name, String lastname, String phone, String email, String password, enumRol rol, enumProgram program) {
+  //constrcutor para registrar
+    public User(String name, String lastname, int phone, String email, String password, enumRol rol, enumProgram program) {
         this.name = name;
         this.lastname = lastname;
         this.phone = phone;
@@ -78,6 +87,20 @@ public class User {
         this.password = password;
         this.rol = rol;
         this.program = program;
+    }
+//para leer de la BD
+    public User(int idUsuario, String name, String lastname, int phone, String email, String password, enumRol rol, enumProgram program) {
+        this.idUsuario = idUsuario;
+        this.name = name;
+        this.lastname = lastname;
+        this.phone = phone;
+        this.email = email;
+        this.password = password;
+        this.rol = rol;
+        this.program = program;
+    }
+
+    public User() {
     }
 
     
