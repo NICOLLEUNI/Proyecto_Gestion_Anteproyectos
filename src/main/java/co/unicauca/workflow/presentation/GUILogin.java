@@ -166,6 +166,9 @@ public class GUILogin extends javax.swing.JFrame {
         lblRegistrarse.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblRegistrarse.setText("REGISTRARSE");
         lblRegistrarse.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblRegistrarseMouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 lblRegistrarseMouseEntered(evt);
             }
@@ -273,6 +276,12 @@ public class GUILogin extends javax.swing.JFrame {
     private void lblRegistrarseMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRegistrarseMouseExited
         pnlBttRegistrarse.setBackground(new Color(0,102,204));
     }//GEN-LAST:event_lblRegistrarseMouseExited
+
+    private void lblRegistrarseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRegistrarseMouseClicked
+        GUISingIn ventanaSingIn = new GUISingIn(); // crear la nueva ventana
+        ventanaSingIn.setVisible(true);            // mostrarla
+        this.dispose();       
+    }//GEN-LAST:event_lblRegistrarseMouseClicked
 
     /**
      * @param args the command line arguments
