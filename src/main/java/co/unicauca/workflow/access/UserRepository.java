@@ -131,8 +131,8 @@ public class UserRepository implements IUserRepository {
 
     public void connect() {
         // SQLite connection string
-  
-        String url = "jdbc:sqlite:C:/Users/User/Desktop/Taller02/Taller02_SOLID/BD.db";
+
+        String url = "jdbc:sqlite:./BD.db";
       
         try {
             conn = DriverManager.getConnection(url);
