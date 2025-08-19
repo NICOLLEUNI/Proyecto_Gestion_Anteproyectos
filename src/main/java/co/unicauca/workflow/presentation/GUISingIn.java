@@ -7,6 +7,9 @@ package co.unicauca.workflow.presentation;
 import co.unicauca.workflow.domain.entities.User;
 import co.unicauca.workflow.domain.entities.enumProgram;
 import co.unicauca.workflow.domain.entities.enumRol;
+import co.unicauca.workflow.access.UserRepository;
+import co.unicauca.workflow.access.IUserRepository;
+import co.unicauca.workflow.domain.service.UserService;
 import java.awt.Color;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -19,13 +22,18 @@ import javax.swing.JTextField;
  * @author User
  */
 public class GUISingIn extends javax.swing.JFrame {
-
+private final UserService userService;
     /**
      * Creates new form GUISingIn
      */
     public GUISingIn() {
         initComponents();
+         IUserRepository repo = new UserRepository(); // conecta con SQLite
+    this.userService = new UserService(repo);
     }
+    
+
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -332,7 +340,7 @@ public class GUISingIn extends javax.swing.JFrame {
     }//GEN-LAST:event_lblBttRegistrarMouseExited
 
     private void lblBttRegistrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblBttRegistrarMouseClicked
-    String nombre = txtNombre.getText().trim();
+      String nombre = txtNombre.getText().trim();
     String apellidos = txtApellidos.getText().trim();
     String celularStr = txtCelular.getText().trim();
     String email = txtEmail.getText().trim();
@@ -358,14 +366,29 @@ public class GUISingIn extends javax.swing.JFrame {
         }
     }
 
+    // Manejo del celular opcional
+    int celular = 0; // por defecto 0 si no digitó nada
+    if (!celularStr.isEmpty()) {
+        try {
+            celular = Integer.parseInt(celularStr);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "El celular debe ser numérico", "Error", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+    }
+
     // Crear usuario
-    int celular = Integer.parseInt(celularStr);
     User nuevoUsuario = new User(nombre, apellidos, celular, email, password, rol, program);
 
-    // Aquí llamas al servicio
-    JOptionPane.showMessageDialog(this, "Usuario registrado exitosamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                          // cerrar la ventana actual (si quieres ocultarla del todo)
-     irALogin();
+    // Guardar con el servicio
+    boolean registrado = userService.saveUser(nuevoUsuario);
+
+    if (registrado) {
+        JOptionPane.showMessageDialog(this, "Usuario registrado exitosamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        irALogin();
+    } else {
+        JOptionPane.showMessageDialog(this, "Error al registrar el usuario. Verifica los datos.", "Error", JOptionPane.ERROR_MESSAGE);
+    }
     }//GEN-LAST:event_lblBttRegistrarMouseClicked
    public void irALogin(){
     GUILogin ventanaLogin = new GUILogin(); // crear la nueva ventana
@@ -415,6 +438,7 @@ public class GUISingIn extends javax.swing.JFrame {
     return null; // null = sin errores
 }
 
+   ///
 
     private void manejarPlaceHolder(JTextField campo, String placeholder, JTextField... otros) {
     // Si hago clic en este campo y está en modo placeholder → lo limpio
