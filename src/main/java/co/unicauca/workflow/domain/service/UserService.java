@@ -108,11 +108,16 @@ public class UserService {
     /**
      * Valida la fortaleza de la contraseña.
      */
-    boolean validatePassword(String password) {
-        String regex = "^(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{6,}$";
-        return password != null && password.matches(regex);
-    }
+   
+boolean validatePassword(String password) {
+    if (password == null) return false;
+    // min 6, al menos una minúscula, una mayúscula, un dígito y un caracter especial
+    String regex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{6,}$";
+    return password.matches(regex);
+}
 
+    
+    
     /**
      * Valida que el email pertenezca al dominio institucional.
      */
