@@ -413,14 +413,6 @@ private final UserService userService;
     }
 
 
-    // Crear usuario
-
-    celular = null; // valor por defecto (si no digitó nada)
-    if (!celularStr.isEmpty() && !celularStr.equals("Ingrese su celular")) {
-        celular = celularStr; // lo guardamos tal cual como String
-    }
-
-
     // Guardar con el servicio
     boolean registrado = userService.saveUser(nombre, apellidos, celular, email, password, rol, program);
 
@@ -461,12 +453,7 @@ public void irALogin(){
         return "Por favor completa todos los campos.";
     }
 
-    // Validar celular numérico
-    if (!celularStr.isEmpty() && !celularStr.equals("Ingrese su celular")) {
-        if (!celularStr.matches("\\d+")) {
-            return "El celular debe ser un número válido."; 
-        }
-    }
+    
 
 
 

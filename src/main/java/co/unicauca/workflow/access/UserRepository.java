@@ -30,9 +30,24 @@ public class UserRepository implements IUserRepository {
         initDatabase();
     }
 
-
+   /**
+     * @brief Guarda un nuevo usuario en la base de datos.
+     *
+     * Este método valida los datos del objeto {@link User} recibido y,
+     * si son correctos, los inserta en la tabla "User". 
+     * Además, recupera y asigna el ID autogenerado por la base de datos al objeto.
+     *
+     * @param newUser Usuario a registrar en la base de datos.
+     *                - Debe contener nombre, apellido, email, contraseña, rol y programa válidos.
+     *                - El teléfono puede ser nulo o vacío.
+     *
+     * @return true si el usuario fue guardado exitosamente en la BD, false en caso de error
+     *         (por datos inválidos o fallo en la operación SQL).
+     *
+     * @throws RuntimeException si ocurre un error grave en la conexión o ejecución de la consulta.
+     */
    @Override
-public boolean save(User newUser) {
+    public boolean save(User newUser) {
     try {
         // Validar User
         if (newUser == null || newUser.getName().isBlank()) {
@@ -47,7 +62,7 @@ public boolean save(User newUser) {
 
         pstmt.setString(1, newUser.getName());
         pstmt.setString(2, newUser.getLastname());
-
+        //Verifica 
         if (newUser.getPhone() == null || newUser.getPhone().isBlank()) {
             pstmt.setNull(3, java.sql.Types.VARCHAR);
         } else {
@@ -79,7 +94,23 @@ public boolean save(User newUser) {
     }
     return false;
 }
-
+/**
+     * @brief Recupera todos los usuarios de la base de datos.
+     *
+     * Este método ejecuta una consulta SQL sobre la tabla "User" y construye 
+     * una lista de objetos {@link User} con los datos obtenidos. 
+     * Se encarga de mapear cada columna (idUsuario, name, lastname, phone, 
+     * email, password, rol, program) a los atributos de la entidad.
+     *
+     * @return Lista de objetos {@link User} con todos los usuarios almacenados 
+     *         en la base de datos. Si no hay registros, retorna una lista vacía.
+     *
+     * @note El campo <code>phone</code> puede ser <code>null</code> si en la base 
+     *       de datos el valor está vacío o definido como NULL.
+     *
+     * @throws RuntimeException si ocurre un error de conexión o en la ejecución 
+     *         de la consulta SQL.
+     */
     @Override
     public List<User> list() {
         List<User> users = new ArrayList<>();

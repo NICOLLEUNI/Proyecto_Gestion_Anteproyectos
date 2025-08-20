@@ -86,7 +86,7 @@ public class GUIEstudiante extends javax.swing.JFrame {
         lblPrograma.setFont(new java.awt.Font("Roboto Thin", 1, 14)); // NOI18N
         lblPrograma.setForeground(new java.awt.Color(0, 0, 0));
         lblPrograma.setText("Programa");
-        Background.add(lblPrograma, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 300, 260, 30));
+        Background.add(lblPrograma, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 300, 490, 30));
 
         lblApellidos.setFont(new java.awt.Font("Roboto Thin", 1, 14)); // NOI18N
         lblApellidos.setForeground(new java.awt.Color(0, 0, 0));

@@ -245,7 +245,7 @@ public class GUILogin extends javax.swing.JFrame {
     }//GEN-LAST:event_pnlBttLoginMouseEntered
 
     private void lblLoginMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblLoginMouseClicked
-          String usuario = tfEmail.getText().trim();
+    String usuario = tfEmail.getText().trim();
     String clave = String.valueOf(tfContrasenia.getPassword()).trim();
 
     // Validar campos vacíos

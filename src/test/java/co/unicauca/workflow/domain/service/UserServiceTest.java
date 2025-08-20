@@ -25,27 +25,7 @@ import co.unicauca.workflow.domain.entities.enumRol;
  */
 public class UserServiceTest {
 
-    /**
-     * Repositorio en memoria para pruebas. No toca BD real.
-     */
-    @BeforeEach
-public void setUp() {
-    repo = new InMemoryRepo();
-    instance = new UserService(repo);
-
-    // Sembrar un usuario válido como lo esperan los tests de authenticateUser
-    User seeded = new User(
-        "Juan",
-        "Pérez",
-        123456789, 
-        "juan.perez@unicauca.edu.co",
-        "Abc123!@", // en texto plano, se hashea al guardar
-        enumRol.ESTUDIANTE, // 👈 ahora sí con rol
-        null                 // programa lo puedes dejar en null si no lo usas
-    );
-    assertTrue(instance.saveUser(seeded), "No se pudo sembrar el usuario de prueba");
-}
-    private static class InMemoryRepo implements IUserRepository {
+       private static class InMemoryRepo implements IUserRepository {
         private final List<User> store = new ArrayList<>();
 
         @Override
@@ -57,7 +37,6 @@ public void setUp() {
 
         @Override
         public List<User> list() {
-            // Devolvemos copia para no exponer la lista interna
             return new ArrayList<>(store);
         }
     }
@@ -65,190 +44,217 @@ public void setUp() {
     private UserService instance;
     private InMemoryRepo repo;
 
-
     @BeforeEach
     public void setUp() {
-      repo = new InMemoryRepo();
+        repo = new InMemoryRepo();
         instance = new UserService(repo);
 
-        // Sembrar un usuario válido como lo esperan los tests de authenticateUser
         User seeded = new User(
             "Juan",
             "Pérez",
-            "123456789", // si tu User usa String para phone, cambia a "123456789"
+            "123456789",
             "juan.perez@unicauca.edu.co",
-            "Abc123!@", // en texto plano, se hashea al guardar
+            "Abc123!@",
             enumRol.ESTUDIANTE,
             enumProgram.INGENIERIA_SISTEMAS
         );
 
         assertTrue(instance.saveUser(
-                seeded.getName(),
-                seeded.getLastname(),
-                seeded.getPhone(),
-                seeded.getEmail(),
-                seeded.getPassword(),
-                seeded.getRol(),
-                seeded.getProgram()
+            seeded.getName(),
+            seeded.getLastname(),
+            seeded.getPhone(),
+            seeded.getEmail(),
+            seeded.getPassword(),
+            seeded.getRol(),
+            seeded.getProgram()
         ), "No se pudo sembrar el usuario de prueba");
     }
 
-
-    // ====================== Tests de hashPassword ======================
+    // ====================== hashPassword ======================
 
     @Test
-    public void testHashPassword() {
-        String hash1 = instance.hashPassword("MiPass123!");
-        String hash2 = instance.hashPassword("MiPass123!");
-        assertEquals(hash1, hash2, "El hash de la misma contraseña debe ser igual");
-
-        String hash3 = instance.hashPassword("OtraPass456!");
-        assertNotEquals(hash1, hash3, "Contraseñas distintas no deben dar el mismo hash");
-
-        assertNull(instance.hashPassword(null), "Si la contraseña es null, el hash también debe ser null");
-
-        String hash4 = instance.hashPassword("MiPass123!");
-        assertNotEquals("MiPass123!", hash4, "El hash no debe ser igual al texto original");
+    void testHashSamePasswordGeneratesSameHash() {
+        assertEquals(instance.hashPassword("MiPass123!"), instance.hashPassword("MiPass123!"));
     }
 
-    // ====================== Tests de validatePassword ======================
+    @Test
+    void testHashDifferentPasswordsGenerateDifferentHash() {
+        assertNotEquals(instance.hashPassword("MiPass123!"), instance.hashPassword("OtraPass456!"));
+    }
 
     @Test
-    public void testValidatePassword() {
-        // válido: min 6, mayúscula, minúscula, dígito y especial
+    void testHashNullPasswordReturnsNull() {
+        assertNull(instance.hashPassword(null));
+    }
+
+    @Test
+    void testHashIsNotPlainText() {
+        assertNotEquals("MiPass123!", instance.hashPassword("MiPass123!"));
+    }
+
+    // ====================== validatePassword ======================
+
+    @Test
+    void testValidPassword() {
         assertTrue(instance.validatePassword("Abc123!@"));
-
-        // inválidos
-        assertFalse(instance.validatePassword("Ab1!"));       // muy corta
-        assertFalse(instance.validatePassword("abc123!@"));   // sin mayúscula
-        assertFalse(instance.validatePassword("ABC123!@"));   // sin minúscula
-        assertFalse(instance.validatePassword("Abcdef!@"));   // sin dígitos
-        assertFalse(instance.validatePassword("Abc12345"));   // sin especial
-        assertFalse(instance.validatePassword(null));         // null
     }
 
-    // ====================== Tests de validateEmail ======================
+    @Test
+    void testPasswordTooShort() {
+        assertFalse(instance.validatePassword("Ab1!"));
+    }
 
     @Test
-    public void testValidateEmail() {
+    void testPasswordWithoutUppercase() {
+        assertFalse(instance.validatePassword("abc123!@"));
+    }
+
+    @Test
+    void testPasswordWithoutLowercase() {
+        assertFalse(instance.validatePassword("ABC123!@"));
+    }
+
+    @Test
+    void testPasswordWithoutDigit() {
+        assertFalse(instance.validatePassword("Abcdef!@"));
+    }
+
+    @Test
+    void testPasswordWithoutSpecialCharacter() {
+        assertFalse(instance.validatePassword("Abc12345"));
+    }
+
+    @Test
+    void testPasswordNull() {
+        assertFalse(instance.validatePassword(null));
+    }
+
+    // ====================== validateEmail ======================
+
+    @Test
+    void testValidEmail() {
         assertTrue(instance.validateEmail("juan.perez@unicauca.edu.co"));
-
-        assertFalse(instance.validateEmail("juan@gmail.com"));     // otro dominio
-        assertFalse(instance.validateEmail("@unicauca.edu.co"));   // mal formato
-        assertFalse(instance.validateEmail(null));                 // null
     }
-
-    // ====================== Tests de saveUser ======================
 
     @Test
-    public void testSaveUser() {
-
-     User userValido = new User("Ana", "López", "987654321",
-        "ana.lopez@unicauca.edu.co", "Xy1!xy",
-        enumRol.ESTUDIANTE, enumProgram.INGENIERIA_SISTEMAS);
-
-
-    assertTrue(instance.saveUser(
-        userValido.getName(),
-        userValido.getLastname(),
-        userValido.getPhone(),
-        userValido.getEmail(),
-        userValido.getPassword(),
-        userValido.getRol(),
-        userValido.getProgram()
-    ), "Debe guardar correctamente un usuario válido");
-
-
-    // null
-    assertFalse(instance.saveUser(null, null, null, null, null, null, null),
-        "No debe permitir guardar un usuario null");
-
-    // email inválido
-    User userEmailInvalido = new User("Pedro", "Ruiz", "555111222",
-        "pedro@gmail.com", "Abc123!@",
-        enumRol.ESTUDIANTE, enumProgram.INGENIERIA_ELECTRONICA);
-
-    assertFalse(instance.saveUser(
-        userEmailInvalido.getName(),
-        userEmailInvalido.getLastname(),
-        userEmailInvalido.getPhone(),
-        userEmailInvalido.getEmail(),
-        userEmailInvalido.getPassword(),
-        userEmailInvalido.getRol(),
-        userEmailInvalido.getProgram()
-    ), "No debe permitir guardar un usuario con email inválido");
-
-    // contraseña débil
-    User userPassInvalida = new User("Carla", "Mora", "444333222",
-        "carla.mora@unicauca.edu.co", "123",
-        enumRol.DOCENTE, enumProgram.AUTOMATICA_INDUSTRIAL);
-
-    assertFalse(instance.saveUser(
-        userPassInvalida.getName(),
-        userPassInvalida.getLastname(),
-        userPassInvalida.getPhone(),
-        userPassInvalida.getEmail(),
-        userPassInvalida.getPassword(),
-        userPassInvalida.getRol(),
-        userPassInvalida.getProgram()
-    ), "No debe permitir guardar un usuario con contraseña inválida");
-
-
+    void testEmailWithWrongDomain() {
+        assertFalse(instance.validateEmail("juan@gmail.com"));
     }
 
-    
-    // ====================== Tests de userExists ======================
+    @Test
+    void testEmailWithBadFormat() {
+        assertFalse(instance.validateEmail("@unicauca.edu.co"));
+    }
 
-@Test
-public void testUserExists() {
-    // El usuario sembrado en setUp() sí existe
-    assertTrue(instance.userExists("juan.perez@unicauca.edu.co"),
-            "Debe retornar true para un usuario ya registrado");
+    @Test
+    void testEmailNull() {
+        assertFalse(instance.validateEmail(null));
+    }
 
-    // Otro correo distinto no existe
-    assertFalse(instance.userExists("otro@unicauca.edu.co"),
-            "Debe retornar false para un usuario no registrado");
+    // ====================== saveUser ======================
 
-    // Correo null
-    assertFalse(instance.userExists(null),
-            "Debe retornar false si el email es null");
+    @Test
+    void testSaveValidUser() {
+        User userValido = new User("Ana", "López", "987654321",
+            "ana.lopez@unicauca.edu.co", "Xy1!xy",
+            enumRol.ESTUDIANTE, enumProgram.INGENIERIA_SISTEMAS);
 
-    // Correo vacío
-    assertFalse(instance.userExists(""),
-            "Debe retornar false si el email es vacío");
+        assertTrue(instance.saveUser(
+            userValido.getName(), userValido.getLastname(), userValido.getPhone(),
+            userValido.getEmail(), userValido.getPassword(), userValido.getRol(),
+            userValido.getProgram()
+        ));
+    }
 
-    // Correo con mayúsculas (debe normalizar y encontrarlo)
-    assertTrue(instance.userExists("JUAN.PEREZ@UNICAUCA.EDU.CO"),
-            "Debe retornar true aunque el email esté en mayúsculas");
-}
+    @Test
+    void testSaveNullUser() {
+        assertFalse(instance.saveUser(null, null, null, null, null, null, null));
+    }
 
-    
-    
-    // ====================== Tests de authenticateUser ======================
+    @Test
+    void testSaveUserWithInvalidEmail() {
+        User userEmailInvalido = new User("Pedro", "Ruiz", "555111222",
+            "pedro@gmail.com", "Abc123!@",
+            enumRol.ESTUDIANTE, enumProgram.INGENIERIA_ELECTRONICA);
 
+        assertFalse(instance.saveUser(
+            userEmailInvalido.getName(), userEmailInvalido.getLastname(),
+            userEmailInvalido.getPhone(), userEmailInvalido.getEmail(),
+            userEmailInvalido.getPassword(), userEmailInvalido.getRol(),
+            userEmailInvalido.getProgram()
+        ));
+    }
 
-@Test
-public void testAuthenticateUser() {
-    // válido: el usuario sembrado en setUp()
-    User userValido = instance.authenticateUser("juan.perez@unicauca.edu.co", "Abc123!@");
-    assertNotNull(userValido, "Debe autenticar y retornar un objeto User con credenciales válidas");
-    assertEquals("juan.perez@unicauca.edu.co", userValido.getEmail(), "El email debe coincidir");
-    assertEquals(enumRol.ESTUDIANTE, userValido.getRol(), "El rol debe ser ESTUDIANTE (según setUp)");
+    @Test
+    void testSaveUserWithInvalidPassword() {
+        User userPassInvalida = new User("Carla", "Mora", "444333222",
+            "carla.mora@unicauca.edu.co", "123",
+            enumRol.DOCENTE, enumProgram.AUTOMATICA_INDUSTRIAL);
 
-    // contraseña incorrecta
-    User userClaveErrada = instance.authenticateUser("juan.perez@unicauca.edu.co", "ClaveErrada!");
-    assertNull(userClaveErrada, "No debe autenticar con contraseña incorrecta");
+        assertFalse(instance.saveUser(
+            userPassInvalida.getName(), userPassInvalida.getLastname(),
+            userPassInvalida.getPhone(), userPassInvalida.getEmail(),
+            userPassInvalida.getPassword(), userPassInvalida.getRol(),
+            userPassInvalida.getProgram()
+        ));
+    }
 
-    // usuario inexistente
-    User userInexistente = instance.authenticateUser("otro@unicauca.edu.co", "Abc123!@");
-    assertNull(userInexistente, "No debe autenticar un usuario inexistente");
+    // ====================== userExists ======================
 
-    // email null
-    User userEmailNull = instance.authenticateUser(null, "Abc123!@");
-    assertNull(userEmailNull, "No debe autenticar si el email es null");
+    @Test
+    void testUserExistsWithRegisteredEmail() {
+        assertTrue(instance.userExists("juan.perez@unicauca.edu.co"));
+    }
 
-    // password null
-    User userPasswordNull = instance.authenticateUser("juan.perez@unicauca.edu.co", null);
-    assertNull(userPasswordNull, "No debe autenticar si la contraseña es null");
-}}
+    @Test
+    void testUserExistsWithUnregisteredEmail() {
+        assertFalse(instance.userExists("otro@unicauca.edu.co"));
+    }
+
+    @Test
+    void testUserExistsWithNullEmail() {
+        assertFalse(instance.userExists(null));
+    }
+
+    @Test
+    void testUserExistsWithEmptyEmail() {
+        assertFalse(instance.userExists(""));
+    }
+
+    @Test
+    void testUserExistsWithUppercaseEmail() {
+        assertTrue(instance.userExists("JUAN.PEREZ@UNICAUCA.EDU.CO"));
+    }
+
+    // ====================== authenticateUser ======================
+
+    @Test
+    void testAuthenticateValidUser() {
+        User userValido = instance.authenticateUser("juan.perez@unicauca.edu.co", "Abc123!@");
+        assertNotNull(userValido);
+    }
+
+    @Test
+    void testAuthenticateWithWrongPassword() {
+        User userClaveErrada = instance.authenticateUser("juan.perez@unicauca.edu.co", "ClaveErrada!");
+        assertNull(userClaveErrada);
+    }
+
+    @Test
+    void testAuthenticateWithNonExistentUser() {
+        User userInexistente = instance.authenticateUser("otro@unicauca.edu.co", "Abc123!@");
+        assertNull(userInexistente);
+    }
+
+    @Test
+    void testAuthenticateWithNullEmail() {
+        User userEmailNull = instance.authenticateUser(null, "Abc123!@");
+        assertNull(userEmailNull);
+    }
+
+    @Test
+    void testAuthenticateWithNullPassword() {
+        User userPasswordNull = instance.authenticateUser("juan.perez@unicauca.edu.co", null);
+        assertNull(userPasswordNull);
+    }}
 

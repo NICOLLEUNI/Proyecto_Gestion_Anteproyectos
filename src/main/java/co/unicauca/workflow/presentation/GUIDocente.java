@@ -85,7 +85,7 @@ public class GUIDocente extends javax.swing.JFrame {
         lblPrograma.setFont(new java.awt.Font("Roboto Thin", 1, 14)); // NOI18N
         lblPrograma.setForeground(new java.awt.Color(0, 0, 0));
         lblPrograma.setText("Programa");
-        Bakground.add(lblPrograma, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 290, 247, 32));
+        Bakground.add(lblPrograma, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 290, 490, 32));
 
         lblEmail.setFont(new java.awt.Font("Roboto Thin", 1, 14)); // NOI18N
         lblEmail.setForeground(new java.awt.Color(0, 0, 0));

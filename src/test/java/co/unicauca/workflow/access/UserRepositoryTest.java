@@ -1,5 +1,5 @@
 
-package co.unicauca.workflow.TestClass;
+package co.unicauca.workflow.access;
 
 import co.unicauca.workflow.access.UserRepository;
 import co.unicauca.workflow.domain.entities.User;
