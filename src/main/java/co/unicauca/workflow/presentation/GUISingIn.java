@@ -342,26 +342,43 @@ private final UserService userService;
 
     private void lblBttRegistrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblBttRegistrarMouseClicked
 
-
-
-      String nombre = txtNombre.getText().trim();
-
+                                                    
+    String nombre = txtNombre.getText().trim();
     String apellidos = txtApellidos.getText().trim();
     String celularStr = txtCelular.getText().trim();
     String email = txtEmail.getText().trim();
     String password = String.valueOf(txtContrasenia.getPassword()).trim();
 
-    // Validar
+    // Validar campos vacíos
     String error = validarCampos(txtNombre, txtApellidos, txtCelular, txtEmail, txtContrasenia, CBEstudiante, CBDocente, ComBoxPrograma);
     if (error != null) {
         JOptionPane.showMessageDialog(this, error, "Error", JOptionPane.WARNING_MESSAGE);
         return;
     }
 
-    // Crear el rol
+    // 🚨 Validar contraseña con UserService
+    if (!userService.validatePassword(password)) {
+        JOptionPane.showMessageDialog(this,
+                "La contraseña debe tener mínimo 6 caracteres,\n" +
+                "al menos un dígito, al menos un carácter especial\n" +
+                "y al menos una mayúscula.",
+                "Error", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+    // 🚨 Validar correo institucional con UserService
+    if (!userService.validateEmail(email)) {
+        System.out.println("El correo debe ser institucional (@unicauca.edu.co)");
+        JOptionPane.showMessageDialog(this,
+                "El correo debe ser institucional (@unicauca.edu.co)",
+                "Error", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+    // Rol
     enumRol rol = CBEstudiante.isSelected() ? enumRol.ESTUDIANTE : enumRol.DOCENTE;
 
-    // Crear el programa
+    // Programa
     enumProgram program = null;
     String programaSeleccionado = ComBoxPrograma.getSelectedItem().toString();
     for (enumProgram p : enumProgram.values()) {
@@ -371,9 +388,9 @@ private final UserService userService;
         }
     }
 
-    // Manejo del celular opcional
-    int celular = 0; // por defecto 0 si no digitó nada
-    if (!celularStr.isEmpty()) {
+    // Celular
+    int celular = 0;
+    if (!celularStr.isEmpty() && !celularStr.equals("Ingrese su celular")) {
         try {
             celular = Integer.parseInt(celularStr);
         } catch (NumberFormatException e) {
@@ -382,25 +399,14 @@ private final UserService userService;
         }
     }
 
-    // Crear usuario
-
-    celular = 0; // valor por defecto
-    if (!celularStr.isEmpty() && !celularStr.equals("Ingrese su celular")) {
-        celular = Integer.parseInt(celularStr);
+    // Validar si ya existe
+    if (userService.userExists(email)) {
+        JOptionPane.showMessageDialog(this, "El usuario con este correo ya existe", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
     }
 
-
-
-    // Aquí llamas al servicio
-    JOptionPane.showMessageDialog(this, "Usuario registrado exitosamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-
-    // Ir al login
-    irALogin();
-
-    User nuevoUsuario = new User(nombre, apellidos, celular, email, password, rol, program);
-
     // Guardar con el servicio
-    boolean registrado = userService.saveUser(nuevoUsuario);
+    boolean registrado = userService.saveUser(nombre, apellidos, celular, email, password, rol, program);
 
     if (registrado) {
         JOptionPane.showMessageDialog(this, "Usuario registrado exitosamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
@@ -408,6 +414,7 @@ private final UserService userService;
     } else {
         JOptionPane.showMessageDialog(this, "Error al registrar el usuario. Verifica los datos.", "Error", JOptionPane.ERROR_MESSAGE);
     }
+       
 
     }//GEN-LAST:event_lblBttRegistrarMouseClicked
    
