@@ -6,6 +6,8 @@ package co.unicauca.workflow.domain.service;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import co.unicauca.workflow.domain.entities.enumRol;
+import co.unicauca.workflow.domain.entities.enumProgram;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -47,21 +49,29 @@ public class UserServiceTest {
 
     @BeforeEach
     public void setUp() {
-        repo = new InMemoryRepo();
+      repo = new InMemoryRepo();
         instance = new UserService(repo);
 
         // Sembrar un usuario válido como lo esperan los tests de authenticateUser
-        // OJO: saveUser hashea la contraseña y valida email/contraseña.
         User seeded = new User(
             "Juan",
             "Pérez",
-            123456789, // si tu User usa String para phone, cambia a "123456789"
+            123456789,
             "juan.perez@unicauca.edu.co",
             "Abc123!@", // en texto plano, se hashea al guardar
-            null,
-            null
+            enumRol.ESTUDIANTE,
+            enumProgram.INGENIERIA_SISTEMAS
         );
-        assertTrue(instance.saveUser(seeded), "No se pudo sembrar el usuario de prueba");
+
+        assertTrue(instance.saveUser(
+                seeded.getName(),
+                seeded.getLastname(),
+                seeded.getPhone(),
+                seeded.getEmail(),
+                seeded.getPassword(),
+                seeded.getRol(),
+                seeded.getProgram()
+        ), "No se pudo sembrar el usuario de prueba");
     }
 
     // ====================== Tests de hashPassword ======================
@@ -112,22 +122,83 @@ public class UserServiceTest {
 
     @Test
     public void testSaveUser() {
-        // válido
-        User userValido = new User("Ana", "López", 987654321, "ana.lopez@unicauca.edu.co", "Xy1!xy", null, null);
-        assertTrue(instance.saveUser(userValido), "Debe guardar correctamente un usuario válido");
+     User userValido = new User("Ana", "López", 987654321,
+        "ana.lopez@unicauca.edu.co", "Xy1!xy",
+        enumRol.ESTUDIANTE, enumProgram.INGENIERIA_SISTEMAS);
 
-        // null
-        assertFalse(instance.saveUser(null), "No debe permitir guardar un usuario null");
+    assertTrue(instance.saveUser(
+        userValido.getName(),
+        userValido.getLastname(),
+        userValido.getPhone(),
+        userValido.getEmail(),
+        userValido.getPassword(),
+        userValido.getRol(),
+        userValido.getProgram()
+    ), "Debe guardar correctamente un usuario válido");
 
-        // email inválido
-        User userEmailInvalido = new User("Pedro", "Ruiz", 555111222, "pedro@gmail.com", "Abc123!@", null, null);
-        assertFalse(instance.saveUser(userEmailInvalido), "No debe permitir guardar un usuario con email inválido");
+    // null
+    assertFalse(instance.saveUser(null, null, 0, null, null, null, null),
+        "No debe permitir guardar un usuario null");
 
-        // contraseña débil
-        User userPassInvalida = new User("Carla", "Mora", 444333222, "carla.mora@unicauca.edu.co", "123", null, null);
-        assertFalse(instance.saveUser(userPassInvalida), "No debe permitir guardar un usuario con contraseña inválida");
+    // email inválido
+    User userEmailInvalido = new User("Pedro", "Ruiz", 555111222,
+        "pedro@gmail.com", "Abc123!@",
+        enumRol.ESTUDIANTE, enumProgram.INGENIERIA_ELECTRONICA);
+
+    assertFalse(instance.saveUser(
+        userEmailInvalido.getName(),
+        userEmailInvalido.getLastname(),
+        userEmailInvalido.getPhone(),
+        userEmailInvalido.getEmail(),
+        userEmailInvalido.getPassword(),
+        userEmailInvalido.getRol(),
+        userEmailInvalido.getProgram()
+    ), "No debe permitir guardar un usuario con email inválido");
+
+    // contraseña débil
+    User userPassInvalida = new User("Carla", "Mora", 444333222,
+        "carla.mora@unicauca.edu.co", "123",
+        enumRol.DOCENTE, enumProgram.AUTOMATICA_INDUSTRIAL);
+
+    assertFalse(instance.saveUser(
+        userPassInvalida.getName(),
+        userPassInvalida.getLastname(),
+        userPassInvalida.getPhone(),
+        userPassInvalida.getEmail(),
+        userPassInvalida.getPassword(),
+        userPassInvalida.getRol(),
+        userPassInvalida.getProgram()
+    ), "No debe permitir guardar un usuario con contraseña inválida");
     }
 
+    
+    // ====================== Tests de userExists ======================
+
+@Test
+public void testUserExists() {
+    // El usuario sembrado en setUp() sí existe
+    assertTrue(instance.userExists("juan.perez@unicauca.edu.co"),
+            "Debe retornar true para un usuario ya registrado");
+
+    // Otro correo distinto no existe
+    assertFalse(instance.userExists("otro@unicauca.edu.co"),
+            "Debe retornar false para un usuario no registrado");
+
+    // Correo null
+    assertFalse(instance.userExists(null),
+            "Debe retornar false si el email es null");
+
+    // Correo vacío
+    assertFalse(instance.userExists(""),
+            "Debe retornar false si el email es vacío");
+
+    // Correo con mayúsculas (debe normalizar y encontrarlo)
+    assertTrue(instance.userExists("JUAN.PEREZ@UNICAUCA.EDU.CO"),
+            "Debe retornar true aunque el email esté en mayúsculas");
+}
+
+    
+    
     // ====================== Tests de authenticateUser ======================
 
     @Test

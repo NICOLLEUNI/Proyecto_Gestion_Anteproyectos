@@ -1,6 +1,8 @@
 package co.unicauca.workflow.domain.service;
 
-import java.util.Locale; // ✅ IMPORT NECESARIO
+import java.util.Locale; // 
+import co.unicauca.workflow.domain.entities.enumRol;
+import co.unicauca.workflow.domain.entities.enumProgram;
 
 import co.unicauca.workflow.domain.entities.User;
 import co.unicauca.workflow.access.IUserRepository;
@@ -25,36 +27,38 @@ public class UserService {
     /**
      * Guarda un nuevo usuario en el repositorio.
      */
-    public boolean saveUser(User user) {
-        if (user == null) {
-            return false;
-        }
-        if (user.getName() == null || user.getName().isBlank()
-                || user.getLastname() == null || user.getLastname().isBlank()
-                || user.getEmail() == null || user.getEmail().isBlank()
-                || user.getPassword() == null || user.getPassword().isBlank()) {
-            return false;
-        }
-
-        String normalizedEmail = user.getEmail().trim().toLowerCase(Locale.ROOT);
-        if (!validateEmail(normalizedEmail)) {
-            return false;
-        }
-        user.setEmail(normalizedEmail);
-
-        if (!validatePassword(user.getPassword())) {
-            return false;
-        }
-
-        String hashedPassword = hashPassword(user.getPassword());
-        if (hashedPassword == null) {
-            return false;
-        }
-        user.setPassword(hashedPassword);
-
-        return userRepository.save(user);
+public boolean saveUser(String nombre, String apellidos, int celular,
+                        String email, String password, enumRol rol, enumProgram program) {
+    if (nombre == null || nombre.isBlank()
+            || apellidos == null || apellidos.isBlank()
+            || email == null || email.isBlank()
+            || password == null || password.isBlank()) {
+        return false;
     }
 
+    String normalizedEmail = email.trim().toLowerCase(Locale.ROOT);
+    if (!validateEmail(normalizedEmail)) {
+        return false;
+    }
+
+    if (!validatePassword(password)) {
+        return false;
+    }
+
+    String hashedPassword = hashPassword(password);
+    if (hashedPassword == null) {
+        return false;
+    }
+
+    // Crear objeto User
+    User user = new User(nombre, apellidos, celular, normalizedEmail, hashedPassword, rol, program);
+
+    return userRepository.save(user);
+}
+
+
+    
+    
     /**
      * Autentica a un usuario verificando email y contraseña.
      */
@@ -109,7 +113,7 @@ public class UserService {
      * Valida la fortaleza de la contraseña.
      */
    
-boolean validatePassword(String password) {
+public boolean validatePassword(String password) {
     if (password == null) return false;
     // min 6, al menos una minúscula, una mayúscula, un dígito y un caracter especial
     String regex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{6,}$";
@@ -125,4 +129,28 @@ boolean validatePassword(String password) {
         String regex = "^[A-Za-z0-9._%+-]+@unicauca\\.edu\\.co$";
         return email != null && email.matches(regex);
     }
+    /**
+ /**
+ * Verifica si ya existe un usuario con el mismo email.
+ */
+public boolean userExists(String email) {
+    if (email == null || email.isBlank()) {
+        return false;
+    }
+    String normalizedEmail = email.trim().toLowerCase(Locale.ROOT);
+
+    List<User> users = userRepository.list();
+    for (User u : users) {
+        if (u.getEmail() != null && u.getEmail().equals(normalizedEmail)) {
+            return true;
+        }
+    }
+    return false;
 }
+
+}
+
+    
+    
+    
+ 
