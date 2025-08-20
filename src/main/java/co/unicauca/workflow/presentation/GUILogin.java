@@ -165,6 +165,7 @@ public class GUILogin extends javax.swing.JFrame {
         lblRegistrarse.setForeground(new java.awt.Color(255, 255, 255));
         lblRegistrarse.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblRegistrarse.setText("REGISTRARSE");
+        lblRegistrarse.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         lblRegistrarse.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lblRegistrarseMouseClicked(evt);
@@ -203,6 +204,7 @@ public class GUILogin extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void tfEmailMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tfEmailMousePressed

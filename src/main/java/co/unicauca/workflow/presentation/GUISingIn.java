@@ -257,7 +257,7 @@ public class GUISingIn extends javax.swing.JFrame {
         pnlBack.add(jSeparator14, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 360, 230, 20));
         pnlBack.add(jSeparator15, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 360, 230, 20));
 
-        BackGround.add(pnlBack, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 30, 650, 470));
+        BackGround.add(pnlBack, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 20, 640, 470));
 
         BgImage.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         BgImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/co/unicauca/workflow/presentation/images/BackGroundSingIn.png"))); // NOI18N
@@ -275,6 +275,7 @@ public class GUISingIn extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtNombreMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtNombreMousePressed
@@ -332,7 +333,7 @@ public class GUISingIn extends javax.swing.JFrame {
     }//GEN-LAST:event_lblBttRegistrarMouseExited
 
     private void lblBttRegistrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblBttRegistrarMouseClicked
-    String nombre = txtNombre.getText().trim();
+ String nombre = txtNombre.getText().trim();
     String apellidos = txtApellidos.getText().trim();
     String celularStr = txtCelular.getText().trim();
     String email = txtEmail.getText().trim();
@@ -359,15 +360,21 @@ public class GUISingIn extends javax.swing.JFrame {
     }
 
     // Crear usuario
-    int celular = Integer.parseInt(celularStr);
-    User nuevoUsuario = new User(nombre, apellidos, celular, email, password, rol, program);
+    int celular = 0; // valor por defecto
+    if (!celularStr.isEmpty() && !celularStr.equals("Ingrese su celular")) {
+        celular = Integer.parseInt(celularStr);
+    }
+
+
 
     // Aquí llamas al servicio
     JOptionPane.showMessageDialog(this, "Usuario registrado exitosamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                          // cerrar la ventana actual (si quieres ocultarla del todo)
-     irALogin();
+
+    // Ir al login
+    irALogin();
     }//GEN-LAST:event_lblBttRegistrarMouseClicked
-   public void irALogin(){
+   
+public void irALogin(){
     GUILogin ventanaLogin = new GUILogin(); // crear la nueva ventana
     ventanaLogin.setVisible(true);            // mostrarla
     this.dispose();  
@@ -395,10 +402,12 @@ public class GUISingIn extends javax.swing.JFrame {
     }
 
     // Validar celular numérico
-    try {
-        Integer.parseInt(celularStr);
-    } catch (NumberFormatException e) {
-        return "El celular debe ser un número válido.";
+  if (!celularStr.isEmpty() && !celularStr.equals("Ingrese su celular")) {
+        try {
+            Integer.parseInt(celularStr);
+        } catch (NumberFormatException e) {
+            return "El celular debe ser un número válido.";
+        }
     }
 
     // Validar rol

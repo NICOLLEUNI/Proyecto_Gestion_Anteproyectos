@@ -26,18 +26,100 @@ public class GUIDocente extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        Bakground = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        lblApellido = new javax.swing.JLabel();
+        lblPrograma = new javax.swing.JLabel();
+        lblEmail = new javax.swing.JLabel();
+        lblRol = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        lblNombre = new javax.swing.JLabel();
+        lblCelular = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        Bakground.setBackground(new java.awt.Color(255, 255, 255));
+        Bakground.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jPanel1.setBackground(new java.awt.Color(26, 55, 171));
+
+        jLabel1.setFont(new java.awt.Font("Roboto ExtraBold", 1, 24)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(0, 0, 102));
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("DOCENTE");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(425, Short.MAX_VALUE))
         );
+
+        Bakground.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 260, 510));
+
+        lblApellido.setFont(new java.awt.Font("Roboto Thin", 1, 14)); // NOI18N
+        lblApellido.setForeground(new java.awt.Color(0, 0, 0));
+        lblApellido.setText("Apellido");
+        Bakground.add(lblApellido, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 170, 247, 32));
+
+        lblPrograma.setFont(new java.awt.Font("Roboto Thin", 1, 14)); // NOI18N
+        lblPrograma.setForeground(new java.awt.Color(0, 0, 0));
+        lblPrograma.setText("Programa");
+        Bakground.add(lblPrograma, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 290, 247, 32));
+
+        lblEmail.setFont(new java.awt.Font("Roboto Thin", 1, 14)); // NOI18N
+        lblEmail.setForeground(new java.awt.Color(0, 0, 0));
+        lblEmail.setText("Email");
+        Bakground.add(lblEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 200, 247, 32));
+
+        lblRol.setFont(new java.awt.Font("Roboto Thin", 1, 14)); // NOI18N
+        lblRol.setForeground(new java.awt.Color(0, 0, 0));
+        lblRol.setText("rol");
+        Bakground.add(lblRol, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 230, 247, 32));
+
+        jPanel2.setBackground(new java.awt.Color(0, 102, 204));
+        jPanel2.setForeground(new java.awt.Color(102, 153, 255));
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 680, Short.MAX_VALUE)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+
+        Bakground.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(257, 0, 680, -1));
+
+        lblNombre.setFont(new java.awt.Font("Roboto Thin", 1, 14)); // NOI18N
+        lblNombre.setForeground(new java.awt.Color(0, 0, 0));
+        lblNombre.setText("Nombre");
+        Bakground.add(lblNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 140, 247, 32));
+
+        lblCelular.setFont(new java.awt.Font("Roboto Thin", 1, 14)); // NOI18N
+        lblCelular.setForeground(new java.awt.Color(0, 0, 0));
+        lblCelular.setText("Celular");
+        Bakground.add(lblCelular, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 260, 247, 32));
+
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/co/unicauca/workflow/presentation/images/Logo.png"))); // NOI18N
+        jLabel2.setText("jLabel2");
+        Bakground.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 390, 330, 120));
+
+        getContentPane().add(Bakground, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -78,5 +160,16 @@ public class GUIDocente extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel Bakground;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JLabel lblApellido;
+    private javax.swing.JLabel lblCelular;
+    private javax.swing.JLabel lblEmail;
+    private javax.swing.JLabel lblNombre;
+    private javax.swing.JLabel lblPrograma;
+    private javax.swing.JLabel lblRol;
     // End of variables declaration//GEN-END:variables
 }
