@@ -384,7 +384,7 @@ private final UserService userService;
 
     // Crear usuario
 
-    int celular = 0; // valor por defecto
+    celular = 0; // valor por defecto
     if (!celularStr.isEmpty() && !celularStr.equals("Ingrese su celular")) {
         celular = Integer.parseInt(celularStr);
     }
