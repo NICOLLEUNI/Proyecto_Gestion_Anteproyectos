@@ -7,6 +7,9 @@ package co.unicauca.workflow.presentation;
 import co.unicauca.workflow.domain.entities.User;
 import co.unicauca.workflow.domain.entities.enumProgram;
 import co.unicauca.workflow.domain.entities.enumRol;
+import co.unicauca.workflow.access.UserRepository;
+import co.unicauca.workflow.access.IUserRepository;
+import co.unicauca.workflow.domain.service.UserService;
 import java.awt.Color;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -19,13 +22,18 @@ import javax.swing.JTextField;
  * @author User
  */
 public class GUISingIn extends javax.swing.JFrame {
-
+private final UserService userService;
     /**
      * Creates new form GUISingIn
      */
     public GUISingIn() {
         initComponents();
+         IUserRepository repo = new UserRepository(); // conecta con SQLite
+    this.userService = new UserService(repo);
     }
+    
+
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -257,7 +265,7 @@ public class GUISingIn extends javax.swing.JFrame {
         pnlBack.add(jSeparator14, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 360, 230, 20));
         pnlBack.add(jSeparator15, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 360, 230, 20));
 
-        BackGround.add(pnlBack, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 30, 650, 470));
+        BackGround.add(pnlBack, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 20, 640, 470));
 
         BgImage.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         BgImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/co/unicauca/workflow/presentation/images/BackGroundSingIn.png"))); // NOI18N
@@ -275,6 +283,7 @@ public class GUISingIn extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtNombreMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtNombreMousePressed
@@ -332,7 +341,11 @@ public class GUISingIn extends javax.swing.JFrame {
     }//GEN-LAST:event_lblBttRegistrarMouseExited
 
     private void lblBttRegistrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblBttRegistrarMouseClicked
-    String nombre = txtNombre.getText().trim();
+
+
+
+      String nombre = txtNombre.getText().trim();
+
     String apellidos = txtApellidos.getText().trim();
     String celularStr = txtCelular.getText().trim();
     String email = txtEmail.getText().trim();
@@ -358,16 +371,47 @@ public class GUISingIn extends javax.swing.JFrame {
         }
     }
 
+    // Manejo del celular opcional
+    int celular = 0; // por defecto 0 si no digitó nada
+    if (!celularStr.isEmpty()) {
+        try {
+            celular = Integer.parseInt(celularStr);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "El celular debe ser numérico", "Error", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+    }
+
     // Crear usuario
-    int celular = Integer.parseInt(celularStr);
-    User nuevoUsuario = new User(nombre, apellidos, celular, email, password, rol, program);
+
+    int celular = 0; // valor por defecto
+    if (!celularStr.isEmpty() && !celularStr.equals("Ingrese su celular")) {
+        celular = Integer.parseInt(celularStr);
+    }
+
+
 
     // Aquí llamas al servicio
     JOptionPane.showMessageDialog(this, "Usuario registrado exitosamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                          // cerrar la ventana actual (si quieres ocultarla del todo)
-     irALogin();
+
+    // Ir al login
+    irALogin();
+
+    User nuevoUsuario = new User(nombre, apellidos, celular, email, password, rol, program);
+
+    // Guardar con el servicio
+    boolean registrado = userService.saveUser(nuevoUsuario);
+
+    if (registrado) {
+        JOptionPane.showMessageDialog(this, "Usuario registrado exitosamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        irALogin();
+    } else {
+        JOptionPane.showMessageDialog(this, "Error al registrar el usuario. Verifica los datos.", "Error", JOptionPane.ERROR_MESSAGE);
+    }
+
     }//GEN-LAST:event_lblBttRegistrarMouseClicked
-   public void irALogin(){
+   
+public void irALogin(){
     GUILogin ventanaLogin = new GUILogin(); // crear la nueva ventana
     ventanaLogin.setVisible(true);            // mostrarla
     this.dispose();  
@@ -395,10 +439,12 @@ public class GUISingIn extends javax.swing.JFrame {
     }
 
     // Validar celular numérico
-    try {
-        Integer.parseInt(celularStr);
-    } catch (NumberFormatException e) {
-        return "El celular debe ser un número válido.";
+  if (!celularStr.isEmpty() && !celularStr.equals("Ingrese su celular")) {
+        try {
+            Integer.parseInt(celularStr);
+        } catch (NumberFormatException e) {
+            return "El celular debe ser un número válido.";
+        }
     }
 
     // Validar rol
@@ -415,6 +461,7 @@ public class GUISingIn extends javax.swing.JFrame {
     return null; // null = sin errores
 }
 
+   ///
 
     private void manejarPlaceHolder(JTextField campo, String placeholder, JTextField... otros) {
     // Si hago clic en este campo y está en modo placeholder → lo limpio

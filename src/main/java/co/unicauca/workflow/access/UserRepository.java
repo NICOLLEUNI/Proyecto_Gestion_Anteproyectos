@@ -30,49 +30,55 @@ public class UserRepository implements IUserRepository {
         initDatabase();
     }
 
-    @Override
-    public boolean save( User newUser) {
 
-        try {
-            //Validate User
-            if (newUser == null ||  newUser.getName().isBlank()) {
-                return false;
-            }
-            //this.connect();
-            String sql = "INSERT INTO User (name, lastname, phone, email, password, rol, program) "
-           + "VALUES (?, ?, ?, ?, ?, ?, ?)";
-
-            // OJO: aquí pedimos que devuelva las llaves generadas
-            PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-
-            pstmt.setString(1, newUser.getName());
-            pstmt.setString(2, newUser.getLastname());
-            pstmt.setInt(3, newUser.getPhone());
-            pstmt.setString(4, newUser.getEmail());
-            pstmt.setString(5, newUser.getPassword());
-            pstmt.setString(6, newUser.getRol().name());
-            pstmt.setString(7, newUser.getProgram().name());
-
-            int rowsAffected = pstmt.executeUpdate();
-
-            if (rowsAffected > 0) {
-                // Recuperar el id generado
-                ResultSet rs = pstmt.getGeneratedKeys();
-                if (rs.next()) {
-                    int idGenerado = rs.getInt(1);  // primera columna del ResultSet
-                    newUser.setIdUsuario(idGenerado); // guardamos el id en el objeto
-                    System.out.println("Nuevo usuario creado con id: " + idGenerado);
-                }
-            }
-
-            //this.disconnect();
-            return true;
-            
-       } catch (SQLException ex) {
-            Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+   @Override
+public boolean save(User newUser) {
+    try {
+        // Validar User
+        if (newUser == null || newUser.getName().isBlank()) {
+            return false;
         }
-        return false;
+
+        String sql = "INSERT INTO User (name, lastname, phone, email, password, rol, program) "
+                   + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+        // OJO: aquí pedimos que devuelva las llaves generadas
+        PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+
+        pstmt.setString(1, newUser.getName());
+        pstmt.setString(2, newUser.getLastname());
+
+         if (newUser.getPhone() == null) {
+            pstmt.setNull(3, java.sql.Types.INTEGER);
+        } else {
+            pstmt.setInt(3, newUser.getPhone());
+        }
+
+        pstmt.setString(4, newUser.getEmail());
+        pstmt.setString(5, newUser.getPassword());
+        pstmt.setString(6, newUser.getRol().name());
+        pstmt.setString(7, newUser.getProgram().name());
+
+        int rowsAffected = pstmt.executeUpdate();
+
+        if (rowsAffected > 0) {
+            // Recuperar el id generado
+            ResultSet rs = pstmt.getGeneratedKeys();
+            if (rs.next()) {
+                int idGenerado = rs.getInt(1);
+                newUser.setIdUsuario(idGenerado);
+                System.out.println("Nuevo usuario creado con id: " + idGenerado);
+            }
+        }
+
+        return true;
+
+    } catch (SQLException ex) {
+        Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
     }
+    return false;
+}
+
     @Override
     public List<User> list() {
         List<User> users = new ArrayList<>();
@@ -88,7 +94,13 @@ public class UserRepository implements IUserRepository {
                 newUser.setIdUsuario(rs.getInt("idUsuario"));
                 newUser.setName(rs.getString("name"));
                 newUser.setLastname(rs.getString("lastname"));
-                newUser.setPhone(rs.getInt("phone"));
+              // Manejar phone como nullable
+            int ph = rs.getInt("phone");
+            if (rs.wasNull()) {
+                newUser.setPhone(null);
+            } else {
+                newUser.setPhone(ph);
+            }
                 newUser.setEmail(rs.getString("email"));
                 newUser.setPassword(rs.getString("password"));
                 newUser.setRol(enumRol.valueOf(rs.getString("rol"))); 
