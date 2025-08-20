@@ -58,28 +58,31 @@ public class UserService {
     /**
      * Autentica a un usuario verificando email y contraseña.
      */
-    public boolean authenticateUser(String email, String password) {
-        if (email == null || email.isBlank() || password == null || password.isBlank()) {
-            return false;
-        }
+ 
 
-        String normalizedEmail = email.trim().toLowerCase(Locale.ROOT);
-        String hashedPassword = hashPassword(password);
-        if (hashedPassword == null) {
-            return false;
-        }
-
-        List<User> users = userRepository.list();
-        for (User u : users) {
-            if (u.getEmail() != null
-                    && u.getEmail().equals(normalizedEmail)
-                    && u.getPassword().equals(hashedPassword)) {
-                return true;
-            }
-        }
-        return false;
+    
+    
+    public User authenticateUser (String email, String password) {
+    if (email == null || email.isBlank() || password == null || password.isBlank()) {
+        return null;
     }
 
+    String normalizedEmail = email.trim().toLowerCase(Locale.ROOT);
+    String hashedPassword = hashPassword(password);
+    if (hashedPassword == null) {
+        return null;
+    }
+
+    List<User> users = userRepository.list();
+    for (User u : users) {
+        if (u.getEmail() != null
+                && u.getEmail().equals(normalizedEmail)
+                && u.getPassword().equals(hashedPassword)) {
+            return u; // 👈 Retorna el usuario completo
+        }
+    }
+    return null;
+}
     /**
      * Encripta una contraseña en SHA-256.
      */

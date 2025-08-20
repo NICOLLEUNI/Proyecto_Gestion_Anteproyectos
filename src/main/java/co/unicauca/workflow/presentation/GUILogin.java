@@ -5,6 +5,8 @@ import javax.swing.JOptionPane;
 import co.unicauca.workflow.domain.service.UserService;
 import co.unicauca.workflow.access.IUserRepository;
 import co.unicauca.workflow.access.UserRepository;
+import co.unicauca.workflow.domain.entities.User;
+import co.unicauca.workflow.domain.entities.enumRol;
 
 public class GUILogin extends javax.swing.JFrame {
 
@@ -271,29 +273,33 @@ public class GUILogin extends javax.swing.JFrame {
         return;
     }
 
+
     try {
-        // Aquí conectamos con UserService
-        //co.unicauca.workflow.domain.services.UserService userService = new co.unicauca.workflow.domain.services.UserService();
-boolean autenticado = userService.authenticateUser(usuario, clave);
+        User logueado = userService.authenticateUser(usuario, clave);
 
-
-        if (autenticado) {
+        if (logueado != null) {
             JOptionPane.showMessageDialog(this,
-                "¡Bienvenido, " + usuario + "!",
+                "¡Bienvenido, " + logueado.getName() + "!",
                 "Inicio de sesión exitoso",
                 JOptionPane.INFORMATION_MESSAGE);
 
-            // Aquí podrías abrir la siguiente ventana del sistema
-            // Ejemplo:
-            // GUIPrincipal ventana = new GUIPrincipal();
-            // ventana.setVisible(true);
-            // this.dispose();
+            // Abrir la GUI correspondiente según rol
+            if (logueado.getRol() == enumRol.ESTUDIANTE) {
+                GUIEstudiante guiEst = new GUIEstudiante(logueado);
+                guiEst.setVisible(true);
+            } else if (logueado.getRol() == enumRol.DOCENTE) {
+                GUIDocente guiDoc = new GUIDocente(logueado);
+                guiDoc.setVisible(true);
+            }
+
+            this.dispose(); // cerrar el login
         } else {
             JOptionPane.showMessageDialog(this,
                 "Usuario o contraseña incorrectos.",
                 "Error de autenticación",
                 JOptionPane.ERROR_MESSAGE);
         }
+
     } catch (Exception e) {
         JOptionPane.showMessageDialog(this,
             "Ocurrió un error al intentar autenticar: " + e.getMessage(),
@@ -301,7 +307,6 @@ boolean autenticado = userService.authenticateUser(usuario, clave);
             JOptionPane.ERROR_MESSAGE);
         e.printStackTrace();
     }
-        
     }//GEN-LAST:event_lblLoginMouseClicked
 
     

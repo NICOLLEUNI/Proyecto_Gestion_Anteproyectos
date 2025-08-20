@@ -4,6 +4,8 @@
  */
 package co.unicauca.workflow.presentation;
 
+import co.unicauca.workflow.domain.entities.User;
+
 /**
  *
  * @author User
@@ -13,8 +15,14 @@ public class GUIDocente extends javax.swing.JFrame {
     /**
      * Creates new form GUIDocente
      */
-    public GUIDocente() {
+    public GUIDocente (User user) {
         initComponents();
+        lblNombre.setText(user.getName());
+        lblApellidos.setText(user.getLastname());
+        lblEmail.setText(user.getEmail());
+        lblCelular.setText(String.valueOf(user.getPhone()));
+        lblPrograma.setText(user.getProgram().getDescripcion());
+        lblRol.setText(user.getRol().toString());
     }
 
     /**
@@ -29,7 +37,7 @@ public class GUIDocente extends javax.swing.JFrame {
         Bakground = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        lblApellido = new javax.swing.JLabel();
+        lblApellidos = new javax.swing.JLabel();
         lblPrograma = new javax.swing.JLabel();
         lblEmail = new javax.swing.JLabel();
         lblRol = new javax.swing.JLabel();
@@ -69,10 +77,10 @@ public class GUIDocente extends javax.swing.JFrame {
 
         Bakground.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 260, 510));
 
-        lblApellido.setFont(new java.awt.Font("Roboto Thin", 1, 14)); // NOI18N
-        lblApellido.setForeground(new java.awt.Color(0, 0, 0));
-        lblApellido.setText("Apellido");
-        Bakground.add(lblApellido, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 170, 247, 32));
+        lblApellidos.setFont(new java.awt.Font("Roboto Thin", 1, 14)); // NOI18N
+        lblApellidos.setForeground(new java.awt.Color(0, 0, 0));
+        lblApellidos.setText("Apellido");
+        Bakground.add(lblApellidos, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 170, 247, 32));
 
         lblPrograma.setFont(new java.awt.Font("Roboto Thin", 1, 14)); // NOI18N
         lblPrograma.setForeground(new java.awt.Color(0, 0, 0));
@@ -127,37 +135,7 @@ public class GUIDocente extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(GUIDocente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GUIDocente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GUIDocente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(GUIDocente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new GUIDocente().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Bakground;
@@ -165,7 +143,7 @@ public class GUIDocente extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JLabel lblApellido;
+    private javax.swing.JLabel lblApellidos;
     private javax.swing.JLabel lblCelular;
     private javax.swing.JLabel lblEmail;
     private javax.swing.JLabel lblNombre;

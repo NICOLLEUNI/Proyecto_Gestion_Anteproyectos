@@ -4,6 +4,7 @@
  */
 package co.unicauca.workflow.presentation;
 
+import co.unicauca.workflow.domain.entities.User;
 import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMTMaterialLighterIJTheme;
 
@@ -16,8 +17,14 @@ public class GUIEstudiante extends javax.swing.JFrame {
     /**
      * Creates new form GUIEstudiante
      */
-    public GUIEstudiante() {
+   public GUIEstudiante(User user) {
         initComponents();
+        lblNombre.setText(user.getName());
+        lblApellidos.setText(user.getLastname());
+        lblEmail.setText(user.getEmail());
+        lblCelular.setText(String.valueOf(user.getPhone()));
+        lblPrograma.setText(user.getProgram().getDescripcion());
+        lblRol.setText(user.getRol().toString());
     }
 
     /**
@@ -139,17 +146,7 @@ public class GUIEstudiante extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        FlatMTMaterialLighterIJTheme.setup();
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new GUIEstudiante().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Background;

@@ -87,7 +87,7 @@
             </Component>
           </SubComponents>
         </Container>
-        <Component class="javax.swing.JLabel" name="lblApellido">
+        <Component class="javax.swing.JLabel" name="lblApellidos">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Roboto Thin" size="14" style="1"/>

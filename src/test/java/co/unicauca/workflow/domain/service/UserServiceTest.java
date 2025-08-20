@@ -14,6 +14,7 @@ import java.util.List;
 
 import co.unicauca.workflow.domain.entities.User;
 import co.unicauca.workflow.access.IUserRepository;
+import co.unicauca.workflow.domain.entities.enumRol;
 
 /**
  * Tests de UserService con repositorio en memoria.
@@ -25,6 +26,23 @@ public class UserServiceTest {
     /**
      * Repositorio en memoria para pruebas. No toca BD real.
      */
+    @BeforeEach
+public void setUp() {
+    repo = new InMemoryRepo();
+    instance = new UserService(repo);
+
+    // Sembrar un usuario válido como lo esperan los tests de authenticateUser
+    User seeded = new User(
+        "Juan",
+        "Pérez",
+        123456789, 
+        "juan.perez@unicauca.edu.co",
+        "Abc123!@", // en texto plano, se hashea al guardar
+        enumRol.ESTUDIANTE, // 👈 ahora sí con rol
+        null                 // programa lo puedes dejar en null si no lo usas
+    );
+    assertTrue(instance.saveUser(seeded), "No se pudo sembrar el usuario de prueba");
+}
     private static class InMemoryRepo implements IUserRepository {
         private final List<User> store = new ArrayList<>();
 
@@ -45,24 +63,7 @@ public class UserServiceTest {
     private UserService instance;
     private InMemoryRepo repo;
 
-    @BeforeEach
-    public void setUp() {
-        repo = new InMemoryRepo();
-        instance = new UserService(repo);
-
-        // Sembrar un usuario válido como lo esperan los tests de authenticateUser
-        // OJO: saveUser hashea la contraseña y valida email/contraseña.
-        User seeded = new User(
-            "Juan",
-            "Pérez",
-            123456789, // si tu User usa String para phone, cambia a "123456789"
-            "juan.perez@unicauca.edu.co",
-            "Abc123!@", // en texto plano, se hashea al guardar
-            null,
-            null
-        );
-        assertTrue(instance.saveUser(seeded), "No se pudo sembrar el usuario de prueba");
-    }
+  
 
     // ====================== Tests de hashPassword ======================
 
@@ -130,36 +131,29 @@ public class UserServiceTest {
 
     // ====================== Tests de authenticateUser ======================
 
-    @Test
-    public void testAuthenticateUser() {
-        // válido: el usuario sembrado en setUp()
-        assertTrue(
-            instance.authenticateUser("juan.perez@unicauca.edu.co", "Abc123!@"),
-            "Debe autenticar correctamente con credenciales válidas"
-        );
 
-        // contraseña incorrecta
-        assertFalse(
-            instance.authenticateUser("juan.perez@unicauca.edu.co", "ClaveErrada!"),
-            "No debe autenticar con contraseña incorrecta"
-        );
+@Test
+public void testAuthenticateUser() {
+    // válido: el usuario sembrado en setUp()
+    User userValido = instance.authenticateUser("juan.perez@unicauca.edu.co", "Abc123!@");
+    assertNotNull(userValido, "Debe autenticar y retornar un objeto User con credenciales válidas");
+    assertEquals("juan.perez@unicauca.edu.co", userValido.getEmail(), "El email debe coincidir");
+    assertEquals(enumRol.ESTUDIANTE, userValido.getRol(), "El rol debe ser ESTUDIANTE (según setUp)");
 
-        // usuario inexistente
-        assertFalse(
-            instance.authenticateUser("otro@unicauca.edu.co", "Abc123!@"),
-            "No debe autenticar un usuario inexistente"
-        );
+    // contraseña incorrecta
+    User userClaveErrada = instance.authenticateUser("juan.perez@unicauca.edu.co", "ClaveErrada!");
+    assertNull(userClaveErrada, "No debe autenticar con contraseña incorrecta");
 
-        // email null
-        assertFalse(
-            instance.authenticateUser(null, "Abc123!@"),
-            "No debe autenticar si el email es null"
-        );
+    // usuario inexistente
+    User userInexistente = instance.authenticateUser("otro@unicauca.edu.co", "Abc123!@");
+    assertNull(userInexistente, "No debe autenticar un usuario inexistente");
 
-        // password null
-        assertFalse(
-            instance.authenticateUser("juan.perez@unicauca.edu.co", null),
-            "No debe autenticar si la contraseña es null"
-        );
-    }
-}
+    // email null
+    User userEmailNull = instance.authenticateUser(null, "Abc123!@");
+    assertNull(userEmailNull, "No debe autenticar si el email es null");
+
+    // password null
+    User userPasswordNull = instance.authenticateUser("juan.perez@unicauca.edu.co", null);
+    assertNull(userPasswordNull, "No debe autenticar si la contraseña es null");
+}}
+
