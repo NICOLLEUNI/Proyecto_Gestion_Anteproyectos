@@ -42,7 +42,7 @@ void resetDB() throws Exception {
         User user = new User();
         user.setName("Carlos");
         user.setLastname("Pérez");
-        user.setPhone(123456);
+        user.setPhone("1234567890");
         user.setEmail("carlos@unicauca.edu.co");
         user.setPassword("Password123");
         user.setRol(enumRol.ESTUDIANTE);

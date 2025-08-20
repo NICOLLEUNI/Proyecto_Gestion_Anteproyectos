@@ -55,7 +55,7 @@ public class UserServiceTest {
         User seeded = new User(
             "Juan",
             "Pérez",
-            123456789, // si tu User usa String para phone, cambia a "123456789"
+            "123456789", // si tu User usa String para phone, cambia a "123456789"
             "juan.perez@unicauca.edu.co",
             "Abc123!@", // en texto plano, se hashea al guardar
             null,
@@ -113,18 +113,18 @@ public class UserServiceTest {
     @Test
     public void testSaveUser() {
         // válido
-        User userValido = new User("Ana", "López", 987654321, "ana.lopez@unicauca.edu.co", "Xy1!xy", null, null);
+        User userValido = new User("Ana", "López", "987654321", "ana.lopez@unicauca.edu.co", "Xy1!xy", null, null);
         assertTrue(instance.saveUser(userValido), "Debe guardar correctamente un usuario válido");
 
         // null
         assertFalse(instance.saveUser(null), "No debe permitir guardar un usuario null");
 
         // email inválido
-        User userEmailInvalido = new User("Pedro", "Ruiz", 555111222, "pedro@gmail.com", "Abc123!@", null, null);
+        User userEmailInvalido = new User("Pedro", "Ruiz", "555111222", "pedro@gmail.com", "Abc123!@", null, null);
         assertFalse(instance.saveUser(userEmailInvalido), "No debe permitir guardar un usuario con email inválido");
 
         // contraseña débil
-        User userPassInvalida = new User("Carla", "Mora", 444333222, "carla.mora@unicauca.edu.co", "123", null, null);
+        User userPassInvalida = new User("Carla", "Mora", "444333222", "carla.mora@unicauca.edu.co", "123", null, null);
         assertFalse(instance.saveUser(userPassInvalida), "No debe permitir guardar un usuario con contraseña inválida");
     }
 
