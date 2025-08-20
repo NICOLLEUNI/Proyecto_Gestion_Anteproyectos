@@ -9,7 +9,7 @@ public class User {
     private int idUsuario;
     private String name;
     private String lastname;
-    private Integer phone;
+    private String phone;
     private String email;
     private String password;
     private enumRol rol;
@@ -39,11 +39,11 @@ public class User {
         this.lastname = lastname;
     }
 
-    public Integer getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(Integer phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 
@@ -79,7 +79,7 @@ public class User {
         this.program = program;
     }
   //constrcutor para registrar
-    public User(String name, String lastname, Integer phone, String email, String password, enumRol rol, enumProgram program) {
+    public User(String name, String lastname, String phone, String email, String password, enumRol rol, enumProgram program) {
         this.name = name;
         this.lastname = lastname;
         this.phone = phone;
@@ -89,7 +89,7 @@ public class User {
         this.program = program;
     }
 //para leer de la BD
-    public User(int idUsuario, String name, String lastname, Integer phone, String email, String password, enumRol rol, enumProgram program) {
+    public User(int idUsuario, String name, String lastname, String phone, String email, String password, enumRol rol, enumProgram program) {
         this.idUsuario = idUsuario;
         this.name = name;
         this.lastname = lastname;

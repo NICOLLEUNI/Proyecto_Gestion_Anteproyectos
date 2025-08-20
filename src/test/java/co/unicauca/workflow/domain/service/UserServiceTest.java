@@ -75,7 +75,7 @@ public void setUp() {
         User seeded = new User(
             "Juan",
             "Pérez",
-            123456789,
+            "123456789", // si tu User usa String para phone, cambia a "123456789"
             "juan.perez@unicauca.edu.co",
             "Abc123!@", // en texto plano, se hashea al guardar
             enumRol.ESTUDIANTE,
@@ -142,9 +142,11 @@ public void setUp() {
 
     @Test
     public void testSaveUser() {
-     User userValido = new User("Ana", "López", 987654321,
+
+     User userValido = new User("Ana", "López", "987654321",
         "ana.lopez@unicauca.edu.co", "Xy1!xy",
         enumRol.ESTUDIANTE, enumProgram.INGENIERIA_SISTEMAS);
+
 
     assertTrue(instance.saveUser(
         userValido.getName(),
@@ -156,12 +158,13 @@ public void setUp() {
         userValido.getProgram()
     ), "Debe guardar correctamente un usuario válido");
 
+
     // null
-    assertFalse(instance.saveUser(null, null, 0, null, null, null, null),
+    assertFalse(instance.saveUser(null, null, null, null, null, null, null),
         "No debe permitir guardar un usuario null");
 
     // email inválido
-    User userEmailInvalido = new User("Pedro", "Ruiz", 555111222,
+    User userEmailInvalido = new User("Pedro", "Ruiz", "555111222",
         "pedro@gmail.com", "Abc123!@",
         enumRol.ESTUDIANTE, enumProgram.INGENIERIA_ELECTRONICA);
 
@@ -176,7 +179,7 @@ public void setUp() {
     ), "No debe permitir guardar un usuario con email inválido");
 
     // contraseña débil
-    User userPassInvalida = new User("Carla", "Mora", 444333222,
+    User userPassInvalida = new User("Carla", "Mora", "444333222",
         "carla.mora@unicauca.edu.co", "123",
         enumRol.DOCENTE, enumProgram.AUTOMATICA_INDUSTRIAL);
 
@@ -189,6 +192,8 @@ public void setUp() {
         userPassInvalida.getRol(),
         userPassInvalida.getProgram()
     ), "No debe permitir guardar un usuario con contraseña inválida");
+
+
     }
 
     

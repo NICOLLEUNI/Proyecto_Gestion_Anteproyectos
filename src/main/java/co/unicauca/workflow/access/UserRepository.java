@@ -48,11 +48,12 @@ public boolean save(User newUser) {
         pstmt.setString(1, newUser.getName());
         pstmt.setString(2, newUser.getLastname());
 
-         if (newUser.getPhone() == null) {
-            pstmt.setNull(3, java.sql.Types.INTEGER);
+        if (newUser.getPhone() == null || newUser.getPhone().isBlank()) {
+            pstmt.setNull(3, java.sql.Types.VARCHAR);
         } else {
-            pstmt.setInt(3, newUser.getPhone());
+            pstmt.setString(3, newUser.getPhone());
         }
+
 
         pstmt.setString(4, newUser.getEmail());
         pstmt.setString(5, newUser.getPassword());
@@ -95,12 +96,9 @@ public boolean save(User newUser) {
                 newUser.setName(rs.getString("name"));
                 newUser.setLastname(rs.getString("lastname"));
               // Manejar phone como nullable
-            int ph = rs.getInt("phone");
-            if (rs.wasNull()) {
-                newUser.setPhone(null);
-            } else {
-                newUser.setPhone(ph);
-            }
+            String ph = rs.getString("phone");
+            newUser.setPhone(ph); // puede ser null si en la BD está vacío
+
                 newUser.setEmail(rs.getString("email"));
                 newUser.setPassword(rs.getString("password"));
                 newUser.setRol(enumRol.valueOf(rs.getString("rol"))); 
@@ -123,7 +121,7 @@ public boolean save(User newUser) {
                + "   idUsuario INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,\n"
                + "   name TEXT NOT NULL,\n"
                + "   lastname TEXT NOT NULL,\n"
-               + "   phone INT,\n"
+               + "   phone TEXT,\n"
                + "   email TEXT NOT NULL UNIQUE,\n"
                + "   password TEXT NOT NULL,\n"
                + "   rol TEXT NOT NULL,\n"

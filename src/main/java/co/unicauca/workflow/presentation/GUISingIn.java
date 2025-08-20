@@ -342,8 +342,10 @@ private final UserService userService;
 
     private void lblBttRegistrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblBttRegistrarMouseClicked
 
-                                                    
+
     String nombre = txtNombre.getText().trim();
+
+
     String apellidos = txtApellidos.getText().trim();
     String celularStr = txtCelular.getText().trim();
     String email = txtEmail.getText().trim();
@@ -388,22 +390,36 @@ private final UserService userService;
         }
     }
 
-    // Celular
-    int celular = 0;
+
+    // Manejo del celular opcional
+    String celular = null; // por defecto null si no digitó nada
     if (!celularStr.isEmpty() && !celularStr.equals("Ingrese su celular")) {
-        try {
-            celular = Integer.parseInt(celularStr);
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "El celular debe ser numérico", "Error", JOptionPane.WARNING_MESSAGE);
+        if (!celularStr.matches("\\d+")) {
+            JOptionPane.showMessageDialog(this, 
+                "El celular debe ser numérico", 
+                "Error", 
+                JOptionPane.WARNING_MESSAGE);
+
             return;
         }
+        celular = celularStr; // Guardamos el número como String válido
     }
+
 
     // Validar si ya existe
     if (userService.userExists(email)) {
         JOptionPane.showMessageDialog(this, "El usuario con este correo ya existe", "Error", JOptionPane.ERROR_MESSAGE);
         return;
     }
+
+
+    // Crear usuario
+
+    celular = null; // valor por defecto (si no digitó nada)
+    if (!celularStr.isEmpty() && !celularStr.equals("Ingrese su celular")) {
+        celular = celularStr; // lo guardamos tal cual como String
+    }
+
 
     // Guardar con el servicio
     boolean registrado = userService.saveUser(nombre, apellidos, celular, email, password, rol, program);
@@ -446,13 +462,13 @@ public void irALogin(){
     }
 
     // Validar celular numérico
-  if (!celularStr.isEmpty() && !celularStr.equals("Ingrese su celular")) {
-        try {
-            Integer.parseInt(celularStr);
-        } catch (NumberFormatException e) {
-            return "El celular debe ser un número válido.";
+    if (!celularStr.isEmpty() && !celularStr.equals("Ingrese su celular")) {
+        if (!celularStr.matches("\\d+")) {
+            return "El celular debe ser un número válido."; 
         }
     }
+
+
 
     // Validar rol
     if (!(cbEstudiante.isSelected() ^ cbDocente.isSelected())) {
