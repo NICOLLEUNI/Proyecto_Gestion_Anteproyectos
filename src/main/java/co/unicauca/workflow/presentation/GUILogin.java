@@ -2,15 +2,21 @@
 package co.unicauca.workflow.presentation;
 import java.awt.Color;
 import javax.swing.JOptionPane;
-
+import co.unicauca.workflow.domain.service.UserService;
+import co.unicauca.workflow.access.IUserRepository;
+import co.unicauca.workflow.access.UserRepository;
 
 public class GUILogin extends javax.swing.JFrame {
 
+    private final UserService userService;
     /**
      * Creates new form GUILogin
      */
     public GUILogin() {
         initComponents();
+            IUserRepository repo = new UserRepository();
+        userService = new UserService(repo);
+        
     }
 
     /**
@@ -237,36 +243,68 @@ public class GUILogin extends javax.swing.JFrame {
     }//GEN-LAST:event_pnlBttLoginMouseEntered
 
     private void lblLoginMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblLoginMouseClicked
-        String usuario = tfEmail.getText();
-        String clave = String.valueOf(tfContrasenia.getPassword());
+          String usuario = tfEmail.getText().trim();
+    String clave = String.valueOf(tfContrasenia.getPassword()).trim();
 
-        // Validar campos vacíos
-        boolean faltaUsuario = (usuario == null || usuario.trim().isEmpty());
-        boolean faltaClave = (clave == null || clave.trim().isEmpty());
+    // Validar campos vacíos
+    boolean faltaUsuario = (usuario == null || usuario.isEmpty() || usuario.equals("Ingrese su email"));
+    boolean faltaClave = (clave == null || clave.isEmpty() || clave.equals("**********"));
 
-        // Mostrar si ambos faltan
-        if (faltaUsuario && faltaClave) {
-            lblMensaje.setText("Por favor completa todos los campos.");
-            return;
-        }
+    if (faltaUsuario && faltaClave) {
+        lblMensaje.setText("Por favor completa todos los campos.");
+        return;
+    }
 
-        if (faltaUsuario || tfEmail.getText().equals("Ingrese su email")) {
+    if (faltaUsuario) {
+        JOptionPane.showMessageDialog(this,
+            "Debes ingresar un email.",
+            "Campo vacío",
+            JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+    if (faltaClave) {
+        JOptionPane.showMessageDialog(this,
+            "Debes ingresar una contraseña.",
+            "Campo vacío",
+            JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+    try {
+        // Aquí conectamos con UserService
+        //co.unicauca.workflow.domain.services.UserService userService = new co.unicauca.workflow.domain.services.UserService();
+boolean autenticado = userService.authenticateUser(usuario, clave);
+
+
+        if (autenticado) {
             JOptionPane.showMessageDialog(this,
-                "Debes ingresar un email.",
-                "Campo vacío",
-                JOptionPane.WARNING_MESSAGE);
-            return;
-        }
+                "¡Bienvenido, " + usuario + "!",
+                "Inicio de sesión exitoso",
+                JOptionPane.INFORMATION_MESSAGE);
 
-        if (faltaClave || String.valueOf(tfContrasenia.getPassword()).equals("**********")) {
+            // Aquí podrías abrir la siguiente ventana del sistema
+            // Ejemplo:
+            // GUIPrincipal ventana = new GUIPrincipal();
+            // ventana.setVisible(true);
+            // this.dispose();
+        } else {
             JOptionPane.showMessageDialog(this,
-                "Debes ingresar una contraseña.",
-                "Campo vacío",
-                JOptionPane.WARNING_MESSAGE);
-            return;
+                "Usuario o contraseña incorrectos.",
+                "Error de autenticación",
+                JOptionPane.ERROR_MESSAGE);
         }
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this,
+            "Ocurrió un error al intentar autenticar: " + e.getMessage(),
+            "Error",
+            JOptionPane.ERROR_MESSAGE);
+        e.printStackTrace();
+    }
+        
     }//GEN-LAST:event_lblLoginMouseClicked
 
+    
     private void lblLoginMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblLoginMouseEntered
         pnlBttLogin.setBackground(new Color(0,64,128));
     }//GEN-LAST:event_lblLoginMouseEntered

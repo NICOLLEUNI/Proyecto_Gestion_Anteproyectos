@@ -4,148 +4,162 @@
  */
 package co.unicauca.workflow.domain.service;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import co.unicauca.workflow.domain.entities.User;
+import co.unicauca.workflow.access.IUserRepository;
+
 /**
- *
- * @author Usuario
+ * Tests de UserService con repositorio en memoria.
+ * - Se usa un repo fake que realmente almacena en una lista interna.
+ * - En cada setUp() se siembra un usuario válido para probar authenticateUser.
  */
 public class UserServiceTest {
-    /*
-    public UserServiceTest() {
+
+    /**
+     * Repositorio en memoria para pruebas. No toca BD real.
+     */
+    private static class InMemoryRepo implements IUserRepository {
+        private final List<User> store = new ArrayList<>();
+
+        @Override
+        public boolean save(User user) {
+            if (user == null) return false;
+            store.add(user);
+            return true;
+        }
+
+        @Override
+        public List<User> list() {
+            // Devolvemos copia para no exponer la lista interna
+            return new ArrayList<>(store);
+        }
     }
-    
-    @BeforeAll
-    public static void setUpClass() {
-    }
-    
-    @AfterAll
-    public static void tearDownClass() {
-    }
-    
+
+    private UserService instance;
+    private InMemoryRepo repo;
+
     @BeforeEach
     public void setUp() {
-    }
-    
-    @AfterEach
-    public void tearDown() {
-    }
-    */
+        repo = new InMemoryRepo();
+        instance = new UserService(repo);
 
-    /**
-     * Test of saveUser method, of class UserService.
-     */
-    
-    /*
-    @Test
-    public void testSaveUser() {
-        System.out.println("saveUser");
-        UserService instance = new UserService();
-        instance.saveUser();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        // Sembrar un usuario válido como lo esperan los tests de authenticateUser
+        // OJO: saveUser hashea la contraseña y valida email/contraseña.
+        User seeded = new User(
+            "Juan",
+            "Pérez",
+            123456789, // si tu User usa String para phone, cambia a "123456789"
+            "juan.perez@unicauca.edu.co",
+            "Abc123!@", // en texto plano, se hashea al guardar
+            null,
+            null
+        );
+        assertTrue(instance.saveUser(seeded), "No se pudo sembrar el usuario de prueba");
     }
-    */
 
-    /**
-     * Test of authenticateUser method, of class UserService.
-     */
-    /*
-    @Test
-    public void testAuthenticateUser() {
-        System.out.println("authenticateUser");
-        UserService instance = new UserService();
-        instance.authenticateUser();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-    */
+    // ====================== Tests de hashPassword ======================
 
-    /**
-     * Test of hashPassword method, of class UserService.
-     */
-    
     @Test
     public void testHashPassword() {
-        System.out.println("hashPassword");
-        UserService instance = new UserService();
-
-        //Caso 1: misma contraseña, mismo hash
         String hash1 = instance.hashPassword("MiPass123!");
         String hash2 = instance.hashPassword("MiPass123!");
         assertEquals(hash1, hash2, "El hash de la misma contraseña debe ser igual");
 
-        //Caso 2: contraseñas distintas, hashes distintos
         String hash3 = instance.hashPassword("OtraPass456!");
         assertNotEquals(hash1, hash3, "Contraseñas distintas no deben dar el mismo hash");
 
-        //Caso 3: null → retorna null
         assertNull(instance.hashPassword(null), "Si la contraseña es null, el hash también debe ser null");
 
-        //Caso 4: hash diferente al texto original
         String hash4 = instance.hashPassword("MiPass123!");
         assertNotEquals("MiPass123!", hash4, "El hash no debe ser igual al texto original");
     }
 
-    
+    // ====================== Tests de validatePassword ======================
 
-    /**
-     * Test of validatePassword method, of class UserService.
-     */
-    
     @Test
     public void testValidatePassword() {
-        System.out.println("validatePassword");
-        UserService instance = new UserService();
-        //caso valido
+        // válido: min 6, mayúscula, minúscula, dígito y especial
         assertTrue(instance.validatePassword("Abc123!@"));
-        
-        //caso invalido (Muy corta)
-        assertFalse(instance.validatePassword("Ab1!"));
-        
-        //caso invalido (Sin mayúsculas)
-        assertFalse(instance.validatePassword("abc123!@"));
 
-        //caso invalido (Sin minúsculas)
-        assertFalse(instance.validatePassword("ABC123!@"));
-
-        //caso invalido (Sin números)
-        assertFalse(instance.validatePassword("Abcdef!@"));
-
-        //caso invalido (Sin caracteres especiales)
-        assertFalse(instance.validatePassword("Abc12345"));
-
-        //caso invalido (Null)
-        assertFalse(instance.validatePassword(null));
+        // inválidos
+        assertFalse(instance.validatePassword("Ab1!"));       // muy corta
+        assertFalse(instance.validatePassword("abc123!@"));   // sin mayúscula
+        assertFalse(instance.validatePassword("ABC123!@"));   // sin minúscula
+        assertFalse(instance.validatePassword("Abcdef!@"));   // sin dígitos
+        assertFalse(instance.validatePassword("Abc12345"));   // sin especial
+        assertFalse(instance.validatePassword(null));         // null
     }
-    
 
-    /**
-     * Test of validateEmail method, of class UserService.
-     */
-    
-   @Test
+    // ====================== Tests de validateEmail ======================
+
+    @Test
     public void testValidateEmail() {
-        System.out.println("ValidateEmail");
-        UserService instance = new UserService();
-
-        // Caso válido
         assertTrue(instance.validateEmail("juan.perez@unicauca.edu.co"));
 
-        // Caso inválido (otro dominio)
-        assertFalse(instance.validateEmail("juan@gmail.com"));
-
-        // Caso inválido (mal formato)
-        assertFalse(instance.validateEmail("@unicauca.edu.co"));
-
-        // Caso inválido (null)
-        assertFalse(instance.validateEmail(null));
+        assertFalse(instance.validateEmail("juan@gmail.com"));     // otro dominio
+        assertFalse(instance.validateEmail("@unicauca.edu.co"));   // mal formato
+        assertFalse(instance.validateEmail(null));                 // null
     }
 
-    
+    // ====================== Tests de saveUser ======================
+
+    @Test
+    public void testSaveUser() {
+        // válido
+        User userValido = new User("Ana", "López", 987654321, "ana.lopez@unicauca.edu.co", "Xy1!xy", null, null);
+        assertTrue(instance.saveUser(userValido), "Debe guardar correctamente un usuario válido");
+
+        // null
+        assertFalse(instance.saveUser(null), "No debe permitir guardar un usuario null");
+
+        // email inválido
+        User userEmailInvalido = new User("Pedro", "Ruiz", 555111222, "pedro@gmail.com", "Abc123!@", null, null);
+        assertFalse(instance.saveUser(userEmailInvalido), "No debe permitir guardar un usuario con email inválido");
+
+        // contraseña débil
+        User userPassInvalida = new User("Carla", "Mora", 444333222, "carla.mora@unicauca.edu.co", "123", null, null);
+        assertFalse(instance.saveUser(userPassInvalida), "No debe permitir guardar un usuario con contraseña inválida");
+    }
+
+    // ====================== Tests de authenticateUser ======================
+
+    @Test
+    public void testAuthenticateUser() {
+        // válido: el usuario sembrado en setUp()
+        assertTrue(
+            instance.authenticateUser("juan.perez@unicauca.edu.co", "Abc123!@"),
+            "Debe autenticar correctamente con credenciales válidas"
+        );
+
+        // contraseña incorrecta
+        assertFalse(
+            instance.authenticateUser("juan.perez@unicauca.edu.co", "ClaveErrada!"),
+            "No debe autenticar con contraseña incorrecta"
+        );
+
+        // usuario inexistente
+        assertFalse(
+            instance.authenticateUser("otro@unicauca.edu.co", "Abc123!@"),
+            "No debe autenticar un usuario inexistente"
+        );
+
+        // email null
+        assertFalse(
+            instance.authenticateUser(null, "Abc123!@"),
+            "No debe autenticar si el email es null"
+        );
+
+        // password null
+        assertFalse(
+            instance.authenticateUser("juan.perez@unicauca.edu.co", null),
+            "No debe autenticar si la contraseña es null"
+        );
+    }
 }
