@@ -14,13 +14,25 @@ import static org.junit.jupiter.api.Assertions.*;
 class UserRepositoryTest {
 
     private static UserRepository repo;
-
+  /**
+     * @brief Inicializa el repositorio y la conexión a la base de datos.
+     *
+     * Se ejecuta una sola vez antes de todos los tests.
+     * Deja la base de datos lista para las operaciones CRUD.
+     */
     @BeforeAll
     static void init() {
         repo = new UserRepository();
         repo.connect(); // Conectamos para que la BD esté lista
     }
-    
+  /**
+     * @brief Limpia la tabla {@code User} antes de cada prueba.
+     *
+     * Esto asegura que cada test se ejecute en un entorno limpio,
+     * sin usuarios residuales de pruebas anteriores.
+     *
+     * @throws Exception si ocurre un error al ejecutar la sentencia SQL.
+     */  
 @BeforeEach
 void resetDB() throws Exception {
     if (repo.getConnection() != null) {
@@ -31,12 +43,23 @@ void resetDB() throws Exception {
         }
     }
 }
-
+/**
+     * @brief Cierra la conexión a la base de datos después de todas las pruebas.
+     */
     @AfterAll
     static void cleanup() {
         repo.disconnect();
     }
-
+/**
+     * @brief Verifica que un usuario pueda guardarse correctamente en la base de datos.
+     *
+     * Se crea un usuario con datos de prueba y se guarda usando el repositorio.
+     * 
+     * Validaciones:
+     * - El método {@code save()} debe retornar {@code true}.
+     * - El usuario guardado debe tener un {@code idUsuario} asignado
+     *   por la base de datos (mayor que cero).
+     */
     @Test
     void testSaveUser() {
         User user = new User();
@@ -54,7 +77,13 @@ void resetDB() throws Exception {
         assertTrue(user.getIdUsuario() > 0, "El idUsuario debería haberse asignado");
         
     }
-
+/**
+     * @brief Verifica que el método {@code list()} devuelva los usuarios de la BD.
+     *
+     * Validaciones:
+     * - La lista retornada no debe ser {@code null}.
+     * - Puede estar vacía, pero siempre debe existir.
+     */
     @Test
     void testListUsers() {
         List<User> users = repo.list();

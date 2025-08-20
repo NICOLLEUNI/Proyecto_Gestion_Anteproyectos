@@ -24,17 +24,40 @@ import co.unicauca.workflow.domain.entities.enumRol;
  * - En cada setUp() se siembra un usuario válido para probar authenticateUser.
  */
 public class UserServiceTest {
-
+        /**
+     * @brief Implementación en memoria de {@link IUserRepository} para pruebas.
+     *
+     * Esta clase simula un repositorio de usuarios sin necesidad de conectarse
+     * a una base de datos real. Los usuarios se almacenan en una lista interna
+     * que vive únicamente durante la ejecución de las pruebas.
+     *
+     * Se utiliza en la clase de test {@code UserServiceTest} para probar
+     * la lógica de negocio de {@link UserService} en un entorno controlado.
+     */
        private static class InMemoryRepo implements IUserRepository {
+            /**
+         * Lista interna que almacena los usuarios en memoria.
+         */
         private final List<User> store = new ArrayList<>();
-
+  /**
+         * @brief Guarda un usuario en el repositorio en memoria.
+         *
+         * @param user Objeto {@link User} a guardar. 
+         * @return {@code true} si el usuario fue agregado, 
+         *         {@code false} si el objeto era {@code null}.
+         */
         @Override
         public boolean save(User user) {
             if (user == null) return false;
             store.add(user);
             return true;
         }
-
+/**
+         * @brief Lista todos los usuarios almacenados en memoria.
+         *
+         * @return Una nueva lista con copias de los usuarios almacenados,
+         *         para evitar exponer la lista interna directamente.
+         */
         @Override
         public List<User> list() {
             return new ArrayList<>(store);
@@ -44,6 +67,17 @@ public class UserServiceTest {
     private UserService instance;
     private InMemoryRepo repo;
 
+    /**
+     * @brief Inicializa el entorno de pruebas antes de cada test.
+     *
+     * - Crea una instancia de {@link InMemoryRepo} como repositorio falso.  
+     * - Inicializa el {@link UserService} con dicho repositorio.  
+     * - Inserta un usuario de prueba en el repositorio, que servirá
+     *   como base para los casos de autenticación y validación.
+     *
+     * Este método se ejecuta automáticamente antes de cada prueba unitaria
+     * gracias a la anotación {@link BeforeEach}.
+     */
     @BeforeEach
     public void setUp() {
         repo = new InMemoryRepo();
