@@ -23,6 +23,11 @@ public class FormatoA {
     private String archivoPDF;
     private String studentCode;
     private String counter;
+    //
+    private String observaciones;
+    //
+    private String estado;//aceptado o rechazado ,entregado
+    
 
     public FormatoA(String title, String mode, String proyectManager, String projectCoManager, LocalDate date, String generalObjetive, String specificObjetives,  String archivoPDF, String studentCode, String counter) {
         this.title = title;
@@ -40,6 +45,11 @@ public class FormatoA {
     public FormatoA() {
     }
 
+    //
+    public void ValidarCampos(){}
+    
+    
+    
     public int getId() {
         return id;
     }
@@ -128,8 +138,4 @@ public class FormatoA {
         this.counter = counter;
     }
 
- 
-
-    
-    
 }
