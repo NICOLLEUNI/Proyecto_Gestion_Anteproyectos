@@ -6,8 +6,11 @@ package co.unicauca.workflow.presentation;
 
 import co.unicauca.workflow.presentation.views.Principal;
 import co.unicauca.workflow.domain.entities.User;
+import co.unicauca.workflow.presentation.views.ConsultarFormatoA;
+import co.unicauca.workflow.presentation.views.SubirFormatoA;
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMTMaterialLighterIJTheme;
 import java.awt.BorderLayout;
+import javax.swing.JPanel;
 
 /**
  *
@@ -22,22 +25,26 @@ public class GUIMenuDocente extends javax.swing.JFrame {
      
         initComponents();
       
-      initContent();
+    initContent();
  
     }
 
      private void initStyles(){
      
      }
-     private void initContent(){
-     Principal pl= new Principal();
+     private void showJPanel(JPanel pl){
      pl.setSize(641,498);
      pl.setLocation(0, 0);
      
      Contenido.removeAll();
      Contenido.add(pl,BorderLayout.CENTER);
      Contenido.revalidate();
-     Contenido.repaint();
+     Contenido.repaint(); 
+         
+     }
+     private void initContent(){
+     showJPanel( new SubirFormatoA());
+    
      }
     /**
      * This method is called from within the constructor to initialize the form.

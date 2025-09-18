@@ -15,8 +15,33 @@ public class ConsultarFormatoA extends javax.swing.JPanel {
      */
     public ConsultarFormatoA() {
         initComponents();
+        initStyles();
     }
 
+     private void initStyles(){
+         // Ajustes de tabla para que combine con FlatLaf
+jTable1.setRowHeight(30); // filas más altas
+jTable1.setShowGrid(false); // sin líneas internas
+jTable1.setIntercellSpacing(new java.awt.Dimension(0, 0)); // elimina separación entre celdas
+
+// Encabezado más estilizado
+jTable1.getTableHeader().setReorderingAllowed(false);
+jTable1.getTableHeader().setResizingAllowed(false);
+jTable1.getTableHeader().setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 14));
+jTable1.getTableHeader().setBackground(new java.awt.Color(240, 240, 240));
+jTable1.getTableHeader().setForeground(new java.awt.Color(50, 50, 50));
+
+// Fuente del contenido
+jTable1.setFont(new java.awt.Font("Segoe UI", java.awt.Font.PLAIN, 13));
+
+// Selección bonita (FlatLaf ya pinta bien, pero puedes reforzar)
+jTable1.setSelectionBackground(new java.awt.Color(33, 150, 243)); // azul Material
+jTable1.setSelectionForeground(java.awt.Color.WHITE);
+
+// Scroll con bordes redondeados (si usas FlatLaf extras)
+jScrollPane1.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+     
+     }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -26,19 +51,69 @@ public class ConsultarFormatoA extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        Contenido = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jSeparator8 = new javax.swing.JSeparator();
+
+        Contenido.setBackground(new java.awt.Color(255, 255, 255));
+
+        jScrollPane1.setBackground(new java.awt.Color(204, 204, 204));
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "Titulo", "Director", "Entrega", "Estado", "Observaciones"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable1);
+
+        javax.swing.GroupLayout ContenidoLayout = new javax.swing.GroupLayout(Contenido);
+        Contenido.setLayout(ContenidoLayout);
+        ContenidoLayout.setHorizontalGroup(
+            ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ContenidoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jSeparator8, javax.swing.GroupLayout.DEFAULT_SIZE, 629, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(ContenidoLayout.createSequentialGroup()
+                .addGap(42, 42, 42)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 556, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        ContenidoLayout.setVerticalGroup(
+            ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ContenidoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jSeparator8, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 329, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(134, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(Contenido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addComponent(Contenido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel Contenido;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSeparator jSeparator8;
+    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 }
