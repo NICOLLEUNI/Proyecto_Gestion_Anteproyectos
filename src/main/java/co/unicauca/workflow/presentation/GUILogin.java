@@ -285,10 +285,10 @@ public class GUILogin extends javax.swing.JFrame {
 
             // Abrir la GUI correspondiente según rol
             if (logueado.getRol() == enumRol.ESTUDIANTE) {
-                GUIEstudiante guiEst = new GUIEstudiante(logueado);
+                GUIMenuEstudiante guiEst = new GUIMenuEstudiante();
                 guiEst.setVisible(true);
             } else if (logueado.getRol() == enumRol.DOCENTE) {
-                GUIDocente guiDoc = new GUIDocente(logueado);
+                GUIMenuDocente guiDoc = new GUIMenuDocente();
                 guiDoc.setVisible(true);
             }
 

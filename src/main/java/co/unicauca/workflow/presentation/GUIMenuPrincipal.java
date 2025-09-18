@@ -4,6 +4,12 @@
  */
 package co.unicauca.workflow.presentation;
 
+import com.formdev.flatlaf.FlatLightLaf;
+import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMTMaterialLighterIJTheme;
+import java.awt.BorderLayout;
+
+import javax.swing.UIManager;
+
 /**
  *
  * @author User
@@ -14,9 +20,26 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
      * Creates new form GUIMenuPrincipal
      */
     public GUIMenuPrincipal() {
+
         initComponents();
+        initStyles();
+        initContent();
+ 
     }
 
+     private void initStyles(){
+     
+     }
+     private void initContent(){
+     Principal pl= new Principal();
+     pl.setSize(641,498);
+     pl.setLocation(0, 0);
+     
+     Contenido.removeAll();
+     Contenido.add(pl,BorderLayout.CENTER);
+     Contenido.revalidate();
+     Contenido.repaint();
+     }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -26,17 +49,129 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        Background = new javax.swing.JPanel();
+        Menu = new javax.swing.JPanel();
+        Icono = new javax.swing.JLabel();
+        btEst = new javax.swing.JButton();
+        btCoord = new javax.swing.JButton();
+        btDoc = new javax.swing.JButton();
+        Contenido = new javax.swing.JPanel();
+        jSeparator7 = new javax.swing.JSeparator();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(910, 510));
+
+        Background.setBackground(new java.awt.Color(26, 55, 171));
+
+        Menu.setBackground(new java.awt.Color(26, 55, 171));
+        Menu.setOpaque(false);
+        Menu.setPreferredSize(new java.awt.Dimension(270, 510));
+
+        Icono.setIcon(new javax.swing.ImageIcon(getClass().getResource("/co/unicauca/workflow/presentation/images/LogoPequeño.png"))); // NOI18N
+
+        btEst.setBackground(new java.awt.Color(65, 55, 171));
+        btEst.setFont(new java.awt.Font("Roboto Medium", 0, 24)); // NOI18N
+        btEst.setForeground(new java.awt.Color(255, 255, 255));
+        btEst.setIcon(new javax.swing.ImageIcon(getClass().getResource("/co/unicauca/workflow/presentation/images/account-multiple.png"))); // NOI18N
+        btEst.setText("ESTUDIANTE");
+        btEst.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        btEst.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btEst.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btEst.setIconTextGap(7);
+
+        btCoord.setBackground(new java.awt.Color(65, 55, 171));
+        btCoord.setFont(new java.awt.Font("Roboto Medium", 0, 24)); // NOI18N
+        btCoord.setForeground(new java.awt.Color(255, 255, 255));
+        btCoord.setIcon(new javax.swing.ImageIcon(getClass().getResource("/co/unicauca/workflow/presentation/images/account-multiple.png"))); // NOI18N
+        btCoord.setText("COORDINADOR");
+        btCoord.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        btCoord.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btCoord.setIconTextGap(7);
+
+        btDoc.setBackground(new java.awt.Color(65, 55, 171));
+        btDoc.setFont(new java.awt.Font("Roboto Medium", 0, 24)); // NOI18N
+        btDoc.setForeground(new java.awt.Color(255, 255, 255));
+        btDoc.setIcon(new javax.swing.ImageIcon(getClass().getResource("/co/unicauca/workflow/presentation/images/account-multiple.png"))); // NOI18N
+        btDoc.setText("DOCENTE");
+        btDoc.setAlignmentY(0.0F);
+        btDoc.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        btDoc.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btDoc.setDefaultCapable(false);
+        btDoc.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btDoc.setIconTextGap(7);
+
+        javax.swing.GroupLayout MenuLayout = new javax.swing.GroupLayout(Menu);
+        Menu.setLayout(MenuLayout);
+        MenuLayout.setHorizontalGroup(
+            MenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(MenuLayout.createSequentialGroup()
+                .addGap(38, 38, 38)
+                .addComponent(Icono))
+            .addComponent(btDoc, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(btEst, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(btCoord, javax.swing.GroupLayout.DEFAULT_SIZE, 270, Short.MAX_VALUE)
+        );
+        MenuLayout.setVerticalGroup(
+            MenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(MenuLayout.createSequentialGroup()
+                .addGap(6, 6, 6)
+                .addComponent(Icono)
+                .addGap(70, 70, 70)
+                .addComponent(btDoc, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(btEst, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(btCoord, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(172, Short.MAX_VALUE))
+        );
+
+        Contenido.setBackground(new java.awt.Color(255, 255, 255));
+
+        javax.swing.GroupLayout ContenidoLayout = new javax.swing.GroupLayout(Contenido);
+        Contenido.setLayout(ContenidoLayout);
+        ContenidoLayout.setHorizontalGroup(
+            ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ContenidoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jSeparator7, javax.swing.GroupLayout.DEFAULT_SIZE, 629, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        ContenidoLayout.setVerticalGroup(
+            ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ContenidoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jSeparator7, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout BackgroundLayout = new javax.swing.GroupLayout(Background);
+        Background.setLayout(BackgroundLayout);
+        BackgroundLayout.setHorizontalGroup(
+            BackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(BackgroundLayout.createSequentialGroup()
+                .addComponent(Menu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(2, 2, 2)
+                .addComponent(Contenido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        BackgroundLayout.setVerticalGroup(
+            BackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(BackgroundLayout.createSequentialGroup()
+                .addGap(6, 6, 6)
+                .addComponent(Contenido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(6, 6, 6))
+            .addComponent(Menu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(Background, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addComponent(Background, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -47,27 +182,9 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
      */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(GUIMenuPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GUIMenuPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GUIMenuPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(GUIMenuPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+       FlatMTMaterialLighterIJTheme.setup();
+       
+      
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -78,5 +195,13 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel Background;
+    private javax.swing.JPanel Contenido;
+    private javax.swing.JLabel Icono;
+    private javax.swing.JPanel Menu;
+    private javax.swing.JButton btCoord;
+    private javax.swing.JButton btDoc;
+    private javax.swing.JButton btEst;
+    private javax.swing.JSeparator jSeparator7;
     // End of variables declaration//GEN-END:variables
 }

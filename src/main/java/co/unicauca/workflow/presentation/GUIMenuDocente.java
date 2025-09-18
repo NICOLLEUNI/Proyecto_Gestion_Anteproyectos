@@ -4,21 +4,23 @@
  */
 package co.unicauca.workflow.presentation;
 
-import com.formdev.flatlaf.FlatLightLaf;
+import co.unicauca.workflow.domain.entities.User;
+import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMTMaterialLighterIJTheme;
 import java.awt.BorderLayout;
 
 /**
  *
  * @author User
  */
-public class GUIMenuCoord extends javax.swing.JFrame {
+public class GUIMenuDocente extends javax.swing.JFrame {
 
     /**
-     * Creates new form GUIMenuCoord
+     * Creates new form GUIDocente
      */
-    public GUIMenuCoord() {
+    public GUIMenuDocente () {
+     
         initComponents();
-         initStyles();
+      
       initContent();
  
     }
@@ -45,30 +47,32 @@ public class GUIMenuCoord extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        Background = new javax.swing.JPanel();
+        Bakground = new javax.swing.JPanel();
         Menu = new javax.swing.JPanel();
         Icon = new javax.swing.JLabel();
         Titulo = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        btEvaluarFormatoA = new javax.swing.JButton();
+        btRespuestas = new javax.swing.JButton();
+        btSubirFormatoA = new javax.swing.JButton();
         Contenido = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        Background.setBackground(new java.awt.Color(26, 55, 171));
+        Bakground.setBackground(new java.awt.Color(26, 55, 171));
+        Bakground.setPreferredSize(new java.awt.Dimension(919, 510));
 
         Menu.setBackground(new java.awt.Color(26, 55, 171));
-        Menu.setPreferredSize(new java.awt.Dimension(267, 510));
+        Menu.setPreferredSize(new java.awt.Dimension(270, 512));
 
         Icon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/co/unicauca/workflow/presentation/images/LogoPequeño.png"))); // NOI18N
-        Icon.setText("jLabel1");
+        Icon.setText("jLabel2");
 
         Titulo.setBackground(new java.awt.Color(204, 204, 204));
 
         jLabel1.setFont(new java.awt.Font("Roboto ExtraBold", 0, 28)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(26, 55, 171));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("COORDINADOR");
+        jLabel1.setText("DOCENTE");
 
         javax.swing.GroupLayout TituloLayout = new javax.swing.GroupLayout(Titulo);
         Titulo.setLayout(TituloLayout);
@@ -83,40 +87,50 @@ public class GUIMenuCoord extends javax.swing.JFrame {
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        btEvaluarFormatoA.setBackground(new java.awt.Color(65, 55, 171));
-        btEvaluarFormatoA.setFont(new java.awt.Font("Roboto Medium", 0, 24)); // NOI18N
-        btEvaluarFormatoA.setForeground(new java.awt.Color(255, 255, 255));
-        btEvaluarFormatoA.setIcon(new javax.swing.ImageIcon(getClass().getResource("/co/unicauca/workflow/presentation/images/file-chart.png"))); // NOI18N
-        btEvaluarFormatoA.setText("Evaluar FormatoA");
-        btEvaluarFormatoA.setToolTipText("");
-        btEvaluarFormatoA.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
-        btEvaluarFormatoA.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btEvaluarFormatoA.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        btEvaluarFormatoA.setIconTextGap(7);
+        btRespuestas.setBackground(new java.awt.Color(65, 55, 171));
+        btRespuestas.setFont(new java.awt.Font("Roboto Medium", 0, 24)); // NOI18N
+        btRespuestas.setForeground(new java.awt.Color(255, 255, 255));
+        btRespuestas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/co/unicauca/workflow/presentation/images/file-chart.png"))); // NOI18N
+        btRespuestas.setText("Respuestas");
+        btRespuestas.setToolTipText("");
+        btRespuestas.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        btRespuestas.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btRespuestas.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btRespuestas.setIconTextGap(7);
+
+        btSubirFormatoA.setBackground(new java.awt.Color(65, 55, 171));
+        btSubirFormatoA.setFont(new java.awt.Font("Roboto Medium", 0, 24)); // NOI18N
+        btSubirFormatoA.setForeground(new java.awt.Color(255, 255, 255));
+        btSubirFormatoA.setIcon(new javax.swing.ImageIcon(getClass().getResource("/co/unicauca/workflow/presentation/images/file-chart.png"))); // NOI18N
+        btSubirFormatoA.setText("Subir FormatoA");
+        btSubirFormatoA.setToolTipText("");
+        btSubirFormatoA.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        btSubirFormatoA.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btSubirFormatoA.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btSubirFormatoA.setIconTextGap(7);
 
         javax.swing.GroupLayout MenuLayout = new javax.swing.GroupLayout(Menu);
         Menu.setLayout(MenuLayout);
         MenuLayout.setHorizontalGroup(
             MenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(MenuLayout.createSequentialGroup()
-                .addGap(14, 14, 14)
-                .addComponent(Icon, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(25, 25, 25)
+                .addComponent(Icon, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addComponent(Titulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(MenuLayout.createSequentialGroup()
-                .addComponent(btEvaluarFormatoA, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(btSubirFormatoA, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(btRespuestas, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         MenuLayout.setVerticalGroup(
             MenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(MenuLayout.createSequentialGroup()
-                .addGap(14, 14, 14)
-                .addComponent(Icon, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(52, 52, 52)
+                .addGap(20, 20, 20)
+                .addComponent(Icon)
+                .addGap(20, 20, 20)
                 .addComponent(Titulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(37, 37, 37)
-                .addComponent(btEvaluarFormatoA, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(226, Short.MAX_VALUE))
+                .addGap(31, 31, 31)
+                .addComponent(btSubirFormatoA, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(btRespuestas, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         Contenido.setBackground(new java.awt.Color(255, 255, 255));
@@ -126,41 +140,41 @@ public class GUIMenuCoord extends javax.swing.JFrame {
         Contenido.setLayout(ContenidoLayout);
         ContenidoLayout.setHorizontalGroup(
             ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 645, Short.MAX_VALUE)
+            .addGap(0, 641, Short.MAX_VALUE)
         );
         ContenidoLayout.setVerticalGroup(
             ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 490, Short.MAX_VALUE)
         );
 
-        javax.swing.GroupLayout BackgroundLayout = new javax.swing.GroupLayout(Background);
-        Background.setLayout(BackgroundLayout);
-        BackgroundLayout.setHorizontalGroup(
-            BackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(BackgroundLayout.createSequentialGroup()
-                .addComponent(Menu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(1, 1, 1)
-                .addComponent(Contenido, javax.swing.GroupLayout.DEFAULT_SIZE, 645, Short.MAX_VALUE)
-                .addContainerGap())
+        javax.swing.GroupLayout BakgroundLayout = new javax.swing.GroupLayout(Bakground);
+        Bakground.setLayout(BakgroundLayout);
+        BakgroundLayout.setHorizontalGroup(
+            BakgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(BakgroundLayout.createSequentialGroup()
+                .addComponent(Menu, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(Contenido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(11, 11, 11))
         );
-        BackgroundLayout.setVerticalGroup(
-            BackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(Menu, javax.swing.GroupLayout.DEFAULT_SIZE, 512, Short.MAX_VALUE)
-            .addGroup(BackgroundLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(Contenido, javax.swing.GroupLayout.DEFAULT_SIZE, 500, Short.MAX_VALUE)
-                .addContainerGap())
+        BakgroundLayout.setVerticalGroup(
+            BakgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(Menu, javax.swing.GroupLayout.DEFAULT_SIZE, 510, Short.MAX_VALUE)
+            .addGroup(BakgroundLayout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addComponent(Contenido, javax.swing.GroupLayout.DEFAULT_SIZE, 490, Short.MAX_VALUE)
+                .addGap(10, 10, 10))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(Background, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(Bakground, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(Background, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(Bakground, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -169,25 +183,28 @@ public class GUIMenuCoord extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+
+      public static void main(String args[]) {
         /* Set the Nimbus look and feel */
-        FlatLightLaf.setup();
+       FlatMTMaterialLighterIJTheme.setup();
+       
+      
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GUIMenuCoord().setVisible(true);
+                new GUIMenuDocente().setVisible(true);
             }
         });
     }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel Background;
+    private javax.swing.JPanel Bakground;
     private javax.swing.JPanel Contenido;
     private javax.swing.JLabel Icon;
     private javax.swing.JPanel Menu;
     private javax.swing.JPanel Titulo;
-    private javax.swing.JButton btEvaluarFormatoA;
+    private javax.swing.JButton btRespuestas;
+    private javax.swing.JButton btSubirFormatoA;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }
