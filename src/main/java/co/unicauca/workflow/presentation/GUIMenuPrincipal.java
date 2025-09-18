@@ -4,9 +4,11 @@
  */
 package co.unicauca.workflow.presentation;
 
+import co.unicauca.workflow.presentation.views.SubirFormatoA;
 import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMTMaterialLighterIJTheme;
 import java.awt.BorderLayout;
+import javax.swing.JPanel;
 
 import javax.swing.UIManager;
 
@@ -30,15 +32,19 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
      private void initStyles(){
      
      }
-     private void initContent(){
-     Principal pl= new Principal();
+     private void showJPanel(JPanel pl){
      pl.setSize(641,498);
      pl.setLocation(0, 0);
      
      Contenido.removeAll();
      Contenido.add(pl,BorderLayout.CENTER);
      Contenido.revalidate();
-     Contenido.repaint();
+     Contenido.repaint(); 
+         
+     }
+     private void initContent(){
+     showJPanel( new SubirFormatoA());
+    
      }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -59,6 +65,7 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
         jSeparator7 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(910, 510));
         setPreferredSize(new java.awt.Dimension(910, 510));
 
         Background.setBackground(new java.awt.Color(26, 55, 171));
@@ -133,7 +140,7 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
             ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ContenidoLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jSeparator7, javax.swing.GroupLayout.DEFAULT_SIZE, 629, Short.MAX_VALUE)
+                .addComponent(jSeparator7, javax.swing.GroupLayout.DEFAULT_SIZE, 620, Short.MAX_VALUE)
                 .addContainerGap())
         );
         ContenidoLayout.setVerticalGroup(

@@ -22,14 +22,14 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <Component id="Contenido" pref="661" max="32767" attributes="0"/>
+              <Component id="Contenido" pref="640" max="32767" attributes="0"/>
               <EmptySpace min="1" pref="1" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="Contenido" alignment="0" pref="462" max="32767" attributes="0"/>
+          <Component id="Contenido" alignment="0" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
   </Layout>
