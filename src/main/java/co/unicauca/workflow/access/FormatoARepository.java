@@ -42,9 +42,8 @@ public boolean save(FormatoA newFormatoA) {
             return false;
         }
 
-        String sql = "INSERT INTO FormatoA (title, mode, proyectManager, projectCoManager, date, " +
-                     "generalObjetive, specificObjetives, archivoPDF, studentCode, counter, observaciones, estado) " +
-                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO FormatoA (title, mode, proyectManager, projectCoManager, date, generalObjetive, specificObjetives, archivoPDF, studentCode, counter, state) "
+                   + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         PreparedStatement pstmt = conn.prepareStatement(sql);
         pstmt.setString(1, newFormatoA.getTitle());
@@ -56,9 +55,9 @@ public boolean save(FormatoA newFormatoA) {
         pstmt.setString(7, newFormatoA.getSpecificObjetives());
         pstmt.setString(8, newFormatoA.getArchivoPDF());
         pstmt.setString(9, newFormatoA.getStudentCode());
-        pstmt.setString(10, newFormatoA.getCounter());
-        pstmt.setString(11, newFormatoA.getObservaciones()); // puede ser null
-        pstmt.setString(12, newFormatoA.getEstado()); // debe ser Rechazado, Aprobado o Entregado
+        pstmt.setInt(10, newFormatoA.getCounter());
+        pstmt.setString(11, newFormatoA.getState());
+      
 
         pstmt.executeUpdate();
         return true;
@@ -71,9 +70,9 @@ public boolean save(FormatoA newFormatoA) {
 public List<FormatoA> list() {
     List<FormatoA> formatos = new ArrayList<>();
     try {
-        String sql = "SELECT id, title, mode, proyectManager, projectCoManager, date, " +
-                     "generalObjetive, specificObjetives, archivoPDF, studentCode, counter, observaciones, estado " +
-                     "FROM FormatoA";
+       
+
+        String sql = "SELECT id, title, mode, proyectManager, projectCoManager, date, generalObjetive, specificObjetives, archivoPDF, studentCode, counter, state, observations FROM FormatoA";
 
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery(sql);
@@ -89,12 +88,16 @@ public List<FormatoA> list() {
             newFormatoA.setSpecificObjetives(rs.getString("specificObjetives"));
             newFormatoA.setArchivoPDF(rs.getString("archivoPDF"));
             newFormatoA.setStudentCode(rs.getString("studentCode"));
-            newFormatoA.setCounter(rs.getString("counter"));
-            newFormatoA.setObservaciones(rs.getString("observaciones"));
-            newFormatoA.setEstado(rs.getString("estado"));
+            newFormatoA.setCounter(rs.getInt("counter"));
+            newFormatoA.setState(rs.getString("state"));
+            newFormatoA.setObservations(rs.getString("observations"));
 
             formatos.add(newFormatoA);
         }
+
+            //this.disconnect();
+
+       
     } catch (SQLException ex) {
         Logger.getLogger(Service.class.getName()).log(Level.SEVERE, null, ex);
     }
@@ -115,10 +118,11 @@ public List<FormatoA> list() {
             + "    specificObjetives TEXT,\n"
             + "    archivoPDF TEXT,\n"
             + "    studentCode TEXT NOT NULL,\n"
-            + "    counter TEXT,\n"
-            + "    observaciones TEXT NULL,\n"
-            + "    estado TEXT CHECK(estado IN ('Rechazado', 'Aprobado', 'Entregado'))\n"
+            + "    counter INTEGER,\n"
+            + "    state TEXT CHECK(estado IN ('Rechazado', 'Aprobado', 'Entregado'))\n"
+            + "    observations TEXT NULL\n"
             + ");";
+
 
     try {
         this.connect();
@@ -153,7 +157,7 @@ public List<FormatoA> list() {
             return f;
         }
     } catch (SQLException e) {
-        System.out.println("⚠️ Error al buscar FormatoA por id: " + e.getMessage());
+        System.out.println(" Error al buscar FormatoA por id: " + e.getMessage());
     }
     return null;
 }
