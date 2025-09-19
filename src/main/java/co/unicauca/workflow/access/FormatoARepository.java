@@ -43,8 +43,8 @@ public boolean save(FormatoA newFormatoA) {
             return false;
         }
 
-        String sql = "INSERT INTO FormatoA (title, mode, proyectManager, projectCoManager, date, generalObjetive, specificObjetives, archivoPDF, studentCode, counter) "
-                   + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO FormatoA (title, mode, proyectManager, projectCoManager, date, generalObjetive, specificObjetives, archivoPDF, studentCode, counter, state, observations) "
+                   + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         PreparedStatement pstmt = conn.prepareStatement(sql);
         pstmt.setString(1, newFormatoA.getTitle());
@@ -54,9 +54,11 @@ public boolean save(FormatoA newFormatoA) {
         pstmt.setString(5, newFormatoA.getDate() != null ? newFormatoA.getDate().toString() : null);
         pstmt.setString(6, newFormatoA.getGeneralObjetive());
         pstmt.setString(7, newFormatoA.getSpecificObjetives());
-        pstmt.setString(8, newFormatoA.getArchivoPDF()); // aquí guardas la ruta al PDF
+        pstmt.setString(8, newFormatoA.getArchivoPDF());
         pstmt.setString(9, newFormatoA.getStudentCode());
-        pstmt.setString(10, newFormatoA.getCounter());
+        pstmt.setInt(10, newFormatoA.getCounter());
+        pstmt.setString(11, newFormatoA.getState());
+        pstmt.setString(12, newFormatoA.getObservations());
 
         pstmt.executeUpdate();
         return true;
@@ -70,26 +72,29 @@ public boolean save(FormatoA newFormatoA) {
         List<FormatoA> formatos = new ArrayList<>();
         try {
 
-            String sql = "SELECT id, title, mode, proyectManager, projectCoManager, date, generalObjetive, specificObjetives, archivoPDF, studentCode, counter FROM FormatoA";
-            //this.connect();
+        String sql = "SELECT id, title, mode, proyectManager, projectCoManager, date, generalObjetive, specificObjetives, archivoPDF, studentCode, counter, state, observations FROM FormatoA";
 
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
-            while (rs.next()) {
-                FormatoA newFormatoA = new FormatoA();
-                newFormatoA.setId(rs.getInt("id"));
-                newFormatoA.setTitle(rs.getString("title"));
-                newFormatoA.setMode(rs.getString("mode"));
-                newFormatoA.setProyectManager(rs.getString("projectCoManager"));
-                newFormatoA.setDate(rs.getString("date") != null ? LocalDate.parse(rs.getString("date")) : null);
-                newFormatoA.setGeneralObjetive(rs.getString("generalObjetive"));
-                newFormatoA.setSpecificObjetives(rs.getString("specificObjetives"));
-                newFormatoA.setArchivoPDF(rs.getString("archivoPDF"));
-                newFormatoA.setStudentCode(rs.getString("studentCode"));
-                newFormatoA.setCounter(rs.getString("counter"));
-                
-                formatos.add(newFormatoA);
-            }
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery(sql);
+        while (rs.next()) {
+            FormatoA newFormatoA = new FormatoA();
+            newFormatoA.setId(rs.getInt("id"));
+            newFormatoA.setTitle(rs.getString("title"));
+            newFormatoA.setMode(rs.getString("mode"));
+            newFormatoA.setProyectManager(rs.getString("proyectManager"));
+            newFormatoA.setProjectCoManager(rs.getString("projectCoManager"));
+            newFormatoA.setDate(rs.getString("date") != null ? LocalDate.parse(rs.getString("date")) : null);
+            newFormatoA.setGeneralObjetive(rs.getString("generalObjetive"));
+            newFormatoA.setSpecificObjetives(rs.getString("specificObjetives"));
+            newFormatoA.setArchivoPDF(rs.getString("archivoPDF"));
+            newFormatoA.setStudentCode(rs.getString("studentCode"));
+            newFormatoA.setCounter(rs.getInt("counter"));
+            newFormatoA.setState(rs.getString("state"));
+            newFormatoA.setObservations(rs.getString("observations"));
+
+            formatos.add(newFormatoA);
+        }
+
             //this.disconnect();
 
         } catch (SQLException ex) {
@@ -112,8 +117,11 @@ public boolean save(FormatoA newFormatoA) {
             + "    specificObjetives TEXT,\n"
             + "    archivoPDF TEXT,\n"
             + "    studentCode TEXT NOT NULL,\n"
-            + "    counter TEXT\n"
+            + "    counter INTEGER,\n"
+            + "    state TEXT,\n"
+            + "    observations TEXT\n"
             + ");";
+
 
     try {
         this.connect();

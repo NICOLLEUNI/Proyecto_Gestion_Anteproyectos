@@ -14,7 +14,7 @@ public enum enumProgram {
     AUTOMATICA_INDUSTRIAL("Automática Industrial"),
     TECNOLOGIA_TELEMATICA("Tecnología en Telemática");
     
-     private final String descripcion;
+    private final String descripcion;
 
     enumProgram(String descripcion) {
         this.descripcion = descripcion;
@@ -23,4 +23,5 @@ public enum enumProgram {
     public String getDescripcion() {
         return descripcion;
     }
+    
 }

@@ -4,9 +4,10 @@
  */
 package co.unicauca.workflow.domain.entities;
 
+import co.unicauca.workflow.domain.exceptions.ValidationException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
-
 /**
  *
  * @author User
@@ -22,14 +23,13 @@ public class FormatoA {
     private String specificObjetives;
     private String archivoPDF;
     private String studentCode;
-    private String counter;
-    //
-    private String observaciones;
-    //
-    private String estado;//aceptado o rechazado ,entregado
+    private int counter; //Para el numero de intentos
+    private String state; //entregado, aceptado o rechazado
+    private String observations; //para las observaciones del coordinador
+    
     
 
-    public FormatoA(String title, String mode, String proyectManager, String projectCoManager, LocalDate date, String generalObjetive, String specificObjetives,  String archivoPDF, String studentCode, String counter) {
+    public FormatoA(String title, String mode, String proyectManager, String projectCoManager, LocalDate date, String generalObjetive, String specificObjetives,  String archivoPDF, String studentCode, int counter, String state, String observations) {
         this.title = title;
         this.mode = mode;
         this.proyectManager = proyectManager;
@@ -40,13 +40,60 @@ public class FormatoA {
         this.archivoPDF = archivoPDF;
         this.studentCode = studentCode;
         this.counter = counter;
+        this.state = state;
+        this.observations = observations;
     }
 
     public FormatoA() {
     }
 
     //
-    public void ValidarCampos(){}
+   public void validarCampos() throws ValidationException {
+        List<String> errores = new ArrayList<>();
+
+        // 🔹 Validaciones básicas
+        if (title == null || title.trim().isEmpty()) {
+            errores.add("El título no puede estar vacío.");
+        }
+
+        if (mode == null || mode.trim().isEmpty()) {
+            errores.add("Debe especificar la modalidad del proyecto.");
+        }
+
+        if (date == null) {
+            errores.add("Debe especificar la fecha.");
+        }
+
+        if (generalObjetive == null || generalObjetive.trim().isEmpty()) {
+            errores.add("Debe especificar el objetivo general.");
+        }
+
+        if (specificObjetives == null || specificObjetives.trim().isEmpty()) {
+            errores.add("Debe especificar al menos un objetivo específico.");
+        }
+
+        if (archivoPDF == null || archivoPDF.trim().isEmpty()) {
+            errores.add("Debe adjuntar el archivo PDF del Formato A.");
+        }
+
+        if (studentCode == null || studentCode.trim().isEmpty()) {
+            errores.add("Debe especificar el código del estudiante.");
+        }
+
+        // 🔹 Validaciones de negocio (ejemplo)
+        if (counter < 0) {
+            errores.add("El número de intentos no puede ser negativo.");
+        }
+        if (counter > 3) {
+            errores.add("El proyecto ya no puede ser enviado después del tercer intento.");
+        }
+
+        // 🔹 Si hay errores → lanzar excepción
+        if (!errores.isEmpty()) {
+            throw new ValidationException(errores);
+        }
+        
+    }
     
     
     
@@ -90,7 +137,7 @@ public class FormatoA {
         return studentCode;
     }
 
-    public String getCounter() {
+    public int getCounter() {
         return counter;
     }
 
@@ -134,8 +181,27 @@ public class FormatoA {
         this.studentCode = studentCode;
     }
 
-    public void setCounter(String counter) {
+    public void setCounter(int counter) {
         this.counter = counter;
     }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getObservations() {
+        return observations;
+    }
+
+    public void setObservations(String observations) {
+        this.observations = observations;
+    }
+    
+    
+    
 
 }
