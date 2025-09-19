@@ -128,7 +128,35 @@ public List<FormatoA> list() {
         Logger.getLogger(Service.class.getName()).log(Level.SEVERE, null, ex);
     }
 }
-    
+    public FormatoA findById(int id) {
+    try {
+        String sql = "SELECT * FROM FormatoA WHERE id = ?";
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.setInt(1, id);
+        ResultSet rs = stmt.executeQuery();
+
+        if (rs.next()) {
+            FormatoA f = new FormatoA();
+            f.setId(rs.getInt("id"));
+            f.setTitle(rs.getString("title"));
+            f.setMode(rs.getString("mode"));
+            f.setProyectManager(rs.getString("proyectManager"));
+            f.setProjectCoManager(rs.getString("projectCoManager"));
+          f.setDate(rs.getString("date") != null ? LocalDate.parse(rs.getString("date")) : null);
+            f.setGeneralObjetive(rs.getString("generalObjetive"));
+            f.setSpecificObjetives(rs.getString("specificObjetives"));
+            f.setArchivoPDF(rs.getString("archivoPDF"));
+            f.setStudentCode(rs.getString("studentCode"));
+            f.setCounter(rs.getString("counter"));
+            f.setEstado(rs.getString("estado"));
+            f.setObservaciones(rs.getString("observaciones"));
+            return f;
+        }
+    } catch (SQLException e) {
+        System.out.println("⚠️ Error al buscar FormatoA por id: " + e.getMessage());
+    }
+    return null;
+}
   public void connect() {
         // SQLite connection string
 

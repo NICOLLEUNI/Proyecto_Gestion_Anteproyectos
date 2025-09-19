@@ -4,7 +4,15 @@
  */
 package co.unicauca.workflow.presentation.views;
 
+import co.unicauca.workflow.domain.entities.FormatoA;
 import java.awt.Color;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -18,6 +26,17 @@ public class Observaciones extends javax.swing.JPanel {
     public Observaciones() {
         initComponents();
     }
+public void setFormatoA(FormatoA formato) {
+    lblUTitulo.setText(formato.getTitle());
+    lblUEstudiante.setText(formato.getStudentCode()); // O nombre si tienes
+    lblUDirector.setText(formato.getProyectManager());
+    lblUModalidad.setText(formato.getMode()); // Aquí puse el modo como "programa"
+    lblPDF.setText(formato.getArchivoPDF() != null ? formato.getArchivoPDF() : "Sin PDF");
+
+    // Estado
+    CBXAprovado.setSelected("Aprobado".equalsIgnoreCase(formato.getEstado()));
+    CBXRechazado.setSelected("Rechazado".equalsIgnoreCase(formato.getEstado()));
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -32,21 +51,21 @@ public class Observaciones extends javax.swing.JPanel {
         lblTitulo = new javax.swing.JLabel();
         jSeparator9 = new javax.swing.JSeparator();
         lblUTitulo = new javax.swing.JLabel();
-        lblTitulo1 = new javax.swing.JLabel();
-        lblUTitulo1 = new javax.swing.JLabel();
+        lblEstudiante = new javax.swing.JLabel();
+        lblUEstudiante = new javax.swing.JLabel();
         jSeparator10 = new javax.swing.JSeparator();
-        lblTitulo2 = new javax.swing.JLabel();
-        lblUTitulo2 = new javax.swing.JLabel();
+        lblDirector = new javax.swing.JLabel();
+        lblUDirector = new javax.swing.JLabel();
         jSeparator11 = new javax.swing.JSeparator();
-        lblTitulo3 = new javax.swing.JLabel();
-        lblUTitulo3 = new javax.swing.JLabel();
+        lblModalidad = new javax.swing.JLabel();
+        lblUModalidad = new javax.swing.JLabel();
         jSeparator12 = new javax.swing.JSeparator();
         jPanel1 = new javax.swing.JPanel();
         lblPDF = new javax.swing.JLabel();
-        txtObservaciones = new javax.swing.JTextField();
         lblObservaciones = new javax.swing.JLabel();
         CBXAprovado = new javax.swing.JCheckBox();
         CBXRechazado = new javax.swing.JCheckBox();
+        txtObservaciones = new javax.swing.JTextField();
 
         setPreferredSize(new java.awt.Dimension(533, 371));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -55,35 +74,35 @@ public class Observaciones extends javax.swing.JPanel {
 
         lblTitulo.setFont(new java.awt.Font("Roboto Light", 1, 14)); // NOI18N
         lblTitulo.setForeground(new java.awt.Color(0, 0, 0));
-        lblTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblTitulo.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblTitulo.setText("Titulo");
 
         lblUTitulo.setForeground(new java.awt.Color(51, 51, 51));
         lblUTitulo.setText("Titulo");
 
-        lblTitulo1.setFont(new java.awt.Font("Roboto Light", 1, 14)); // NOI18N
-        lblTitulo1.setForeground(new java.awt.Color(0, 0, 0));
-        lblTitulo1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblTitulo1.setText("Titulo");
+        lblEstudiante.setFont(new java.awt.Font("Roboto Light", 1, 14)); // NOI18N
+        lblEstudiante.setForeground(new java.awt.Color(0, 0, 0));
+        lblEstudiante.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lblEstudiante.setText("Estudiante");
 
-        lblUTitulo1.setForeground(new java.awt.Color(51, 51, 51));
-        lblUTitulo1.setText("Titulo");
+        lblUEstudiante.setForeground(new java.awt.Color(51, 51, 51));
+        lblUEstudiante.setText("Estudiante");
 
-        lblTitulo2.setFont(new java.awt.Font("Roboto Light", 1, 14)); // NOI18N
-        lblTitulo2.setForeground(new java.awt.Color(0, 0, 0));
-        lblTitulo2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblTitulo2.setText("Titulo");
+        lblDirector.setFont(new java.awt.Font("Roboto Light", 1, 14)); // NOI18N
+        lblDirector.setForeground(new java.awt.Color(0, 0, 0));
+        lblDirector.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lblDirector.setText("Dir.Proyecto");
 
-        lblUTitulo2.setForeground(new java.awt.Color(51, 51, 51));
-        lblUTitulo2.setText("Titulo");
+        lblUDirector.setForeground(new java.awt.Color(51, 51, 51));
+        lblUDirector.setText("Director");
 
-        lblTitulo3.setFont(new java.awt.Font("Roboto Light", 1, 14)); // NOI18N
-        lblTitulo3.setForeground(new java.awt.Color(0, 0, 0));
-        lblTitulo3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblTitulo3.setText("Titulo");
+        lblModalidad.setFont(new java.awt.Font("Roboto Light", 1, 14)); // NOI18N
+        lblModalidad.setForeground(new java.awt.Color(0, 0, 0));
+        lblModalidad.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lblModalidad.setText("Modalidad");
 
-        lblUTitulo3.setForeground(new java.awt.Color(51, 51, 51));
-        lblUTitulo3.setText("Titulo");
+        lblUModalidad.setForeground(new java.awt.Color(51, 51, 51));
+        lblUModalidad.setText("Modalidad");
 
         jPanel1.setBackground(new java.awt.Color(204, 204, 204));
 
@@ -103,6 +122,15 @@ public class Observaciones extends javax.swing.JPanel {
             .addComponent(lblPDF, javax.swing.GroupLayout.DEFAULT_SIZE, 22, Short.MAX_VALUE)
         );
 
+        lblObservaciones.setFont(new java.awt.Font("Roboto Light", 1, 14)); // NOI18N
+        lblObservaciones.setForeground(new java.awt.Color(0, 0, 0));
+        lblObservaciones.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblObservaciones.setText("Observaciones");
+
+        CBXAprovado.setText("Aprovado");
+
+        CBXRechazado.setText("Rechazado");
+
         txtObservaciones.setBackground(new java.awt.Color(255, 255, 255));
         txtObservaciones.setFont(new java.awt.Font("Roboto Medium", 1, 12)); // NOI18N
         txtObservaciones.setForeground(new java.awt.Color(153, 153, 153));
@@ -114,58 +142,51 @@ public class Observaciones extends javax.swing.JPanel {
             }
         });
 
-        lblObservaciones.setFont(new java.awt.Font("Roboto Light", 1, 14)); // NOI18N
-        lblObservaciones.setForeground(new java.awt.Color(0, 0, 0));
-        lblObservaciones.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblObservaciones.setText("Observaciones");
-
-        CBXAprovado.setText("Aprovado");
-
-        CBXRechazado.setText("Rechazado");
-
         javax.swing.GroupLayout ContenidoLayout = new javax.swing.GroupLayout(Contenido);
         Contenido.setLayout(ContenidoLayout);
         ContenidoLayout.setHorizontalGroup(
             ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ContenidoLayout.createSequentialGroup()
                 .addGap(21, 21, 21)
-                .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(jSeparator12, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(ContenidoLayout.createSequentialGroup()
-                            .addComponent(lblTitulo3, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addComponent(lblUTitulo3, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(jSeparator11, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(ContenidoLayout.createSequentialGroup()
-                            .addComponent(lblTitulo2, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addComponent(lblUTitulo2, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(jSeparator10, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(ContenidoLayout.createSequentialGroup()
-                            .addComponent(lblTitulo1, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addComponent(lblUTitulo1, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(jSeparator9, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(ContenidoLayout.createSequentialGroup()
-                            .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addComponent(lblUTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(ContenidoLayout.createSequentialGroup()
+                        .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(ContenidoLayout.createSequentialGroup()
+                                .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(78, 78, 78))
+                            .addComponent(lblDirector, javax.swing.GroupLayout.Alignment.LEADING))
+                        .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jSeparator10, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lblUEstudiante, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jSeparator9, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lblUTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jSeparator11, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lblUDirector, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(ContenidoLayout.createSequentialGroup()
+                                .addGap(3, 3, 3)
+                                .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jSeparator12, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lblUModalidad, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(137, 137, 137))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, ContenidoLayout.createSequentialGroup()
+                        .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblEstudiante, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblModalidad, javax.swing.GroupLayout.Alignment.LEADING))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
             .addGroup(ContenidoLayout.createSequentialGroup()
                 .addGap(27, 27, 27)
                 .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(ContenidoLayout.createSequentialGroup()
                         .addComponent(CBXAprovado)
                         .addGap(106, 106, 106)
-                        .addComponent(CBXRechazado)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(CBXRechazado))
                     .addGroup(ContenidoLayout.createSequentialGroup()
                         .addComponent(lblObservaciones, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(42, 42, 42)
-                        .addComponent(txtObservaciones, javax.swing.GroupLayout.DEFAULT_SIZE, 305, Short.MAX_VALUE)
-                        .addGap(34, 34, 34))))
+                        .addGap(44, 44, 44)
+                        .addComponent(txtObservaciones, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         ContenidoLayout.setVerticalGroup(
             ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -178,29 +199,31 @@ public class Observaciones extends javax.swing.JPanel {
                 .addComponent(jSeparator9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblTitulo1)
-                    .addComponent(lblUTitulo1))
+                    .addComponent(lblEstudiante)
+                    .addComponent(lblUEstudiante))
                 .addGap(3, 3, 3)
                 .addComponent(jSeparator10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblTitulo2)
-                    .addComponent(lblUTitulo2))
+                    .addComponent(lblDirector)
+                    .addComponent(lblUDirector))
                 .addGap(3, 3, 3)
                 .addComponent(jSeparator11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblTitulo3)
-                    .addComponent(lblUTitulo3))
+                    .addComponent(lblModalidad)
+                    .addComponent(lblUModalidad))
                 .addGap(3, 3, 3)
                 .addComponent(jSeparator12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblObservaciones)
-                    .addComponent(txtObservaciones, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
+                    .addGroup(ContenidoLayout.createSequentialGroup()
+                        .addComponent(lblObservaciones)
+                        .addGap(0, 50, Short.MAX_VALUE))
+                    .addComponent(txtObservaciones))
+                .addGap(18, 18, 18)
                 .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(CBXAprovado)
                     .addComponent(CBXRechazado))
@@ -211,10 +234,9 @@ public class Observaciones extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtObservacionesMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtObservacionesMousePressed
-            if( txtObservaciones.getText().equals("   Ingrese sus Observaciones")){
-       txtObservaciones.setText("");
+     txtObservaciones.getText().equals("   Ingrese sus Observaciones");
+        txtObservaciones.setText("");
        txtObservaciones.setForeground(Color.BLACK);
-      }
     }//GEN-LAST:event_txtObservacionesMousePressed
 
 
@@ -227,16 +249,16 @@ public class Observaciones extends javax.swing.JPanel {
     private javax.swing.JSeparator jSeparator11;
     private javax.swing.JSeparator jSeparator12;
     private javax.swing.JSeparator jSeparator9;
+    private javax.swing.JLabel lblDirector;
+    private javax.swing.JLabel lblEstudiante;
+    private javax.swing.JLabel lblModalidad;
     private javax.swing.JLabel lblObservaciones;
     private javax.swing.JLabel lblPDF;
     private javax.swing.JLabel lblTitulo;
-    private javax.swing.JLabel lblTitulo1;
-    private javax.swing.JLabel lblTitulo2;
-    private javax.swing.JLabel lblTitulo3;
+    private javax.swing.JLabel lblUDirector;
+    private javax.swing.JLabel lblUEstudiante;
+    private javax.swing.JLabel lblUModalidad;
     private javax.swing.JLabel lblUTitulo;
-    private javax.swing.JLabel lblUTitulo1;
-    private javax.swing.JLabel lblUTitulo2;
-    private javax.swing.JLabel lblUTitulo3;
     private javax.swing.JTextField txtObservaciones;
     // End of variables declaration//GEN-END:variables
 }

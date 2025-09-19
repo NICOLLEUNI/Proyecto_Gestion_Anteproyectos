@@ -4,8 +4,16 @@
  */
 package co.unicauca.workflow.presentation.views;
 
+import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMTMaterialLighterIJTheme;
 import java.awt.Color;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -18,8 +26,12 @@ public class SubirFormatoA extends javax.swing.JPanel {
      */
     public SubirFormatoA() {
         initComponents();
+        initStyles();
     }
-
+private void initStyles(){
+      FlatMTMaterialLighterIJTheme.setup();
+      
+     }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -31,7 +43,6 @@ public class SubirFormatoA extends javax.swing.JPanel {
 
         Contenido = new javax.swing.JPanel();
         jSeparator8 = new javax.swing.JSeparator();
-        txtPDF = new javax.swing.JTextField();
         lbPDF = new javax.swing.JLabel();
         txtTitulo = new javax.swing.JTextField();
         jSeparator9 = new javax.swing.JSeparator();
@@ -53,23 +64,15 @@ public class SubirFormatoA extends javax.swing.JPanel {
         txtObjEspecifico = new javax.swing.JTextField();
         lbObEspecifico = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
-        btSubir = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        txtRutaPDF = new javax.swing.JLabel();
+        btPDF = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setPreferredSize(new java.awt.Dimension(641, 498));
 
         Contenido.setBackground(new java.awt.Color(255, 255, 255));
         Contenido.setPreferredSize(new java.awt.Dimension(641, 498));
-
-        txtPDF.setBackground(new java.awt.Color(255, 255, 255));
-        txtPDF.setFont(new java.awt.Font("Roboto Medium", 1, 12)); // NOI18N
-        txtPDF.setForeground(new java.awt.Color(153, 153, 153));
-        txtPDF.setText("Adjunte un pdf");
-        txtPDF.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        txtPDF.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                txtPDFMousePressed(evt);
-            }
-        });
 
         lbPDF.setFont(new java.awt.Font("Roboto Light", 1, 14)); // NOI18N
         lbPDF.setForeground(new java.awt.Color(0, 0, 0));
@@ -190,12 +193,48 @@ public class SubirFormatoA extends javax.swing.JPanel {
 
         jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
-        btSubir.setBackground(new java.awt.Color(65, 55, 171));
-        btSubir.setFont(new java.awt.Font("Roboto Medium", 1, 24)); // NOI18N
-        btSubir.setForeground(new java.awt.Color(255, 255, 255));
-        btSubir.setText("SUBIR");
-        btSubir.setBorderPainted(false);
-        btSubir.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jPanel1.setBackground(new java.awt.Color(204, 204, 204));
+        jPanel1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+
+        txtRutaPDF.setFont(new java.awt.Font("Roboto Light", 0, 14)); // NOI18N
+        txtRutaPDF.setForeground(new java.awt.Color(51, 51, 255));
+        txtRutaPDF.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        txtRutaPDF.setText("Ruta");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addComponent(txtRutaPDF, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addComponent(txtRutaPDF, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+
+        btPDF.setText("Adjunte un PDF");
+        btPDF.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btPDF.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                btPDFMousePressed(evt);
+            }
+        });
+
+        jButton1.setBackground(new java.awt.Color(65, 55, 171));
+        jButton1.setFont(new java.awt.Font("Roboto Medium", 1, 24)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(255, 255, 255));
+        jButton1.setText("SUBIR");
+        jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton1MouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout ContenidoLayout = new javax.swing.GroupLayout(Contenido);
         Contenido.setLayout(ContenidoLayout);
@@ -213,18 +252,18 @@ public class SubirFormatoA extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(ContenidoLayout.createSequentialGroup()
                         .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, 249, Short.MAX_VALUE)
+                            .addComponent(txtTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, 248, Short.MAX_VALUE)
                             .addGroup(ContenidoLayout.createSequentialGroup()
-                                .addComponent(txtCodirector, javax.swing.GroupLayout.DEFAULT_SIZE, 229, Short.MAX_VALUE)
+                                .addComponent(txtCodirector, javax.swing.GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE)
                                 .addGap(20, 20, 20))
                             .addGroup(ContenidoLayout.createSequentialGroup()
-                                .addComponent(txtFecha, javax.swing.GroupLayout.DEFAULT_SIZE, 229, Short.MAX_VALUE)
+                                .addComponent(txtFecha, javax.swing.GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE)
                                 .addGap(20, 20, 20))
                             .addGroup(ContenidoLayout.createSequentialGroup()
-                                .addComponent(txtDirector, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)
+                                .addComponent(txtDirector, javax.swing.GroupLayout.DEFAULT_SIZE, 229, Short.MAX_VALUE)
                                 .addGap(19, 19, 19))
                             .addGroup(ContenidoLayout.createSequentialGroup()
-                                .addComponent(txtModalidad, javax.swing.GroupLayout.DEFAULT_SIZE, 234, Short.MAX_VALUE)
+                                .addComponent(txtModalidad, javax.swing.GroupLayout.DEFAULT_SIZE, 233, Short.MAX_VALUE)
                                 .addGap(15, 15, 15))
                             .addGroup(ContenidoLayout.createSequentialGroup()
                                 .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -249,20 +288,24 @@ public class SubirFormatoA extends javax.swing.JPanel {
                                 .addGap(217, 217, 217))
                             .addGroup(ContenidoLayout.createSequentialGroup()
                                 .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtObjEspecifico, javax.swing.GroupLayout.DEFAULT_SIZE, 305, Short.MAX_VALUE)
+                                    .addComponent(txtObjEspecifico, javax.swing.GroupLayout.DEFAULT_SIZE, 306, Short.MAX_VALUE)
                                     .addComponent(txtObGen)
                                     .addGroup(ContenidoLayout.createSequentialGroup()
                                         .addComponent(lbObEspecifico, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addGap(140, 140, 140))
-                                    .addComponent(lbPDF)
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ContenidoLayout.createSequentialGroup()
-                                        .addComponent(txtPDF, javax.swing.GroupLayout.DEFAULT_SIZE, 275, Short.MAX_VALUE)
-                                        .addGap(30, 30, 30)))
+                                        .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addGroup(ContenidoLayout.createSequentialGroup()
+                                                .addComponent(lbPDF)
+                                                .addGap(47, 47, 47)
+                                                .addComponent(btPDF, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addGap(8, 8, 8)))
                                 .addGap(38, 38, 38))))
-                    .addGroup(ContenidoLayout.createSequentialGroup()
-                        .addGap(56, 56, 56)
-                        .addComponent(btSubir, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ContenidoLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(76, 76, 76))))
         );
         ContenidoLayout.setVerticalGroup(
             ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -304,26 +347,26 @@ public class SubirFormatoA extends javax.swing.JPanel {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jSeparator14, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(2, 2, 2)
-                                .addComponent(Fecha))
+                                .addComponent(Fecha)
+                                .addGap(15, 15, 15)
+                                .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, 0)
+                                .addComponent(jSeparator15, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(ContenidoLayout.createSequentialGroup()
                                 .addComponent(lbObEspecifico)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(txtObjEspecifico, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(lbPDF)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtPDF, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(ContenidoLayout.createSequentialGroup()
-                                .addGap(13, 13, 13)
-                                .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, 0)
-                                .addComponent(jSeparator15, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(ContenidoLayout.createSequentialGroup()
+                                .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(lbPDF, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btPDF))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(btSubir, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(15, 15, 15))))
                     .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 371, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(54, Short.MAX_VALUE))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -336,49 +379,85 @@ public class SubirFormatoA extends javax.swing.JPanel {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(Contenido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(Contenido, javax.swing.GroupLayout.PREFERRED_SIZE, 460, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtTituloMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtTituloMousePressed
         manejarPlaceHolder(txtTitulo, "Ingrese el Titulo del Proyecto", 
-                       txtPDF, txtModalidad, txtDirector, txtCodirector, txtFecha, txtObGen, txtObjEspecifico);
+                        txtModalidad, txtDirector, txtCodirector, txtFecha, txtObGen, txtObjEspecifico);
     }//GEN-LAST:event_txtTituloMousePressed
 
     private void txtModalidadMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtModalidadMousePressed
         manejarPlaceHolder(txtModalidad, "Ingrese la modalidad", 
-                       txtPDF, txtTitulo, txtDirector, txtCodirector, txtFecha, txtObGen, txtObjEspecifico);
+                        txtTitulo, txtDirector, txtCodirector, txtFecha, txtObGen, txtObjEspecifico);
     }//GEN-LAST:event_txtModalidadMousePressed
 
     private void txtDirectorMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtDirectorMousePressed
         manejarPlaceHolder(txtDirector, "Ingrese el Director del Proyecto", 
-                       txtPDF, txtModalidad, txtTitulo, txtCodirector, txtFecha, txtObGen, txtObjEspecifico);
+                        txtModalidad, txtTitulo, txtCodirector, txtFecha, txtObGen, txtObjEspecifico);
     }//GEN-LAST:event_txtDirectorMousePressed
 
     private void txtCodirectorMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtCodirectorMousePressed
        manejarPlaceHolder(txtCodirector, "Ingrese el Codirector del Proyecto", 
-                       txtPDF, txtModalidad, txtDirector, txtTitulo, txtFecha, txtObGen, txtObjEspecifico);
+                        txtModalidad, txtDirector, txtTitulo, txtFecha, txtObGen, txtObjEspecifico);
     }//GEN-LAST:event_txtCodirectorMousePressed
 
     private void txtFechaMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtFechaMousePressed
         manejarPlaceHolder(txtFecha, "Ingrese la Fecha", 
-                       txtPDF, txtModalidad, txtDirector, txtCodirector, txtTitulo, txtObGen, txtObjEspecifico);
+                        txtModalidad, txtDirector, txtCodirector, txtTitulo, txtObGen, txtObjEspecifico);
     }//GEN-LAST:event_txtFechaMousePressed
 
     private void txtObGenMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtObGenMousePressed
        manejarPlaceHolder(txtObGen, "   Ingrese el Objetivo General", 
-                       txtPDF, txtModalidad, txtDirector, txtCodirector, txtFecha, txtTitulo, txtObjEspecifico);
+                        txtModalidad, txtDirector, txtCodirector, txtFecha, txtTitulo, txtObjEspecifico);
     }//GEN-LAST:event_txtObGenMousePressed
 
     private void txtObjEspecificoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtObjEspecificoMousePressed
        manejarPlaceHolder(txtObjEspecifico, "   Ingrese los objetivos especificos", 
-                       txtPDF, txtModalidad, txtDirector, txtCodirector, txtFecha, txtObGen, txtTitulo);
+                       txtModalidad, txtDirector, txtCodirector, txtFecha, txtObGen, txtTitulo);
     }//GEN-LAST:event_txtObjEspecificoMousePressed
 
-    private void txtPDFMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtPDFMousePressed
-       manejarPlaceHolder(txtPDF, "Adjunte un pdf", 
-                       txtTitulo, txtModalidad, txtDirector, txtCodirector, txtFecha, txtObGen, txtObjEspecifico);
-    }//GEN-LAST:event_txtPDFMousePressed
+    private void btPDFMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btPDFMousePressed
+      JFileChooser fileChooser = new JFileChooser();
+    fileChooser.setDialogTitle("Seleccionar archivo PDF");
+
+    // Filtro para solo mostrar PDFs
+    FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivos PDF", "pdf");
+    fileChooser.setFileFilter(filtro);
+
+    int resultado = fileChooser.showOpenDialog(this);
+
+    if (resultado == JFileChooser.APPROVE_OPTION) {
+        File archivoSeleccionado = fileChooser.getSelectedFile();
+        
+        try {
+            // Ruta de destino dentro del proyecto
+            String carpetaDestino = System.getProperty("user.dir") + File.separator + "archivosPDF";
+            File directorio = new File(carpetaDestino);
+            if (!directorio.exists()) {
+                directorio.mkdir(); // crea la carpeta si no existe
+            }
+
+            // Copiar el archivo al destino
+            File archivoDestino = new File(carpetaDestino, archivoSeleccionado.getName());
+            Files.copy(archivoSeleccionado.toPath(), archivoDestino.toPath(), StandardCopyOption.REPLACE_EXISTING);
+
+            // Guardar la ruta en un atributo (para luego insertarla en la BD)
+            String rutaGuardada = archivoDestino.getAbsolutePath();
+            txtRutaPDF.setText(rutaGuardada); // puedes mostrarlo en un JTextField
+
+            JOptionPane.showMessageDialog(this, "Archivo guardado en: " + rutaGuardada);
+            
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, "Error al guardar el archivo: " + ex.getMessage());
+        }
+    }
+    }//GEN-LAST:event_btPDFMousePressed
+
+    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1MouseClicked
 
  private void manejarPlaceHolder(JTextField campo, String placeholder, JTextField... otros) {
     // Si hago clic en este campo y está en modo placeholder → lo limpio
@@ -390,9 +469,7 @@ public class SubirFormatoA extends javax.swing.JPanel {
     // Si los otros campos están vacíos → les devuelvo su placeholder
     for (JTextField otro : otros) {
         if (otro.getText().isEmpty()) {
-            if (otro == txtPDF) {
-                otro.setText("Adjunte un pdf");
-            } else if (otro == txtTitulo) {
+             if (otro == txtTitulo) {
                 otro.setText("Ingrese el Titulo del Proyecto");
             } else if (otro == txtModalidad) {
                 otro.setText("Ingrese la modalidad");
@@ -414,7 +491,9 @@ public class SubirFormatoA extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Contenido;
     private javax.swing.JLabel Fecha;
-    private javax.swing.JButton btSubir;
+    private javax.swing.JButton btPDF;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator12;
     private javax.swing.JSeparator jSeparator13;
@@ -435,7 +514,7 @@ public class SubirFormatoA extends javax.swing.JPanel {
     private javax.swing.JTextField txtModalidad;
     private javax.swing.JTextField txtObGen;
     private javax.swing.JTextField txtObjEspecifico;
-    private javax.swing.JTextField txtPDF;
+    private javax.swing.JLabel txtRutaPDF;
     private javax.swing.JTextField txtTitulo;
     // End of variables declaration//GEN-END:variables
 }
