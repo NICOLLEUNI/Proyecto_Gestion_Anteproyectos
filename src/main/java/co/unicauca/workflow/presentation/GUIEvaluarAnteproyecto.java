@@ -4,7 +4,10 @@
  */
 package co.unicauca.workflow.presentation;
 
-
+import co.unicauca.workflow.access.FormatoARepository;
+import co.unicauca.workflow.access.IFormatoARepository;
+import co.unicauca.workflow.domain.entities.FormatoA;
+import co.unicauca.workflow.domain.entities.User;
 import co.unicauca.workflow.presentation.views.Observaciones;
 import co.unicauca.workflow.presentation.views.SubirFormatoA;
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMTMaterialLighterIJTheme;
@@ -24,7 +27,9 @@ public class GUIEvaluarAnteproyecto extends javax.swing.JFrame {
     /**
      * Creates new form GUIEvaluarAnteproyecto
      */
-    public GUIEvaluarAnteproyecto() {
+     private static User usuarioLogueado;
+    public GUIEvaluarAnteproyecto(User logueado) {
+         this.usuarioLogueado=logueado;
         initComponents();
    initContent();
 
@@ -103,7 +108,7 @@ private void cargarDatos() {
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-
+        btVolver = new javax.swing.JButton();
         Icon = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         btEvaluar = new javax.swing.JButton();
@@ -115,12 +120,14 @@ private void cargarDatos() {
 
         Menu.setBackground(new java.awt.Color(26, 55, 171));
         Menu.setPreferredSize(new java.awt.Dimension(226, 510));
+        Menu.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
 
         jLabel2.setFont(new java.awt.Font("Roboto Medium", 1, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("PROYECTOS");
+        Menu.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(73, 14, 206, 28));
 
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -136,33 +143,19 @@ private void cargarDatos() {
         ));
         jScrollPane1.setViewportView(jTable1);
 
+        Menu.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 54, 353, 450));
 
-        javax.swing.GroupLayout MenuLayout = new javax.swing.GroupLayout(Menu);
-        Menu.setLayout(MenuLayout);
-        MenuLayout.setHorizontalGroup(
-            MenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(MenuLayout.createSequentialGroup()
-
-                .addGap(73, 73, 73)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(86, Short.MAX_VALUE))
-            .addGroup(MenuLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                .addContainerGap())
-
-        );
-        MenuLayout.setVerticalGroup(
-            MenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(MenuLayout.createSequentialGroup()
-                .addGap(14, 14, 14)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-
-                .addComponent(jScrollPane1)
-
-                .addContainerGap())
-        );
+        btVolver.setBackground(new java.awt.Color(102, 102, 255));
+        btVolver.setFont(new java.awt.Font("Wide Latin", 1, 24)); // NOI18N
+        btVolver.setForeground(new java.awt.Color(255, 255, 255));
+        btVolver.setText("<");
+        btVolver.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btVolver.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btVolverMouseClicked(evt);
+            }
+        });
+        Menu.add(btVolver, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 40, -1));
 
         Icon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/co/unicauca/workflow/presentation/images/LogoPequeño.png"))); // NOI18N
         Icon.setText("jLabel1");
@@ -241,6 +234,12 @@ private void cargarDatos() {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btVolverMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btVolverMouseClicked
+      GUIMenuCoord ventanaCoord = new  GUIMenuCoord(usuarioLogueado);
+      ventanaCoord.setVisible(true);
+      this.dispose(); 
+    }//GEN-LAST:event_btVolverMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -251,7 +250,7 @@ private void cargarDatos() {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GUIEvaluarAnteproyecto().setVisible(true);
+                new GUIEvaluarAnteproyecto(usuarioLogueado).setVisible(true);
             }
         });
     }
@@ -261,6 +260,7 @@ private void cargarDatos() {
     private javax.swing.JLabel Icon;
     private javax.swing.JPanel Menu;
     private javax.swing.JButton btEvaluar;
+    private javax.swing.JButton btVolver;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;

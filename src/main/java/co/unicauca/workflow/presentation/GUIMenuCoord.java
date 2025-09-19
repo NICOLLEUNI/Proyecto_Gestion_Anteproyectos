@@ -68,6 +68,7 @@ public class GUIMenuCoord extends javax.swing.JFrame {
         Titulo = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         btEvaluarFormatoA = new javax.swing.JButton();
+        btRegresar = new javax.swing.JButton();
         Contenido = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -117,36 +118,46 @@ public class GUIMenuCoord extends javax.swing.JFrame {
             }
         });
 
+        btRegresar.setBackground(new java.awt.Color(65, 55, 171));
+        btRegresar.setFont(new java.awt.Font("Roboto Medium", 0, 24)); // NOI18N
+        btRegresar.setForeground(new java.awt.Color(255, 255, 255));
+        btRegresar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/co/unicauca/workflow/presentation/images/file-chart.png"))); // NOI18N
+        btRegresar.setText("Volver");
+        btRegresar.setToolTipText("");
+        btRegresar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        btRegresar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btRegresar.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btRegresar.setIconTextGap(7);
+        btRegresar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btRegresarMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout MenuLayout = new javax.swing.GroupLayout(Menu);
         Menu.setLayout(MenuLayout);
         MenuLayout.setHorizontalGroup(
             MenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-
-
-            .addComponent(Titulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(MenuLayout.createSequentialGroup()
-                .addComponent(btEvaluarFormatoA, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, MenuLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(Icon, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(55, 55, 55))
-
+                .addGap(58, 58, 58)
+                .addComponent(Icon, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(Titulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(btEvaluarFormatoA, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(btRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         MenuLayout.setVerticalGroup(
             MenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(MenuLayout.createSequentialGroup()
 
                 .addGap(21, 21, 21)
-                .addComponent(Icon, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(Icon)
                 .addGap(45, 45, 45)
 
                 .addComponent(Titulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(37, 37, 37)
                 .addComponent(btEvaluarFormatoA, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(226, Short.MAX_VALUE))
+                .addGap(0, 0, 0)
+                .addComponent(btRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         Contenido.setBackground(new java.awt.Color(255, 255, 255));
@@ -197,10 +208,16 @@ public class GUIMenuCoord extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btEvaluarFormatoAMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btEvaluarFormatoAMouseClicked
-       GUIEvaluarAnteproyecto ventanaEvaluar = new GUIEvaluarAnteproyecto(); // crear la nueva ventana
+       GUIEvaluarAnteproyecto ventanaEvaluar = new GUIEvaluarAnteproyecto(usuarioLogueado); // crear la nueva ventana
         ventanaEvaluar.setVisible(true);            // mostrarla
         this.dispose();
     }//GEN-LAST:event_btEvaluarFormatoAMouseClicked
+
+    private void btRegresarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btRegresarMouseClicked
+        GUIMenuPrincipal ventanaPrincipal = new GUIMenuPrincipal(usuarioLogueado);
+        ventanaPrincipal.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btRegresarMouseClicked
 
     /**
      * @param args the command line arguments
@@ -224,6 +241,7 @@ public class GUIMenuCoord extends javax.swing.JFrame {
     private javax.swing.JPanel Menu;
     private javax.swing.JPanel Titulo;
     private javax.swing.JButton btEvaluarFormatoA;
+    private javax.swing.JButton btRegresar;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }
