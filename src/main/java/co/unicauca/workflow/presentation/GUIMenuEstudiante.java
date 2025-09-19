@@ -22,7 +22,9 @@ public class GUIMenuEstudiante extends javax.swing.JFrame {
     /**
      * Creates new form GUIEstudiante
      */
-   public GUIMenuEstudiante() {
+    private static User usuarioLogueado;
+   public GUIMenuEstudiante(User logueado) {
+     this.usuarioLogueado=logueado;
         initComponents();
        
      initContent();
@@ -43,7 +45,7 @@ public class GUIMenuEstudiante extends javax.swing.JFrame {
          
      }
      private void initContent(){
-     showJPanel( new ConsultarFormatoA());
+     showJPanel( new Principal(usuarioLogueado));
     
      }
     /**
@@ -83,6 +85,11 @@ public class GUIMenuEstudiante extends javax.swing.JFrame {
         btConsultarFormatoA.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         btConsultarFormatoA.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btConsultarFormatoA.setIconTextGap(7);
+        btConsultarFormatoA.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btConsultarFormatoAMouseClicked(evt);
+            }
+        });
 
         Titulo.setBackground(new java.awt.Color(204, 204, 204));
 
@@ -181,6 +188,10 @@ public class GUIMenuEstudiante extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btConsultarFormatoAMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btConsultarFormatoAMouseClicked
+     showJPanel( new ConsultarFormatoA());
+    }//GEN-LAST:event_btConsultarFormatoAMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -193,7 +204,7 @@ public class GUIMenuEstudiante extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GUIMenuEstudiante().setVisible(true);
+                new GUIMenuEstudiante(usuarioLogueado).setVisible(true);
             }
         });
     }

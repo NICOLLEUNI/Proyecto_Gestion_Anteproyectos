@@ -9,5 +9,5 @@ package co.unicauca.workflow.infa;
  * @author User
  */
 public interface Observer {
-    
+       public void update(Object o);
 }

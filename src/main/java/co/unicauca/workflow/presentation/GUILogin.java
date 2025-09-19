@@ -283,14 +283,10 @@ public class GUILogin extends javax.swing.JFrame {
                 "Inicio de sesión exitoso",
                 JOptionPane.INFORMATION_MESSAGE);
 
-            // Abrir la GUI correspondiente según rol
-            if (logueado.getRol() == enumRol.ESTUDIANTE) {
-                GUIMenuEstudiante guiEst = new GUIMenuEstudiante();
-                guiEst.setVisible(true);
-            } else if (logueado.getRol() == enumRol.DOCENTE) {
-                GUIMenuDocente guiDoc = new GUIMenuDocente();
-                guiDoc.setVisible(true);
-            }
+     
+                GUIMenuPrincipal guiPrincipal = new GUIMenuPrincipal(logueado);
+               guiPrincipal .setVisible(true);
+           
 
             this.dispose(); // cerrar el login
         } else {

@@ -4,6 +4,8 @@
  */
 package co.unicauca.workflow.presentation.views;
 
+import co.unicauca.workflow.domain.entities.User;
+
 /**
  *
  * @author User
@@ -16,7 +18,20 @@ public class Principal extends javax.swing.JPanel {
     public Principal() {
         initComponents();
     }
+    public Principal(User user) {
+        initComponents();
+        cargarDatos(user);
+    }
 
+    private void cargarDatos(User user) {
+        lbNombre.setText("Nombre: " + user.getName());
+        lbApellido.setText("Apellido: " + user.getLastname());
+        lbCodigo.setText("Código: " + user.getIdUsuario());
+        lbPrograma.setText("Programa: " + user.getProgram().getDescripcion());
+        lbCelular.setText("Celular: " + user.getPhone());
+        lbRol.setText("Rol: " + user.getRol());
+        lbRol1.setText("Email: " + user.getEmail());
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -87,10 +102,10 @@ public class Principal extends javax.swing.JPanel {
                     .addComponent(lbApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lbNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lbCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lbPrograma, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lbCelular, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 350, Short.MAX_VALUE))
+                    .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbPrograma, javax.swing.GroupLayout.PREFERRED_SIZE, 391, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 187, Short.MAX_VALUE))
             .addGroup(ContenidoLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jSeparator8)
@@ -129,7 +144,7 @@ public class Principal extends javax.swing.JPanel {
                 .addComponent(lbRol1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator7, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(10, Short.MAX_VALUE))
+                .addContainerGap(46, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);

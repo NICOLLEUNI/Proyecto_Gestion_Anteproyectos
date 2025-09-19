@@ -61,11 +61,11 @@
                       <Component id="lbApellido" alignment="0" min="-2" pref="211" max="-2" attributes="0"/>
                       <Component id="lbNombre" alignment="0" min="-2" pref="211" max="-2" attributes="0"/>
                       <Component id="lbCodigo" alignment="0" min="-2" pref="211" max="-2" attributes="0"/>
-                      <Component id="lbPrograma" alignment="0" min="-2" pref="211" max="-2" attributes="0"/>
                       <Component id="lbCelular" alignment="0" min="-2" pref="211" max="-2" attributes="0"/>
                       <Component id="jSeparator1" alignment="0" min="-2" pref="249" max="-2" attributes="0"/>
+                      <Component id="lbPrograma" alignment="0" min="-2" pref="391" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="0" pref="350" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="187" max="32767" attributes="0"/>
               </Group>
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
@@ -107,7 +107,7 @@
                   <Component id="lbRol1" min="-2" pref="38" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jSeparator7" min="-2" pref="10" max="-2" attributes="0"/>
-                  <EmptySpace pref="10" max="32767" attributes="0"/>
+                  <EmptySpace pref="46" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>

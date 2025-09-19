@@ -4,9 +4,11 @@
  */
 package co.unicauca.workflow.presentation;
 
+import co.unicauca.workflow.domain.entities.User;
 import co.unicauca.workflow.presentation.views.Principal;
 import com.formdev.flatlaf.FlatLightLaf;
 import java.awt.BorderLayout;
+import javax.swing.JPanel;
 
 /**
  *
@@ -17,25 +19,31 @@ public class GUIMenuCoord extends javax.swing.JFrame {
     /**
      * Creates new form GUIMenuCoord
      */
-    public GUIMenuCoord() {
+     private static User usuarioLogueado;
+    public GUIMenuCoord(User logueado) {
+     this.usuarioLogueado=logueado;
         initComponents();
          initStyles();
-      initContent();
+ initContent();
  
     }
 
      private void initStyles(){
      
      }
-     private void initContent(){
-     Principal pl= new Principal();
+     private void showJPanel(JPanel pl){
      pl.setSize(641,498);
      pl.setLocation(0, 0);
      
      Contenido.removeAll();
      Contenido.add(pl,BorderLayout.CENTER);
      Contenido.revalidate();
-     Contenido.repaint();
+     Contenido.repaint(); 
+         
+     }
+     private void initContent(){
+     showJPanel( new Principal(usuarioLogueado));
+    
      }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -94,26 +102,31 @@ public class GUIMenuCoord extends javax.swing.JFrame {
         btEvaluarFormatoA.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btEvaluarFormatoA.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btEvaluarFormatoA.setIconTextGap(7);
+        btEvaluarFormatoA.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btEvaluarFormatoAMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout MenuLayout = new javax.swing.GroupLayout(Menu);
         Menu.setLayout(MenuLayout);
         MenuLayout.setHorizontalGroup(
             MenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(MenuLayout.createSequentialGroup()
-                .addGap(14, 14, 14)
-                .addComponent(Icon, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addComponent(Titulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(MenuLayout.createSequentialGroup()
                 .addComponent(btEvaluarFormatoA, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, MenuLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(Icon, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(55, 55, 55))
         );
         MenuLayout.setVerticalGroup(
             MenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(MenuLayout.createSequentialGroup()
-                .addGap(14, 14, 14)
+                .addGap(21, 21, 21)
                 .addComponent(Icon, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(52, 52, 52)
+                .addGap(45, 45, 45)
                 .addComponent(Titulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(37, 37, 37)
                 .addComponent(btEvaluarFormatoA, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -167,6 +180,12 @@ public class GUIMenuCoord extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btEvaluarFormatoAMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btEvaluarFormatoAMouseClicked
+       GUIEvaluarAnteproyecto ventanaEvaluar = new GUIEvaluarAnteproyecto(); // crear la nueva ventana
+        ventanaEvaluar.setVisible(true);            // mostrarla
+        this.dispose();
+    }//GEN-LAST:event_btEvaluarFormatoAMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -177,7 +196,7 @@ public class GUIMenuCoord extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GUIMenuCoord().setVisible(true);
+                new GUIMenuCoord(usuarioLogueado).setVisible(true);
             }
         });
     }

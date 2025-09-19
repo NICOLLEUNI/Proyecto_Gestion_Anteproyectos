@@ -12,6 +12,8 @@ public class User {
     private String password;
     private enumRol rol;
     private enumProgram program;
+    //logica de
+    private int CodigoEstudiantil;
     
     //constrcutor para registrar
     public User(String name, String lastname, String phone, String email, String password, enumRol rol, enumProgram program) {

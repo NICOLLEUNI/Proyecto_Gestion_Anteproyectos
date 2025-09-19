@@ -4,7 +4,8 @@
  */
 package co.unicauca.workflow.presentation;
 
-import co.unicauca.workflow.presentation.views.SubirFormatoA;
+import co.unicauca.workflow.domain.entities.User;
+import co.unicauca.workflow.presentation.views.Principal;
 import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMTMaterialLighterIJTheme;
 import java.awt.BorderLayout;
@@ -21,8 +22,9 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
     /**
      * Creates new form GUIMenuPrincipal
      */
-    public GUIMenuPrincipal() {
-
+    private User usuarioLogueado;
+    public GUIMenuPrincipal(User logueado) {
+       this.usuarioLogueado = logueado;
         initComponents();
         initStyles();
         initContent();
@@ -43,7 +45,7 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
          
      }
      private void initContent(){
-     showJPanel( new SubirFormatoA());
+     showJPanel( new Principal(usuarioLogueado));
     
      }
     /**
@@ -66,7 +68,6 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(910, 510));
-        setPreferredSize(new java.awt.Dimension(910, 510));
 
         Background.setBackground(new java.awt.Color(26, 55, 171));
 
@@ -85,6 +86,11 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
         btEst.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btEst.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btEst.setIconTextGap(7);
+        btEst.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btEstMouseClicked(evt);
+            }
+        });
 
         btCoord.setBackground(new java.awt.Color(65, 55, 171));
         btCoord.setFont(new java.awt.Font("Roboto Medium", 0, 24)); // NOI18N
@@ -94,6 +100,11 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
         btCoord.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         btCoord.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btCoord.setIconTextGap(7);
+        btCoord.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btCoordMouseClicked(evt);
+            }
+        });
 
         btDoc.setBackground(new java.awt.Color(65, 55, 171));
         btDoc.setFont(new java.awt.Font("Roboto Medium", 0, 24)); // NOI18N
@@ -106,6 +117,11 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
         btDoc.setDefaultCapable(false);
         btDoc.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btDoc.setIconTextGap(7);
+        btDoc.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btDocMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout MenuLayout = new javax.swing.GroupLayout(Menu);
         Menu.setLayout(MenuLayout);
@@ -184,6 +200,24 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btDocMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btDocMouseClicked
+         GUIMenuDocente ventanaDocente = new GUIMenuDocente(usuarioLogueado); // crear la nueva ventana
+        ventanaDocente.setVisible(true);            // mostrarla
+        this.dispose();       
+    }//GEN-LAST:event_btDocMouseClicked
+
+    private void btEstMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btEstMouseClicked
+         GUIMenuEstudiante ventanaEstudiante = new GUIMenuEstudiante(usuarioLogueado); // crear la nueva ventana
+        ventanaEstudiante.setVisible(true);            // mostrarla
+        this.dispose();       
+    }//GEN-LAST:event_btEstMouseClicked
+
+    private void btCoordMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btCoordMouseClicked
+         GUIMenuCoord ventanaCoord = new GUIMenuCoord(usuarioLogueado); // crear la nueva ventana
+        ventanaCoord.setVisible(true);            // mostrarla
+        this.dispose();       
+    }//GEN-LAST:event_btCoordMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -196,7 +230,7 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GUIMenuPrincipal().setVisible(true);
+               
             }
         });
     }
