@@ -173,7 +173,7 @@ public class UserRepository implements IUserRepository {
     public void connect() {
         // SQLite connection string
 
-        String url = "jdbc:sqlite:./BD.db";
+        String url = "jdbc:sqlite:"+  System.getProperty("user.dir")  +"/BD.db";
       
         try {
             conn = DriverManager.getConnection(url);

@@ -5,7 +5,6 @@
 package co.unicauca.workflow.domain.entities;
 
 import java.time.LocalDate;
-import java.util.List;
 
 /**
  *
@@ -27,9 +26,8 @@ public class FormatoA {
     private String observaciones;
     //
     private String estado;//aceptado o rechazado ,entregado
-    
 
-    public FormatoA(String title, String mode, String proyectManager, String projectCoManager, LocalDate date, String generalObjetive, String specificObjetives,  String archivoPDF, String studentCode, String counter) {
+    public FormatoA(String title, String mode, String proyectManager, String projectCoManager, LocalDate date, String generalObjetive, String specificObjetives, String studentCode, String counter, String estado) {
         this.title = title;
         this.mode = mode;
         this.proyectManager = proyectManager;
@@ -37,11 +35,21 @@ public class FormatoA {
         this.date = date;
         this.generalObjetive = generalObjetive;
         this.specificObjetives = specificObjetives;
-        this.archivoPDF = archivoPDF;
         this.studentCode = studentCode;
         this.counter = counter;
+        this.estado = estado;
     }
 
+    public String getObservaciones() {
+        return observaciones;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+    
+
+    
     public FormatoA() {
     }
 
@@ -136,6 +144,14 @@ public class FormatoA {
 
     public void setCounter(String counter) {
         this.counter = counter;
+    }
+
+    public void setObservaciones(String observaciones) {
+        this.observaciones = observaciones;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 
 }

@@ -4,11 +4,16 @@
  */
 package co.unicauca.workflow.presentation;
 
+
 import co.unicauca.workflow.presentation.views.Observaciones;
 import co.unicauca.workflow.presentation.views.SubirFormatoA;
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMTMaterialLighterIJTheme;
 import java.awt.BorderLayout;
+
+import java.util.List;
 import javax.swing.JPanel;
+import javax.swing.table.DefaultTableModel;
+
 
 /**
  *
@@ -22,8 +27,28 @@ public class GUIEvaluarAnteproyecto extends javax.swing.JFrame {
     public GUIEvaluarAnteproyecto() {
         initComponents();
    initContent();
+
+        cargarDatos();
  
     }
+private void cargarDatos() {
+     IFormatoARepository repo = new FormatoARepository();
+    List<FormatoA> lista = repo.list();
+
+    String[] columnas = {"ID",  "Titulo", "Estado"};
+    DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
+
+    for (FormatoA f : lista) {
+        Object[] fila = {
+            f.getId(),
+            f.getTitle(),
+            f.getEstado() != null ? f.getEstado() : "Pendiente", // Estado real si existe
+        };
+        modelo.addRow(fila);
+    }
+
+    jTable1.setModel(modelo);
+}
 
      private void initStyles(){
      
@@ -39,7 +64,28 @@ public class GUIEvaluarAnteproyecto extends javax.swing.JFrame {
          
      }
      private void initContent(){
-     showJPanel( new Observaciones());
+
+    // Cargamos por defecto el panel de observaciones vacío
+    
+
+    // Listener para tabla
+    jTable1.getSelectionModel().addListSelectionListener(e -> {
+        if (!e.getValueIsAdjusting() && jTable1.getSelectedRow() != -1) {
+            int fila = jTable1.getSelectedRow();
+            int id = (int) jTable1.getValueAt(fila, 0); // ID está en la columna 0
+
+            // Buscar el FormatoA desde repo
+            IFormatoARepository repo = new FormatoARepository();
+            FormatoA formato = repo.findById(id); // ⚠️ Necesitas implementar este método en FormatoARepository
+
+            if (formato != null) {
+                Observaciones panelObs = new Observaciones();
+                panelObs.setFormatoA(formato);
+                showJPanel(panelObs);
+            }
+        }
+    });
+
     
      }
     /**
@@ -53,8 +99,11 @@ public class GUIEvaluarAnteproyecto extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         Menu = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
+
         jLabel2 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+
         Icon = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         btEvaluar = new javax.swing.JButton();
@@ -67,36 +116,41 @@ public class GUIEvaluarAnteproyecto extends javax.swing.JFrame {
         Menu.setBackground(new java.awt.Color(26, 55, 171));
         Menu.setPreferredSize(new java.awt.Dimension(226, 510));
 
-        jPanel2.setBackground(new java.awt.Color(204, 204, 204));
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 450, Short.MAX_VALUE)
-        );
 
         jLabel2.setFont(new java.awt.Font("Roboto Medium", 1, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("PROYECTOS");
 
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
+            },
+            new String [] {
+                "ID", "Titulo", "Estado"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable1);
+
+
         javax.swing.GroupLayout MenuLayout = new javax.swing.GroupLayout(Menu);
         Menu.setLayout(MenuLayout);
         MenuLayout.setHorizontalGroup(
             MenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(MenuLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-            .addGroup(MenuLayout.createSequentialGroup()
+
                 .addGap(73, 73, 73)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(86, Short.MAX_VALUE))
+            .addGroup(MenuLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addContainerGap())
+
         );
         MenuLayout.setVerticalGroup(
             MenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -104,7 +158,9 @@ public class GUIEvaluarAnteproyecto extends javax.swing.JFrame {
                 .addGap(14, 14, 14)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+
+                .addComponent(jScrollPane1)
+
                 .addContainerGap())
         );
 
@@ -208,6 +264,9 @@ public class GUIEvaluarAnteproyecto extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
+
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
+
     // End of variables declaration//GEN-END:variables
 }

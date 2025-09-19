@@ -21,8 +21,11 @@ public class GUIMenuDocente extends javax.swing.JFrame {
     /**
      * Creates new form GUIDocente
      */
-    public GUIMenuDocente () {
-     
+
+    private static User usuarioLogueado;
+    public GUIMenuDocente (User logueado) {
+     this.usuarioLogueado=logueado;
+
         initComponents();
       
     initContent();
@@ -43,7 +46,9 @@ public class GUIMenuDocente extends javax.swing.JFrame {
          
      }
      private void initContent(){
-     showJPanel( new SubirFormatoA());
+
+     showJPanel( new Principal(usuarioLogueado));
+
     
      }
     /**
@@ -116,6 +121,13 @@ public class GUIMenuDocente extends javax.swing.JFrame {
         btSubirFormatoA.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btSubirFormatoA.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btSubirFormatoA.setIconTextGap(7);
+
+        btSubirFormatoA.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btSubirFormatoAMouseClicked(evt);
+            }
+        });
+
 
         javax.swing.GroupLayout MenuLayout = new javax.swing.GroupLayout(Menu);
         Menu.setLayout(MenuLayout);
@@ -192,6 +204,12 @@ public class GUIMenuDocente extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+
+    private void btSubirFormatoAMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btSubirFormatoAMouseClicked
+       showJPanel( new SubirFormatoA());
+    }//GEN-LAST:event_btSubirFormatoAMouseClicked
+
+
     /**
      * @param args the command line arguments
      */
@@ -205,7 +223,9 @@ public class GUIMenuDocente extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GUIMenuDocente().setVisible(true);
+
+                new GUIMenuDocente(usuarioLogueado).setVisible(true);
+
             }
         });
     }

@@ -16,4 +16,5 @@ public interface IFormatoARepository {
     boolean save(FormatoA newFormatoA);
 
     List<FormatoA > list();
+      public FormatoA findById(int id);
 }

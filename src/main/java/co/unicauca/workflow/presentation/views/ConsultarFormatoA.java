@@ -4,6 +4,13 @@
  */
 package co.unicauca.workflow.presentation.views;
 
+import co.unicauca.workflow.access.FormatoARepository;
+import co.unicauca.workflow.access.IFormatoARepository;
+import co.unicauca.workflow.access.IUserRepository;
+import co.unicauca.workflow.domain.entities.FormatoA;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author User
@@ -16,8 +23,28 @@ public class ConsultarFormatoA extends javax.swing.JPanel {
     public ConsultarFormatoA() {
         initComponents();
         initStyles();
+         cargarDatos();
+    }
+private void cargarDatos() {
+     IFormatoARepository repo = new FormatoARepository();
+    List<FormatoA> lista = repo.list();
+
+    String[] columnas = {"Título", "Director", "Entrega", "Estado", "Observaciones"};
+    DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
+
+    for (FormatoA f : lista) {
+        Object[] fila = {
+            f.getTitle(),
+            f.getProyectManager(),
+            f.getDate() != null ? f.getDate().toString() : "", // Fecha segura
+            f.getEstado() != null ? f.getEstado() : "Pendiente", // Estado real si existe
+            f.getObservaciones() != null ? f.getObservaciones() : "" // Observaciones reales
+        };
+        modelo.addRow(fila);
     }
 
+    jTable1.setModel(modelo);
+}
      private void initStyles(){
          // Ajustes de tabla para que combine con FlatLaf
 jTable1.setRowHeight(30); // filas más altas

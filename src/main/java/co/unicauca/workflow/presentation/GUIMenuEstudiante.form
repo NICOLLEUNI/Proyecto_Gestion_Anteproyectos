@@ -139,6 +139,11 @@
                 </Property>
                 <Property name="iconTextGap" type="int" value="7"/>
               </Properties>
+
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btConsultarFormatoAMouseClicked"/>
+              </Events>
+
             </Component>
             <Container class="javax.swing.JPanel" name="Titulo">
               <Properties>

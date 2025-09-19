@@ -25,38 +25,28 @@ public class FormatoARepositoryTest {
     
     private static FormatoARepository repo;
     
-    public FormatoARepositoryTest() {
-    }
-    
-   
-    
-
     @BeforeEach
     public void setUp() {
         repo = new FormatoARepository();
         repo.connect();
-        
     }
     
     @AfterEach
     void resetDB() {
-    if (repo != null && repo.getConnection() != null) {
-        try (Statement stmt = repo.getConnection().createStatement()) {
-            stmt.execute("DELETE FROM FormatoA");
-        } catch (SQLException e) {
-            System.out.println("⚠️ No se pudo limpiar la tabla FormatoA: " + e.getMessage());
+        if (repo != null && repo.getConnection() != null) {
+            try (Statement stmt = repo.getConnection().createStatement()) {
+                stmt.execute("DELETE FROM FormatoA");
+            } catch (SQLException e) {
+                System.out.println("⚠️ No se pudo limpiar la tabla FormatoA: " + e.getMessage());
+            }
         }
-    } else {
-        System.out.println("⚠️ No se limpió la BD porque la conexión estaba cerrada.");
     }
-}
 
     /**
-     * Test del método save().
+     * Test básico del método save().
      */
     @Test
     public void testSave() {
-        System.out.println("save");
         FormatoA newFormatoA = new FormatoA();
         newFormatoA.setTitle("Proyecto Prueba");
         newFormatoA.setMode("Investigación");
@@ -68,9 +58,61 @@ public class FormatoARepositoryTest {
         newFormatoA.setArchivoPDF("ruta/prueba.pdf");
         newFormatoA.setStudentCode("2025A001");
         newFormatoA.setCounter("1");
+        newFormatoA.setObservaciones("Pendiente revisión");
+        newFormatoA.setEstado("Entregado");
 
         boolean result = repo.save(newFormatoA);
         assertTrue(result, "El FormatoA debería guardarse correctamente en la BD");
+    }
+
+    /**
+     * Test para guardar con observaciones nulas.
+     */
+    @Test
+    public void testSaveWithNullObservaciones() {
+        FormatoA newFormatoA = new FormatoA();
+        newFormatoA.setTitle("Proyecto Sin Observaciones");
+        newFormatoA.setMode("Aplicación");
+        newFormatoA.setProyectManager("Docente 3");
+        newFormatoA.setProjectCoManager("Docente 4");
+        newFormatoA.setDate(LocalDate.now());
+        newFormatoA.setGeneralObjetive("Objetivo General sin obs");
+        newFormatoA.setSpecificObjetives("Objetivos específicos sin obs");
+        newFormatoA.setArchivoPDF("ruta/sinObs.pdf");
+        newFormatoA.setStudentCode("2025A002");
+        newFormatoA.setCounter("2");
+        newFormatoA.setObservaciones(null);
+        newFormatoA.setEstado("Aprobado");
+
+        boolean result = repo.save(newFormatoA);
+        assertTrue(result, "Debería permitir guardar aunque las observaciones sean nulas");
+    }
+
+    /**
+     * Test para verificar valores del campo estado.
+     */
+    @Test
+    public void testSaveWithDifferentEstados() {
+        String[] estados = {"Rechazado", "Aprobado", "Entregado"};
+
+        for (String estado : estados) {
+            FormatoA newFormatoA = new FormatoA();
+            newFormatoA.setTitle("Proyecto con estado " + estado);
+            newFormatoA.setMode("Investigación");
+            newFormatoA.setProyectManager("Docente X");
+            newFormatoA.setProjectCoManager("Docente Y");
+            newFormatoA.setDate(LocalDate.now());
+            newFormatoA.setGeneralObjetive("Objetivo para estado " + estado);
+            newFormatoA.setSpecificObjetives("Objetivo específico");
+            newFormatoA.setArchivoPDF("ruta/" + estado + ".pdf");
+            newFormatoA.setStudentCode("2025" + estado);
+            newFormatoA.setCounter("3");
+            newFormatoA.setObservaciones("Observaciones de prueba");
+            newFormatoA.setEstado(estado);
+
+            boolean result = repo.save(newFormatoA);
+            assertTrue(result, "Debería guardar correctamente el estado: " + estado);
+        }
     }
 
     /**
@@ -78,10 +120,16 @@ public class FormatoARepositoryTest {
      */
     @Test
     public void testList() {
-        System.out.println("list");
+        // Se guarda uno antes
+        FormatoA formato = new FormatoA();
+        formato.setTitle("Proyecto List Test");
+        formato.setMode("Investigación");
+        formato.setStudentCode("2025A003");
+        repo.save(formato);
+
         List<FormatoA> result = repo.list();
-        assertNotNull(result, "La lista de formatos no debería ser nula");
-        assertTrue(result.size() >= 0, "La lista debería retornar registros existentes o vacía");
+        assertNotNull(result, "La lista no debería ser nula");
+        assertTrue(result.size() > 0, "La lista debería contener al menos un registro");
     }
 
     /**
@@ -89,34 +137,27 @@ public class FormatoARepositoryTest {
      */
     @Test
     public void testConnect() {
-        System.out.println("connect");
         repo.connect();
         Connection conn = repo.getConnection();
         assertNotNull(conn, "La conexión no debería ser nula después de connect()");
     }
 
     /**
-     * Test del método disconnect().
-     */
-     /**
      * Test del método getConnection().
      */
     @Test
     public void testGetConnection() {
-        System.out.println("getConnection");
         Connection conn = repo.getConnection();
         assertNotNull(conn, "Debería retornar la conexión establecida");
     }
+
+    /**
+     * Test del método disconnect().
+     */
     @Test
     public void testDisconnect() {
-        System.out.println("disconnect");
         repo.disconnect();
         Connection conn = repo.getConnection();
         assertNull(conn, "La conexión debería ser nula después de disconnect()");
     }
-
-    /**
-     * Test del método getConnection().
-     */
-   
 }
