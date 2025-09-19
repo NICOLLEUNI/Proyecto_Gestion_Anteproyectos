@@ -4,8 +4,7 @@
 
 package co.unicauca.workflow;
 
-import co.unicauca.workflow.access.Factory;
-import co.unicauca.workflow.access.IUserRepository;
+
 import co.unicauca.workflow.presentation.GUILogin;
 
 /**

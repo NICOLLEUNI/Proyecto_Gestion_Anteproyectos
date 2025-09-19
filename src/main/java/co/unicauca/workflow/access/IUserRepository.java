@@ -13,4 +13,5 @@ public interface IUserRepository {
     boolean save(User newUser);
 
     List<User> list();
+    
 }
