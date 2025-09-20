@@ -10,4 +10,40 @@ package co.unicauca.workflow.domain.entities;
  */
 public class Departamento {
     
+    private int codDepartamento;
+    private int nombre;
+    private Facultad Facultad;
+
+    public Departamento(int codDepartamento, int nombre, Facultad Facultad) {
+        this.codDepartamento = codDepartamento;
+        this.nombre = nombre;
+        this.Facultad = Facultad;
+    }
+
+    public int getCodDepartamento() {
+        return codDepartamento;
+    }
+
+    public void setCodDepartamento(int codDepartamento) {
+        this.codDepartamento = codDepartamento;
+    }
+
+    public int getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(int nombre) {
+        this.nombre = nombre;
+    }
+
+    public Facultad getFacultad() {
+        return Facultad;
+    }
+
+    public void setFacultad(Facultad Facultad) {
+        this.Facultad = Facultad;
+    }
+
+
+    
 }

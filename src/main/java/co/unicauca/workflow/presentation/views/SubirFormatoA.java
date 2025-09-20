@@ -72,7 +72,6 @@ private void initStyles(){
         txtRutaPDF = new javax.swing.JLabel();
         btPDF = new javax.swing.JButton();
         btSubir = new javax.swing.JButton();
-        txtCodigo = new javax.swing.JTextField();
 
         setPreferredSize(new java.awt.Dimension(641, 498));
 
@@ -241,16 +240,12 @@ private void initStyles(){
             }
         });
 
-        txtCodigo.setText("jTextField1");
-
         javax.swing.GroupLayout ContenidoLayout = new javax.swing.GroupLayout(Contenido);
         Contenido.setLayout(ContenidoLayout);
         ContenidoLayout.setHorizontalGroup(
             ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ContenidoLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(201, 201, 201)
                 .addComponent(jSeparator8)
                 .addContainerGap())
             .addGroup(ContenidoLayout.createSequentialGroup()
@@ -320,10 +315,8 @@ private void initStyles(){
             ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ContenidoLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jSeparator8, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator8, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(ContenidoLayout.createSequentialGroup()
                         .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -468,44 +461,13 @@ private void initStyles(){
     }
     }//GEN-LAST:event_btPDFMousePressed
 
+    private String limpiarTexto(JTextField txt, String placeholder) {
+    String texto = txt.getText().trim();
+    return texto.equals(placeholder) ? "" : texto;
+}
+
     private void btSubirMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btSubirMouseClicked
-          try {
-        // 🔹 Construir el objeto FormatoA con los datos del formulario
-        FormatoA formatoA = new FormatoA();
-        formatoA.setTitle(txtTitulo.getText());
-        formatoA.setMode(txtModalidad.getText());
-        formatoA.setDate(LocalDate.now()); // o un DatePicker
-        formatoA.setGeneralObjetive(txtObGen.getText()); // ✅ corregido
-        formatoA.setSpecificObjetives(txtObGen.getText());
-        formatoA.setArchivoPDF(txtRutaPDF.getText());
-        formatoA.setStudentCode(txtCodigo.getText());
-        // … settear los demás campos según tu formulario
-
-        // 🔹 Usar el método subirFormatoA
-        boolean resultado = fservice.subirFormatoA(formatoA);
-
-        if (resultado) {
-            JOptionPane.showMessageDialog(this,
-                "Formato A guardado exitosamente ✅",
-                "Éxito",
-                JOptionPane.INFORMATION_MESSAGE);
-        } else {
-            // 🔹 Mostrar lista de errores ya generada
-            String errores = String.join("\n", fservice.getLastValidationErrors());
-            JOptionPane.showMessageDialog(this,
-                "No se pudo guardar el Formato A:\n" + errores,
-                "Errores de validación",
-                JOptionPane.ERROR_MESSAGE);
-        }
-
-    } catch (Exception ex) {
-        // 🔹 Captura cualquier error inesperado
-        JOptionPane.showMessageDialog(this,
-            "Ocurrió un error inesperado: " + ex.getMessage(),
-            "Error",
-            JOptionPane.ERROR_MESSAGE);
-    }                             
-     
+       
     }//GEN-LAST:event_btSubirMouseClicked
 
  private void manejarPlaceHolder(JTextField campo, String placeholder, JTextField... otros) {
@@ -557,7 +519,6 @@ private void initStyles(){
     private javax.swing.JLabel lbObjGen;
     private javax.swing.JLabel lbPDF;
     private javax.swing.JLabel lbTitulo;
-    private javax.swing.JTextField txtCodigo;
     private javax.swing.JTextField txtCodirector;
     private javax.swing.JTextField txtDirector;
     private javax.swing.JTextField txtFecha;

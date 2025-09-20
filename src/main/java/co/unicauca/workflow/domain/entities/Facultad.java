@@ -9,5 +9,28 @@ package co.unicauca.workflow.domain.entities;
  * @author User
  */
 public class Facultad {
+    private int codFacultad;
+    private String Nombre;
+
+    public Facultad(int codFacultad, String Nombre) {
+        this.codFacultad = codFacultad;
+        this.Nombre = Nombre;
+    }
+
+    public int getCodFacultad() {
+        return codFacultad;
+    }
+
+    public void setCodFacultad(int codFacultad) {
+        this.codFacultad = codFacultad;
+    }
+
+    public String getNombre() {
+        return Nombre;
+    }
+
+    public void setNombre(String Nombre) {
+        this.Nombre = Nombre;
+    }
     
 }
