@@ -4,6 +4,10 @@
  */
 package co.unicauca.workflow.domain.entities;
 
+import co.unicauca.workflow.domain.exceptions.ValidationException;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author User
@@ -11,18 +15,33 @@ package co.unicauca.workflow.domain.entities;
     public class Estudiante extends Persona{
     
     
-    private enumProgram program;
+    private Programa program;
 
-    public Estudiante(enumProgram program, int idUsuario, String name, String lastname, String phone, String email, String password) {
+    public Estudiante(Programa program, int idUsuario, String name, String lastname, String phone, String email, String password) throws ValidationException {
         super(idUsuario, name, lastname, phone, email, password);
         this.program = program;
+        
+        validarCamposEstudiante();
     }
-
-    public enumProgram getProgram() {
+    
+    private void validarCamposEstudiante() throws ValidationException{
+        List<String> errores = new ArrayList<>();
+        
+        if (program == null){
+            errores.add("El programa es obligatorio.");
+        }
+        
+        if (!errores.isEmpty()) {
+            throw new ValidationException(errores);
+        }
+        
+    }
+            
+    public Programa getProgram() {
         return program;
     }
 
-    public void setProgram(enumProgram program) {
+    public void setProgram(Programa program) {
         this.program = program;
     }
 

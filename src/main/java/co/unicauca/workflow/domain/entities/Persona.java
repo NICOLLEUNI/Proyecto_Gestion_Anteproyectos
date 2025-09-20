@@ -4,8 +4,10 @@
  */
 package co.unicauca.workflow.domain.entities;
 
-import co.unicauca.workflow.domain.service.PersonaService;
+import co.unicauca.workflow.domain.exceptions.ValidationException;
 import java.util.EnumSet;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -21,7 +23,7 @@ public class Persona {
     private String password;  
     private EnumSet<enumRol> roles; 
 
-    public Persona(int idUsuario, String name, String lastname, String phone, String email, String password) {
+    public Persona(int idUsuario, String name, String lastname, String phone, String email, String password) throws ValidationException {
         this.idUsuario = idUsuario;
         this.name = name;
         this.lastname = lastname;
@@ -29,6 +31,44 @@ public class Persona {
         this.email = email;
         this.password = password;
         this.roles = EnumSet.noneOf(enumRol.class); 
+        
+        validarCampos();
+    }
+    
+     /**
+     * Método que valida los campos de la entidad
+     * @throws ValidationException si encuentra errores
+     */ 
+    private void validarCampos() throws ValidationException {
+        List<String> errores = new ArrayList<>();
+
+        // Validaciones básicas
+        if (idUsuario <= 0) {
+            errores.add("El ID de usuario debe ser mayor a 0.");
+        }
+        if (name == null || name.trim().isEmpty()) {
+            errores.add("El nombre es obligatorio.");
+        }
+        if (lastname == null || lastname.trim().isEmpty()) {
+            errores.add("El apellido es obligatorio.");
+        }
+        if (phone == null || phone.trim().isEmpty()) {
+            errores.add("El teléfono es obligatorio.");
+        }
+        if (email == null || email.trim().isEmpty()) {
+            errores.add("El correo electrónico es obligatorio.");
+        }
+        if (password == null || password.trim().isEmpty()) {
+            errores.add("La contraseña es obligatoria.");
+        } 
+        if (roles == null || roles.isEmpty()) {
+            errores.add("Debe asignarse al menos un rol al usuario.");
+        }
+
+        // Si hay errores, lanzamos la excepción
+        if (!errores.isEmpty()) {
+            throw new ValidationException(errores);
+        }
     }
 
 
