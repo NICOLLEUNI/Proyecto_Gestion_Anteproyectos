@@ -119,8 +119,8 @@ public List<FormatoA> list() {
             + "    archivoPDF TEXT,\n"
             + "    studentCode TEXT NOT NULL,\n"
             + "    counter INTEGER,\n"
-            + "    state TEXT CHECK(estado IN ('Rechazado', 'Aprobado', 'Entregado'))\n"
-            + "    observations TEXT NULL\n"
+            + "    state TEXT CHECK(state IN ('Rechazado', 'Aprobado', 'Entregado')),\n"
+            + "    observations TEXT \n"
             + ");";
 
 
@@ -152,8 +152,8 @@ public List<FormatoA> list() {
             f.setArchivoPDF(rs.getString("archivoPDF"));
             f.setStudentCode(rs.getString("studentCode"));
             f.setCounter(rs.getInt("counter"));
-            f.setState(rs.getString("estado"));
-            f.setObservations(rs.getString("observaciones"));
+            f.setState(rs.getString("state"));
+            f.setObservations(rs.getString("observations"));
             return f;
         }
     } catch (SQLException e) {
