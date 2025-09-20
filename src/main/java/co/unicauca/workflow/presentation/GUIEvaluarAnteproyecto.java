@@ -47,7 +47,7 @@ private void cargarDatos() {
         Object[] fila = {
             f.getId(),
             f.getTitle(),
-            f.getEstado() != null ? f.getEstado() : "Pendiente", // Estado real si existe
+            f.getState() != null ? f.getState() : "Pendiente", // Estado real si existe
         };
         modelo.addRow(fila);
     }

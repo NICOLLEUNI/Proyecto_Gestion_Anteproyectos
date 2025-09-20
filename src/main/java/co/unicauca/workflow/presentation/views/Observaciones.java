@@ -34,8 +34,8 @@ public void setFormatoA(FormatoA formato) {
     lblPDF.setText(formato.getArchivoPDF() != null ? formato.getArchivoPDF() : "Sin PDF");
 
     // Estado
-    CBXAprovado.setSelected("Aprobado".equalsIgnoreCase(formato.getEstado()));
-    CBXRechazado.setSelected("Rechazado".equalsIgnoreCase(formato.getEstado()));
+    CBXAprovado.setSelected("Aprobado".equalsIgnoreCase(formato.getState()));
+    CBXRechazado.setSelected("Rechazado".equalsIgnoreCase(formato.getState()));
 }
 
     /**
@@ -198,7 +198,7 @@ public void setFormatoA(FormatoA formato) {
                 .addGap(3, 3, 3)
                 .addComponent(jSeparator9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblEstudiante)
                     .addComponent(lblUEstudiante))
                 .addGap(3, 3, 3)

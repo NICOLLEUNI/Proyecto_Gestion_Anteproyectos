@@ -6,7 +6,6 @@ package co.unicauca.workflow.presentation.views;
 
 import co.unicauca.workflow.access.FormatoARepository;
 import co.unicauca.workflow.access.IFormatoARepository;
-import co.unicauca.workflow.access.IUserRepository;
 import co.unicauca.workflow.domain.entities.FormatoA;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
@@ -37,8 +36,8 @@ private void cargarDatos() {
             f.getTitle(),
             f.getProyectManager(),
             f.getDate() != null ? f.getDate().toString() : "", // Fecha segura
-            f.getEstado() != null ? f.getEstado() : "Pendiente", // Estado real si existe
-            f.getObservaciones() != null ? f.getObservaciones() : "" // Observaciones reales
+            f.getState() != null ? f.getState() : "Pendiente", // Estado real si existe
+            f.getObservations() != null ? f.getObservations() : "" // Observaciones reales
         };
         modelo.addRow(fila);
     }

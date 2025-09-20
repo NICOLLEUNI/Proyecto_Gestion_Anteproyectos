@@ -151,9 +151,9 @@ public List<FormatoA> list() {
             f.setSpecificObjetives(rs.getString("specificObjetives"));
             f.setArchivoPDF(rs.getString("archivoPDF"));
             f.setStudentCode(rs.getString("studentCode"));
-            f.setCounter(rs.getString("counter"));
-            f.setEstado(rs.getString("estado"));
-            f.setObservaciones(rs.getString("observaciones"));
+            f.setCounter(rs.getInt("counter"));
+            f.setState(rs.getString("estado"));
+            f.setObservations(rs.getString("observaciones"));
             return f;
         }
     } catch (SQLException e) {

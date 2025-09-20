@@ -57,9 +57,10 @@ public class FormatoARepositoryTest {
         newFormatoA.setSpecificObjetives("Objetivo Específico");
         newFormatoA.setArchivoPDF("ruta/prueba.pdf");
         newFormatoA.setStudentCode("2025A001");
-        newFormatoA.setCounter("1");
-        newFormatoA.setObservaciones("Pendiente revisión");
-        newFormatoA.setEstado("Entregado");
+        newFormatoA.setCounter(1);
+        newFormatoA.setState("Entregado");
+        newFormatoA.setObservations("Pendiente revisión");
+        
 
         boolean result = repo.save(newFormatoA);
         assertTrue(result, "El FormatoA debería guardarse correctamente en la BD");
@@ -80,9 +81,10 @@ public class FormatoARepositoryTest {
         newFormatoA.setSpecificObjetives("Objetivos específicos sin obs");
         newFormatoA.setArchivoPDF("ruta/sinObs.pdf");
         newFormatoA.setStudentCode("2025A002");
-        newFormatoA.setCounter("2");
-        newFormatoA.setObservaciones(null);
-        newFormatoA.setEstado("Aprobado");
+        newFormatoA.setCounter(2);
+        newFormatoA.setState("Aprobado");
+        newFormatoA.setObservations(null);
+       
 
         boolean result = repo.save(newFormatoA);
         assertTrue(result, "Debería permitir guardar aunque las observaciones sean nulas");
@@ -106,9 +108,10 @@ public class FormatoARepositoryTest {
             newFormatoA.setSpecificObjetives("Objetivo específico");
             newFormatoA.setArchivoPDF("ruta/" + estado + ".pdf");
             newFormatoA.setStudentCode("2025" + estado);
-            newFormatoA.setCounter("3");
-            newFormatoA.setObservaciones("Observaciones de prueba");
-            newFormatoA.setEstado(estado);
+            newFormatoA.setCounter(3);
+            newFormatoA.setState(estado);
+            newFormatoA.setObservations("Observaciones de prueba");
+          
 
             boolean result = repo.save(newFormatoA);
             assertTrue(result, "Debería guardar correctamente el estado: " + estado);

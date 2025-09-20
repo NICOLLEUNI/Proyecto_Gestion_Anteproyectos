@@ -43,14 +43,6 @@ public class FormatoA {
         this.observations = observations;
     }
 
-    public String getObservaciones() {
-        return observaciones;
-    }
-
-    public String getEstado() {
-        return estado;
-    }
-    
 
     
     public FormatoA() {
@@ -103,91 +95,89 @@ public class FormatoA {
         }
         
     }
-    
-    
-    
+
     public int getId() {
         return id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getMode() {
-        return mode;
-    }
-
-    public String getProyectManager() {
-        return proyectManager;
-    }
-
-    public String getProjectCoManager() {
-        return projectCoManager;
-    }
-
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public String getGeneralObjetive() {
-        return generalObjetive;
-    }
-
-    public String getSpecificObjetives() {
-        return specificObjetives;
-    }
-
-    public String getArchivoPDF() {
-        return archivoPDF;
-    }
-
-    public String getStudentCode() {
-        return studentCode;
-    }
-
-    public int getCounter() {
-        return counter;
     }
 
     public void setId(int id) {
         this.id = id;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getMode() {
+        return mode;
     }
 
     public void setMode(String mode) {
         this.mode = mode;
     }
 
+    public String getProyectManager() {
+        return proyectManager;
+    }
+
     public void setProyectManager(String proyectManager) {
         this.proyectManager = proyectManager;
+    }
+
+    public String getProjectCoManager() {
+        return projectCoManager;
     }
 
     public void setProjectCoManager(String projectCoManager) {
         this.projectCoManager = projectCoManager;
     }
 
+    public LocalDate getDate() {
+        return date;
+    }
+
     public void setDate(LocalDate date) {
         this.date = date;
+    }
+
+    public String getGeneralObjetive() {
+        return generalObjetive;
     }
 
     public void setGeneralObjetive(String generalObjetive) {
         this.generalObjetive = generalObjetive;
     }
 
+    public String getSpecificObjetives() {
+        return specificObjetives;
+    }
+
     public void setSpecificObjetives(String specificObjetives) {
         this.specificObjetives = specificObjetives;
+    }
+
+    public String getArchivoPDF() {
+        return archivoPDF;
     }
 
     public void setArchivoPDF(String archivoPDF) {
         this.archivoPDF = archivoPDF;
     }
 
+    public String getStudentCode() {
+        return studentCode;
+    }
+
     public void setStudentCode(String studentCode) {
         this.studentCode = studentCode;
+    }
+
+    public int getCounter() {
+        return counter;
     }
 
     public void setCounter(int counter) {
@@ -209,8 +199,7 @@ public class FormatoA {
     public void setObservations(String observations) {
         this.observations = observations;
     }
-    
-    
+        
     
 
 }
