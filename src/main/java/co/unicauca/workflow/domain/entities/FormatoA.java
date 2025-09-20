@@ -41,6 +41,7 @@ public class FormatoA {
         this.counter = counter;
         this.state = state;
         this.observations = observations;
+        
     }
 
 

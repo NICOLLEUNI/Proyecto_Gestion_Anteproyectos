@@ -4,6 +4,9 @@
  */
 package co.unicauca.workflow.domain.entities;
 
+import co.unicauca.workflow.domain.service.PersonaService;
+import java.util.EnumSet;
+
 /**
  *
  * @author User
@@ -15,7 +18,8 @@ public class Persona {
     private String lastname;
     private String phone;
     private String email;
-    private String password;   
+    private String password;  
+    private EnumSet<enumRol> roles; 
 
     public Persona(int idUsuario, String name, String lastname, String phone, String email, String password) {
         this.idUsuario = idUsuario;
@@ -24,8 +28,11 @@ public class Persona {
         this.phone = phone;
         this.email = email;
         this.password = password;
+        this.roles = EnumSet.noneOf(enumRol.class); 
     }
 
+
+    
     public int getIdUsuario() {
         return idUsuario;
     }
@@ -73,7 +80,21 @@ public class Persona {
     public void setPassword(String password) {
         this.password = password;
     }
-    
+    public void addRol(enumRol rol) {
+        roles.add(rol);
+    }
+
+    public void removeRol(enumRol rol) {
+        roles.remove(rol);
+    }
+
+    public boolean tieneRol(enumRol rol) {
+        return roles.contains(rol);
+    }
+
+    public EnumSet<enumRol> getRoles() {
+        return roles;
+    }
     
     
 }

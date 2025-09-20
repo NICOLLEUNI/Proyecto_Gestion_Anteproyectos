@@ -1,0 +1,15 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package co.unicauca.workflow.domain.entities;
+
+/**
+ *
+ * @author User
+ */
+public class Programa {
+   private int codPrograma;
+   private  String nombrePrograma;
+   private Departamento departamento;
+}
