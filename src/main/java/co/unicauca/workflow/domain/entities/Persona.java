@@ -34,6 +34,15 @@ public class Persona {
         
         validarCampos();
     }
+
+    public Persona(int idUsuario, String name, String lastname, String phone, String email, String password) {
+        this.idUsuario = idUsuario;
+        this.name = name;
+        this.lastname = lastname;
+        this.phone = phone;
+        this.email = email;
+        this.password = password;
+    }
     
      /**
      * Método que valida los campos de la entidad
@@ -67,6 +76,9 @@ public class Persona {
         if (!errores.isEmpty()) {
             throw new ValidationException(errores);
         }
+    }
+
+    public Persona() {
     }
 
 
@@ -133,6 +145,13 @@ public class Persona {
     public EnumSet<enumRol> getRoles() {
         return roles;
     }
+    public void setRoles(EnumSet<enumRol> roles) {
+    if (roles == null) {
+        this.roles = EnumSet.noneOf(enumRol.class); // inicializamos vacío si viene null
+    } else {
+        this.roles = EnumSet.copyOf(roles); // copiamos para evitar referencias externas
+    }
+}
     
     
 }
