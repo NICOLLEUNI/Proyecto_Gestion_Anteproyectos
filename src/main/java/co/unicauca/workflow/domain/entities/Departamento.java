@@ -4,19 +4,46 @@
  */
 package co.unicauca.workflow.domain.entities;
 
+import co.unicauca.workflow.domain.exceptions.ValidationException;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author User
  */
 public class Departamento {
-    
-    private int codDepartamento; //generico incremental
-    private int nombre; //txt
-    private Facultad Facultad; //fk 
 
-    public Departamento(int nombre, Facultad Facultad) {
+    private int codDepartamento; // genérico, lo asigna la BD normalmente
+    private String nombre;       // nombre del departamento
+    private Facultad facultad;   // FK a Facultad
+
+    public Departamento(String nombre, Facultad facultad) throws ValidationException {
         this.nombre = nombre;
-        this.Facultad = Facultad;
+        this.facultad = facultad;
+
+        validarCamposDepartamento();
+    }
+
+    /**
+     * Valida los campos del Departamento
+     * 
+     * @throws ValidationException si hay errores de validación
+     */
+    public void validarCamposDepartamento() throws ValidationException {
+        List<String> errores = new ArrayList<>();
+
+        if (nombre == null || nombre.trim().isEmpty()) {
+            errores.add("El nombre del departamento es obligatorio.");
+        }
+
+        if (facultad == null) {
+            errores.add("La facultad es obligatoria.");
+        }
+
+        if (!errores.isEmpty()) {
+            throw new ValidationException(errores);
+        }
     }
 
     public int getCodDepartamento() {
@@ -27,22 +54,19 @@ public class Departamento {
         this.codDepartamento = codDepartamento;
     }
 
-    public int getNombre() {
+    public String getNombre() {
         return nombre;
     }
 
-    public void setNombre(int nombre) {
+    public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
     public Facultad getFacultad() {
-        return Facultad;
+        return facultad;
     }
 
-    public void setFacultad(Facultad Facultad) {
-        this.Facultad = Facultad;
+    public void setFacultad(Facultad facultad) {
+        this.facultad = facultad;
     }
-
-
-    
 }
