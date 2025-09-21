@@ -12,4 +12,35 @@ public class Programa {
    private int codPrograma;
    private  String nombrePrograma;
    private Departamento departamento;
+
+    public Programa(int codPrograma, String nombrePrograma, Departamento departamento) {
+        this.codPrograma = codPrograma;
+        this.nombrePrograma = nombrePrograma;
+        this.departamento = departamento;
+    }
+
+    public int getCodPrograma() {
+        return codPrograma;
+    }
+
+    public void setCodPrograma(int codPrograma) {
+        this.codPrograma = codPrograma;
+    }
+
+    public String getNombrePrograma() {
+        return nombrePrograma;
+    }
+
+    public void setNombrePrograma(String nombrePrograma) {
+        this.nombrePrograma = nombrePrograma;
+    }
+
+    public Departamento getDepartamento() {
+        return departamento;
+    }
+
+    public void setDepartamento(Departamento departamento) {
+        this.departamento = departamento;
+    }
+   
 }
