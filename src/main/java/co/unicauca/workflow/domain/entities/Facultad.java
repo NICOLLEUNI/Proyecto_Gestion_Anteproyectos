@@ -9,11 +9,11 @@ package co.unicauca.workflow.domain.entities;
  * @author User
  */
 public class Facultad {
-    private int codFacultad;
-    private String Nombre;
+    
+    private int codFacultad; //generico
+    private String Nombre; //txt
 
-    public Facultad(int codFacultad, String Nombre) {
-        this.codFacultad = codFacultad;
+    public Facultad(String Nombre) {
         this.Nombre = Nombre;
     }
 

@@ -35,13 +35,14 @@ public class FormatoARepository implements IFormatoARepository {
 @Override
 public boolean save(FormatoA newFormatoA) {
     try {
+        //SE HACE CON LOS CAMPOS OBLIGATORIOS STRING
         if (newFormatoA == null 
                 || newFormatoA.getTitle() == null || newFormatoA.getTitle().isBlank()
                 || newFormatoA.getMode() == null || newFormatoA.getMode().isBlank()
                 || newFormatoA.getStudentCode() == null || newFormatoA.getStudentCode().isBlank()) {
             return false;
         }
-
+        //INSERT PARA LA BASE 
         String sql = "INSERT INTO FormatoA (title, mode, proyectManager, projectCoManager, date, generalObjetive, specificObjetives, archivoPDF, studentCode, counter, state) "
                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -50,6 +51,7 @@ public boolean save(FormatoA newFormatoA) {
         pstmt.setString(2, newFormatoA.getMode());
         pstmt.setString(3, newFormatoA.getProyectManager());
         pstmt.setString(4, newFormatoA.getProjectCoManager());
+        //SEGUIR EL FORMATO PARA LOS DATOS TIPOS DATE
         pstmt.setString(5, newFormatoA.getDate() != null ? newFormatoA.getDate().toString() : null);
         pstmt.setString(6, newFormatoA.getGeneralObjetive());
         pstmt.setString(7, newFormatoA.getSpecificObjetives());
@@ -104,7 +106,8 @@ public List<FormatoA> list() {
     return formatos;
 }
 
-   
+   //CREACION DE LA TABLA EN LA BD
+   // DATE TIPO TXT
   private void initDatabase() {
     // SQL statement for creating the FormatoA table
     String sql = "CREATE TABLE IF NOT EXISTS FormatoA (\n"
@@ -132,6 +135,8 @@ public List<FormatoA> list() {
         Logger.getLogger(Service.class.getName()).log(Level.SEVERE, null, ex);
     }
 }
+  
+  //NO ES NECESARIO EN TODAS LAS TABLAS
     public FormatoA findById(int id) {
     try {
         String sql = "SELECT * FROM FormatoA WHERE id = ?";

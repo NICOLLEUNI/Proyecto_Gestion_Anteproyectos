@@ -13,12 +13,13 @@ import java.util.List;
  * @author User
  */
     public class Estudiante extends Persona{
-    
-    
-    private Programa program;
+        
+    private int idEstudiante; 
+    private Programa program; 
 
-    public Estudiante(Programa program, int idUsuario, String name, String lastname, String phone, String email, String password) throws ValidationException {
-        super(idUsuario, name, lastname, phone, email, password);
+    public Estudiante(int idEstudiante, Programa program, int idUsuario, String name, String lastname, String phone, String email, String password) throws ValidationException {
+        super(name, lastname, phone, email, password);
+        this.idEstudiante = idEstudiante;
         this.program = program;
         
         validarCamposEstudiante();
@@ -43,6 +44,14 @@ import java.util.List;
 
     public void setProgram(Programa program) {
         this.program = program;
+    }
+
+    public int getIdEstudiante() {
+        return idEstudiante;
+    }
+
+    public void setIdEstudiante(int idEstudiante) {
+        this.idEstudiante = idEstudiante;
     }
 
     

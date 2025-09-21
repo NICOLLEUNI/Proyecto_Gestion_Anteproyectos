@@ -23,8 +23,8 @@ public class Persona {
     private String password;  
     private EnumSet<enumRol> roles; 
 
-    public Persona(int idUsuario, String name, String lastname, String phone, String email, String password) throws ValidationException {
-        this.idUsuario = idUsuario;
+    public Persona(String name, String lastname, String phone, String email, String password) throws ValidationException {
+       
         this.name = name;
         this.lastname = lastname;
         this.phone = phone;
@@ -43,9 +43,7 @@ public class Persona {
         List<String> errores = new ArrayList<>();
 
         // Validaciones básicas
-        if (idUsuario <= 0) {
-            errores.add("El ID de usuario debe ser mayor a 0.");
-        }
+        
         if (name == null || name.trim().isEmpty()) {
             errores.add("El nombre es obligatorio.");
         }

@@ -10,5 +10,6 @@ package co.unicauca.workflow.domain.entities;
  */
 public enum enumRol {
     DOCENTE,
-    ESTUDIANTE
+    ESTUDIANTE,
+    COORDINADOR
 }

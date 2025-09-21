@@ -10,12 +10,11 @@ package co.unicauca.workflow.domain.entities;
  */
 public class Departamento {
     
-    private int codDepartamento;
-    private int nombre;
-    private Facultad Facultad;
+    private int codDepartamento; //generico incremental
+    private int nombre; //txt
+    private Facultad Facultad; //fk 
 
-    public Departamento(int codDepartamento, int nombre, Facultad Facultad) {
-        this.codDepartamento = codDepartamento;
+    public Departamento(int nombre, Facultad Facultad) {
         this.nombre = nombre;
         this.Facultad = Facultad;
     }
