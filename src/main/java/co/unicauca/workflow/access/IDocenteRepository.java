@@ -3,18 +3,16 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
  */
 package co.unicauca.workflow.access;
-
-import co.unicauca.workflow.domain.entities.FormatoA;
 import java.util.List;
+import co.unicauca.workflow.domain.entities.Docente;
 
 /**
  *
- * @author User
+ * @author CRISTHIAN TORRES
  */
-public interface IFormatoARepository {
-        
-    boolean save(FormatoA newFormatoA);
-
-    List<FormatoA > list();
-    public FormatoA findById(int id);
+public interface IDocenteRepository {
+    
+    boolean save(Docente newDocente);
+    List<Docente> list();
+    
 }

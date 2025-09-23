@@ -4,12 +4,28 @@
  */
 package co.unicauca.workflow.presentation.views;
 
+//modalidad es una lista
+//si la modalidad es practica profesional se debe entregar una carta de aceptacion
+//de la empresa (puee hacerse como pdf formato A)
+
+//Si la modalidad es investigacion pueden seleccionarse dos estudiantes
+//manejar estudiante 1 y estudiante 2 (manejar listas de estudiantes por correo) 
+
+//el objetivos especificos hay que manejar un text areo (debe haceptar mucho texto) 
+
+//la fecha se debe manejar con un calendario 
+
+
+import co.unicauca.workflow.domain.entities.FormatoA;
+import co.unicauca.workflow.domain.service.FormatoAService;
+import co.unicauca.workflow.domain.service.UserService;
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMTMaterialLighterIJTheme;
 import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.time.LocalDate;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -20,7 +36,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * @author User
  */
 public class SubirFormatoA extends javax.swing.JPanel {
-
+    private final FormatoAService fservice = null;
     /**
      * Creates new form Princi
      */
@@ -67,7 +83,7 @@ private void initStyles(){
         jPanel1 = new javax.swing.JPanel();
         txtRutaPDF = new javax.swing.JLabel();
         btPDF = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        btSubir = new javax.swing.JButton();
 
         setPreferredSize(new java.awt.Dimension(641, 498));
 
@@ -225,14 +241,14 @@ private void initStyles(){
             }
         });
 
-        jButton1.setBackground(new java.awt.Color(65, 55, 171));
-        jButton1.setFont(new java.awt.Font("Roboto Medium", 1, 24)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("SUBIR");
-        jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+        btSubir.setBackground(new java.awt.Color(65, 55, 171));
+        btSubir.setFont(new java.awt.Font("Roboto Medium", 1, 24)); // NOI18N
+        btSubir.setForeground(new java.awt.Color(255, 255, 255));
+        btSubir.setText("SUBIR");
+        btSubir.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btSubir.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton1MouseClicked(evt);
+                btSubirMouseClicked(evt);
             }
         });
 
@@ -241,8 +257,8 @@ private void initStyles(){
         ContenidoLayout.setHorizontalGroup(
             ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ContenidoLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jSeparator8, javax.swing.GroupLayout.DEFAULT_SIZE, 628, Short.MAX_VALUE)
+                .addGap(201, 201, 201)
+                .addComponent(jSeparator8)
                 .addContainerGap())
             .addGroup(ContenidoLayout.createSequentialGroup()
                 .addGap(19, 19, 19)
@@ -252,18 +268,18 @@ private void initStyles(){
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(ContenidoLayout.createSequentialGroup()
                         .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, 248, Short.MAX_VALUE)
+                            .addComponent(txtTitulo)
                             .addGroup(ContenidoLayout.createSequentialGroup()
-                                .addComponent(txtCodirector, javax.swing.GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE)
+                                .addComponent(txtCodirector)
                                 .addGap(20, 20, 20))
                             .addGroup(ContenidoLayout.createSequentialGroup()
-                                .addComponent(txtFecha, javax.swing.GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE)
+                                .addComponent(txtFecha)
                                 .addGap(20, 20, 20))
                             .addGroup(ContenidoLayout.createSequentialGroup()
-                                .addComponent(txtDirector, javax.swing.GroupLayout.DEFAULT_SIZE, 229, Short.MAX_VALUE)
+                                .addComponent(txtDirector)
                                 .addGap(19, 19, 19))
                             .addGroup(ContenidoLayout.createSequentialGroup()
-                                .addComponent(txtModalidad, javax.swing.GroupLayout.DEFAULT_SIZE, 233, Short.MAX_VALUE)
+                                .addComponent(txtModalidad)
                                 .addGap(15, 15, 15))
                             .addGroup(ContenidoLayout.createSequentialGroup()
                                 .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -276,7 +292,7 @@ private void initStyles(){
                                     .addComponent(lbModalidad, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(lbDirector, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(lbCodirector, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 0, Short.MAX_VALUE)))
+                                .addGap(0, 29, Short.MAX_VALUE)))
                         .addGap(12, 12, 12)))
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -288,7 +304,7 @@ private void initStyles(){
                                 .addGap(217, 217, 217))
                             .addGroup(ContenidoLayout.createSequentialGroup()
                                 .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtObjEspecifico, javax.swing.GroupLayout.DEFAULT_SIZE, 306, Short.MAX_VALUE)
+                                    .addComponent(txtObjEspecifico)
                                     .addComponent(txtObGen)
                                     .addGroup(ContenidoLayout.createSequentialGroup()
                                         .addComponent(lbObEspecifico, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -304,7 +320,7 @@ private void initStyles(){
                                 .addGap(38, 38, 38))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ContenidoLayout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btSubir, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(76, 76, 76))))
         );
         ContenidoLayout.setVerticalGroup(
@@ -331,6 +347,19 @@ private void initStyles(){
                         .addGap(13, 13, 13)
                         .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(ContenidoLayout.createSequentialGroup()
+                                .addComponent(lbObEspecifico)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txtObjEspecifico, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(lbPDF, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btPDF))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btSubir, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(15, 15, 15))
+                            .addGroup(ContenidoLayout.createSequentialGroup()
                                 .addComponent(txtModalidad, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, 0)
                                 .addComponent(jSeparator12, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -348,34 +377,23 @@ private void initStyles(){
                                 .addComponent(jSeparator14, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(2, 2, 2)
                                 .addComponent(Fecha)
-                                .addGap(15, 15, 15)
-                                .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, 0)
-                                .addComponent(jSeparator15, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(ContenidoLayout.createSequentialGroup()
-                                .addComponent(lbObEspecifico)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtObjEspecifico, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(lbPDF, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btPDF))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(15, 15, 15))))
+                                .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(ContenidoLayout.createSequentialGroup()
+                                        .addGap(27, 27, 27)
+                                        .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ContenidoLayout.createSequentialGroup()
+                                        .addGap(46, 46, 46)
+                                        .addComponent(jSeparator15, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(15, 15, 15))))))
                     .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 371, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addGap(16, 16, 16))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(Contenido, javax.swing.GroupLayout.DEFAULT_SIZE, 640, Short.MAX_VALUE)
-                .addGap(1, 1, 1))
+            .addComponent(Contenido, javax.swing.GroupLayout.DEFAULT_SIZE, 649, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -418,6 +436,7 @@ private void initStyles(){
                        txtModalidad, txtDirector, txtCodirector, txtFecha, txtObGen, txtTitulo);
     }//GEN-LAST:event_txtObjEspecificoMousePressed
 
+    //logica para subir el pdf
     private void btPDFMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btPDFMousePressed
       JFileChooser fileChooser = new JFileChooser();
     fileChooser.setDialogTitle("Seleccionar archivo PDF");
@@ -455,9 +474,14 @@ private void initStyles(){
     }
     }//GEN-LAST:event_btPDFMousePressed
 
-    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1MouseClicked
+    private String limpiarTexto(JTextField txt, String placeholder) {
+    String texto = txt.getText().trim();
+    return texto.equals(placeholder) ? "" : texto;
+}
+
+    private void btSubirMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btSubirMouseClicked
+       
+    }//GEN-LAST:event_btSubirMouseClicked
 
  private void manejarPlaceHolder(JTextField campo, String placeholder, JTextField... otros) {
     // Si hago clic en este campo y está en modo placeholder → lo limpio
@@ -492,7 +516,7 @@ private void initStyles(){
     private javax.swing.JPanel Contenido;
     private javax.swing.JLabel Fecha;
     private javax.swing.JButton btPDF;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btSubir;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator12;

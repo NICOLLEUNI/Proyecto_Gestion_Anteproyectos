@@ -4,6 +4,8 @@
  */
 package co.unicauca.workflow.presentation.views;
 
+//al dar click en ruta pdf debe exportar el formato A en la ruta 
+
 import co.unicauca.workflow.domain.entities.FormatoA;
 import java.awt.Color;
 import java.io.File;
@@ -15,6 +17,7 @@ import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
+ * 
  *
  * @author User
  */
@@ -27,15 +30,7 @@ public class Observaciones extends javax.swing.JPanel {
         initComponents();
     }
 public void setFormatoA(FormatoA formato) {
-    lblUTitulo.setText(formato.getTitle());
-    lblUEstudiante.setText(formato.getStudentCode()); // O nombre si tienes
-    lblUDirector.setText(formato.getProyectManager());
-    lblUModalidad.setText(formato.getMode()); // Aquí puse el modo como "programa"
-    lblPDF.setText(formato.getArchivoPDF() != null ? formato.getArchivoPDF() : "Sin PDF");
-
-    // Estado
-    CBXAprovado.setSelected("Aprobado".equalsIgnoreCase(formato.getEstado()));
-    CBXRechazado.setSelected("Rechazado".equalsIgnoreCase(formato.getEstado()));
+    
 }
 
     /**
@@ -198,7 +193,7 @@ public void setFormatoA(FormatoA formato) {
                 .addGap(3, 3, 3)
                 .addComponent(jSeparator9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblEstudiante)
                     .addComponent(lblUEstudiante))
                 .addGap(3, 3, 3)

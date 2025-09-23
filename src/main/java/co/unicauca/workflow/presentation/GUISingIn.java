@@ -4,6 +4,17 @@
  */
 package co.unicauca.workflow.presentation;
 
+//Arreglar el combobox de programa intitucional ya que con algunas carreras no permite el registro
+//la funcionalidad de programa solo se abilita para estudiante
+
+//Añadir el rol del coordinador
+//ñadir el campo donde se elije el departamento   
+//Para docente y coordinador se debe habilitar el campo de departamento al que pertenece 
+
+//Debemos usar la instancia de factory no crear un nuevo repositorio
+
+//DEBES IMPLEMENTAR TODA ESTA LOGICA CON LA CLASE PERSONA
+
 import co.unicauca.workflow.domain.entities.User;
 import co.unicauca.workflow.domain.entities.enumProgram;
 import co.unicauca.workflow.domain.entities.enumRol;
@@ -28,7 +39,9 @@ private final UserService userService;
      */
     public GUISingIn() {
         initComponents();
-         IUserRepository repo = new UserRepository(); // conecta con SQLite
+        
+        //esto está mal. debemos usar la instancia de factory no crear un nuevo repositorio 
+        IUserRepository repo = new UserRepository(); // conecta con SQLite
     this.userService = new UserService(repo);
     }
     
@@ -359,7 +372,7 @@ private final UserService userService;
     }
 
     // 🚨 Validar contraseña con UserService
-    if (!userService.validatePassword(password)) {
+    if (!userService.validatePassword(password)) { 
         JOptionPane.showMessageDialog(this,
                 "La contraseña debe tener mínimo 6 caracteres,\n" +
                 "al menos un dígito, al menos un carácter especial\n" +

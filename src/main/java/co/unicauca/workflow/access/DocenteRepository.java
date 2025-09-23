@@ -1,0 +1,143 @@
+package co.unicauca.workflow.access;
+
+import co.unicauca.workflow.domain.entities.Departamento;
+import co.unicauca.workflow.domain.entities.Docente;
+import co.unicauca.workflow.domain.entities.Facultad;
+import co.unicauca.workflow.domain.exceptions.ValidationException;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+/**
+ *
+ * @author User
+ */
+public class DocenteRepository implements IDocenteRepository {
+
+    private Connection conn;
+
+    public DocenteRepository() {
+        initDatabase();
+    }
+
+    @Override
+    public boolean save(Docente docente) {
+        try {
+            // 🔹 Validar que la persona ya exista
+            PersonaRepository personaRepo = new PersonaRepository();
+            personaRepo.conn = this.conn; // reutilizar la misma conexión
+
+            if (!personaRepo.exists(docente.getIdUsuario())) {
+                System.err.println("La persona con idUsuario=" + docente.getIdUsuario() + " no existe en Persona.");
+                return false;
+            }
+
+            // 🔹 Insertar en Docente (datos específicos)
+            String sqlDoc = "INSERT INTO Docente (idUsuario, codDepartamento) VALUES (?, ?)";
+            try (PreparedStatement psDoc = conn.prepareStatement(sqlDoc)) {
+                psDoc.setInt(1, docente.getIdUsuario());
+
+                if (docente.getDepartamento() != null) {
+                    psDoc.setInt(2, docente.getDepartamento().getCodDepartamento());
+                } else {
+                    psDoc.setNull(2, java.sql.Types.INTEGER);
+                }
+
+                psDoc.executeUpdate();
+            }
+
+            return true;
+
+        } catch (SQLException e) {
+            Logger.getLogger(DocenteRepository.class.getName()).log(Level.SEVERE, null, e);
+            return false;
+        }
+    }
+
+    @Override
+    public List<Docente> list() {
+        List<Docente> docentes = new ArrayList<>();
+        try {
+            String sql = "SELECT d.idUsuario, p.name, p.lastname, p.phone, p.email, p.password, "
+                       + "dep.codDepartamento, dep.nombre AS nombreDepartamento, "
+                       + "f.codFacultad, f.nombre AS nombreFacultad "
+                       + "FROM Docente d "
+                       + "JOIN Persona p ON d.idUsuario = p.idUsuario "
+                       + "JOIN Departamento dep ON d.codDepartamento = dep.codDepartamento "
+                       + "JOIN Facultad f ON dep.codFacultad = f.codFacultad";
+
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+
+            while (rs.next()) {
+                // Facultad
+                Facultad facultad = new Facultad(rs.getString("nombreFacultad"));
+                facultad.setCodFacultad(rs.getInt("codFacultad"));
+
+                // Departamento
+                Departamento departamento = new Departamento(rs.getString("nombreDepartamento"), facultad);
+                departamento.setCodDepartamento(rs.getInt("codDepartamento"));
+
+                // Docente (usa idUsuario heredado de Persona)
+                Docente docente = new Docente(
+                        rs.getInt("idUsuario"),
+                        departamento,
+                        rs.getString("name"),
+                        rs.getString("lastname"),
+                        rs.getString("phone"),
+                        rs.getString("email"),
+                        rs.getString("password")
+                );
+
+                docentes.add(docente);
+            }
+
+        } catch (SQLException | ValidationException ex) {
+            Logger.getLogger(DocenteRepository.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return docentes;
+    }
+
+    private void initDatabase() {
+        String sql = "CREATE TABLE IF NOT EXISTS Docente ("
+                   + "idUsuario INTEGER PRIMARY KEY, "
+                   + "codDepartamento INTEGER NOT NULL, "
+                   + "FOREIGN KEY (idUsuario) REFERENCES Persona(idUsuario), "
+                   + "FOREIGN KEY (codDepartamento) REFERENCES Departamento(codDepartamento)"
+                   + ");";
+
+        try {
+            this.connect();
+            Statement stmt = conn.createStatement();
+            stmt.execute(sql);
+
+        } catch (SQLException ex) {
+            Logger.getLogger(DocenteRepository.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void connect() {
+        String url = "jdbc:sqlite:" + System.getProperty("user.dir") + "/BD.db";
+        try {
+            conn = DriverManager.getConnection(url);
+            System.out.println("Conectado a la BD en archivo");
+        } catch (SQLException ex) {
+            Logger.getLogger(DocenteRepository.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void disconnect() {
+        try {
+            if (conn != null) conn.close();
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+
+    public Connection getConnection() {
+        return conn;
+    }
+}

@@ -4,154 +4,198 @@
  */
 package co.unicauca.workflow.domain.entities;
 
+import co.unicauca.workflow.domain.exceptions.ValidationException;
 import java.time.LocalDate;
-
+import java.util.ArrayList;
+import java.util.List;
 /**
  *
  * @author User
  */
 public class FormatoA {
-    private int id;
+    
+    private int id; 
     private String title;
-    private String mode;
-    private String proyectManager;  
-    private String projectCoManager;
+    private enumModalidad mode; // Modalidad (Investigación, Práctica laboral, etc.)
+    private Docente projectManager;     // Director
+    private Docente projectCoManager;   // Codirector (opcional)
     private LocalDate date;
     private String generalObjetive;
     private String specificObjetives;
     private String archivoPDF;
-    private String studentCode;
-    private String counter;
-    //
-    private String observaciones;
-    //
-    private String estado;//aceptado o rechazado ,entregado
+    private String cartaLaboral;        // Solo si es práctica laboral
+    private List<Estudiante> estudiantes; 
+    private int counter;                // Veces rechazado (máx. 3)
+    private enumEstado state = enumEstado.ENTREGADO; // entregado (default), rechazado, aprobado
+    private String observations;        // Observaciones del coordinador
 
-    public FormatoA(String title, String mode, String proyectManager, String projectCoManager, LocalDate date, String generalObjetive, String specificObjetives, String studentCode, String counter, String estado) {
+    public FormatoA(int id, String title, enumModalidad mode, Docente projectManager, Docente projectCoManager, LocalDate date, String generalObjetive, String specificObjetives, String archivoPDF, String cartaLaboral, List<Estudiante> estudiantes, int counter, String observations) {
+        this.id = id;
         this.title = title;
         this.mode = mode;
-        this.proyectManager = proyectManager;
+        this.projectManager = projectManager;
         this.projectCoManager = projectCoManager;
         this.date = date;
         this.generalObjetive = generalObjetive;
         this.specificObjetives = specificObjetives;
-        this.studentCode = studentCode;
+        this.archivoPDF = archivoPDF;
+        this.cartaLaboral = cartaLaboral;
+        this.estudiantes = estudiantes;
         this.counter = counter;
-        this.estado = estado;
+        this.observations = observations;
     }
-
-    public String getObservaciones() {
-        return observaciones;
-    }
-
-    public String getEstado() {
-        return estado;
-    }
-    
-
     
     public FormatoA() {
     }
+    
+    //Método de validación
+    public void validar() throws ValidationException {
+        List<String> errores = new ArrayList<>();
 
-    //
-    public void ValidarCampos(){}
-    
-    
-    
+        if (title == null || title.isBlank()) {
+            errores.add("El título no puede ser nulo o vacío.");
+        }
+        if (mode == null) {
+            errores.add("Debe especificar la modalidad.");
+        }
+        if (projectManager == null) {
+            errores.add("Debe asignar un director.");
+        }
+        if (date == null) {
+            errores.add("La fecha no puede ser nula.");
+        }
+        if (generalObjetive == null || generalObjetive.isBlank()) {
+            errores.add("El objetivo general es obligatorio.");
+        }
+        if (specificObjetives == null || specificObjetives.isBlank()) {
+            errores.add("Debe definir los objetivos específicos.");
+        }
+        if (archivoPDF == null || archivoPDF.isBlank()) {
+            errores.add("El archivo PDF es obligatorio.");
+        }
+        if (estudiantes == null || estudiantes.isEmpty()) {
+            errores.add("Debe asignarse al menos un estudiante.");
+        }
+
+        //Si hay errores, lanzamos la excepción con la lista
+        if (!errores.isEmpty()) {
+            throw new ValidationException(errores);
+        }
+    }
+
+
     public int getId() {
         return id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getMode() {
-        return mode;
-    }
-
-    public String getProyectManager() {
-        return proyectManager;
-    }
-
-    public String getProjectCoManager() {
-        return projectCoManager;
-    }
-
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public String getGeneralObjetive() {
-        return generalObjetive;
-    }
-
-    public String getSpecificObjetives() {
-        return specificObjetives;
-    }
-
-    public String getArchivoPDF() {
-        return archivoPDF;
-    }
-
-    public String getStudentCode() {
-        return studentCode;
-    }
-
-    public String getCounter() {
-        return counter;
     }
 
     public void setId(int id) {
         this.id = id;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
     public void setTitle(String title) {
         this.title = title;
     }
 
-    public void setMode(String mode) {
+    public enumModalidad getMode() {
+        return mode;
+    }
+
+    public void setMode(enumModalidad mode) {
         this.mode = mode;
     }
 
-    public void setProyectManager(String proyectManager) {
-        this.proyectManager = proyectManager;
+    public Docente getProjectManager() {
+        return projectManager;
     }
 
-    public void setProjectCoManager(String projectCoManager) {
+    public void setProjectManager(Docente projectManager) {
+        this.projectManager = projectManager;
+    }
+
+    public Docente getProjectCoManager() {
+        return projectCoManager;
+    }
+
+    public void setProjectCoManager(Docente projectCoManager) {
         this.projectCoManager = projectCoManager;
+    }
+
+    public LocalDate getDate() {
+        return date;
     }
 
     public void setDate(LocalDate date) {
         this.date = date;
     }
 
+    public String getGeneralObjetive() {
+        return generalObjetive;
+    }
+
     public void setGeneralObjetive(String generalObjetive) {
         this.generalObjetive = generalObjetive;
+    }
+
+    public String getSpecificObjetives() {
+        return specificObjetives;
     }
 
     public void setSpecificObjetives(String specificObjetives) {
         this.specificObjetives = specificObjetives;
     }
 
+    public String getArchivoPDF() {
+        return archivoPDF;
+    }
+
     public void setArchivoPDF(String archivoPDF) {
         this.archivoPDF = archivoPDF;
     }
 
-    public void setStudentCode(String studentCode) {
-        this.studentCode = studentCode;
+    public String getCartaLaboral() {
+        return cartaLaboral;
     }
 
-    public void setCounter(String counter) {
+    public void setCartaLaboral(String cartaLaboral) {
+        this.cartaLaboral = cartaLaboral;
+    }
+
+    public List<Estudiante> getEstudiantes() {
+        return estudiantes;
+    }
+
+    public void setEstudiantes(List<Estudiante> estudiantes) {
+        this.estudiantes = estudiantes;
+    }
+
+    public int getCounter() {
+        return counter;
+    }
+
+    public void setCounter(int counter) {
         this.counter = counter;
     }
 
-    public void setObservaciones(String observaciones) {
-        this.observaciones = observaciones;
+    public enumEstado getState() {
+        return state;
     }
 
-    public void setEstado(String estado) {
-        this.estado = estado;
+    public void setState(enumEstado state) {
+        this.state = state;
     }
 
+    public String getObservations() {
+        return observations;
+    }
+
+    public void setObservations(String observations) {
+        this.observations = observations;
+    }
+   
 }
+
+   

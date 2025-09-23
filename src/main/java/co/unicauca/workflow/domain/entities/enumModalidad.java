@@ -6,22 +6,23 @@ package co.unicauca.workflow.domain.entities;
 
 /**
  *
- * @author User
+ * @author Usuario
  */
-public enum enumProgram {
-    INGENIERIA_SISTEMAS("Ingeniería de Sistemas"),
-    INGENIERIA_ELECTRONICA("Ingeniería Electrónica y Telecomunicaciones"),
-    AUTOMATICA_INDUSTRIAL("Automática Industrial"),
-    TECNOLOGIA_TELEMATICA("Tecnología en Telemática");
+public enum enumModalidad {
+    
+    INVESTIGACION("Investigacion"),
+    PRACTICA_PROFESIONAL("Practica profesional"),
+    PLAN_COTERMINAL("Plan coterminal");
     
     private final String descripcion;
 
-    enumProgram(String descripcion) {
+    enumModalidad(String descripcion) {
         this.descripcion = descripcion;
     }
 
     public String getDescripcion() {
         return descripcion;
     }
+    
     
 }

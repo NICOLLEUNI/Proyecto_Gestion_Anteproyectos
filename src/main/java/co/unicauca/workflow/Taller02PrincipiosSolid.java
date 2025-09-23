@@ -5,6 +5,10 @@
 package co.unicauca.workflow;
 
 
+import co.unicauca.workflow.access.Factory;
+import co.unicauca.workflow.access.ICoordinadorRepository;
+import co.unicauca.workflow.access.IPersonaRepository;
+import co.unicauca.workflow.domain.service.PersonaService;
 import co.unicauca.workflow.presentation.GUILogin;
 
 /**
@@ -20,4 +24,7 @@ public class Taller02PrincipiosSolid {
             }
         });
     }
+    
+    //Se deben instanciar cada uno de los repositorios usando el metodo creado en la factory
+    
 }

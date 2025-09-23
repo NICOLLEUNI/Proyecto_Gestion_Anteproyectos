@@ -4,6 +4,10 @@
  */
 package co.unicauca.workflow.presentation;
 
+//implementar boton cerrar sesion
+//implementar subir formato A y consultar respuestas
+//puede implememtar el pane para doc respuestas  
+
 import co.unicauca.workflow.presentation.views.Principal;
 import co.unicauca.workflow.domain.entities.User;
 import co.unicauca.workflow.presentation.views.ConsultarFormatoA;
@@ -21,9 +25,11 @@ public class GUIMenuDocente extends javax.swing.JFrame {
     /**
      * Creates new form GUIDocente
      */
+
     private static User usuarioLogueado;
     public GUIMenuDocente (User logueado) {
      this.usuarioLogueado=logueado;
+
         initComponents();
       
     initContent();
@@ -44,7 +50,9 @@ public class GUIMenuDocente extends javax.swing.JFrame {
          
      }
      private void initContent(){
+
      showJPanel( new Principal(usuarioLogueado));
+
     
      }
     /**
@@ -63,6 +71,7 @@ public class GUIMenuDocente extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         btRespuestas = new javax.swing.JButton();
         btSubirFormatoA = new javax.swing.JButton();
+        btRegresar = new javax.swing.JButton();
         Contenido = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -117,9 +126,26 @@ public class GUIMenuDocente extends javax.swing.JFrame {
         btSubirFormatoA.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btSubirFormatoA.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btSubirFormatoA.setIconTextGap(7);
+
         btSubirFormatoA.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btSubirFormatoAMouseClicked(evt);
+            }
+        });
+
+        btRegresar.setBackground(new java.awt.Color(65, 55, 171));
+        btRegresar.setFont(new java.awt.Font("Roboto Medium", 0, 24)); // NOI18N
+        btRegresar.setForeground(new java.awt.Color(255, 255, 255));
+        btRegresar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/co/unicauca/workflow/presentation/images/file-chart.png"))); // NOI18N
+        btRegresar.setText("Volver");
+        btRegresar.setToolTipText("");
+        btRegresar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        btRegresar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btRegresar.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btRegresar.setIconTextGap(7);
+        btRegresar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btRegresarMouseClicked(evt);
             }
         });
 
@@ -127,16 +153,13 @@ public class GUIMenuDocente extends javax.swing.JFrame {
         Menu.setLayout(MenuLayout);
         MenuLayout.setHorizontalGroup(
             MenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(Titulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, MenuLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(Icon, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(55, 55, 55))
             .addGroup(MenuLayout.createSequentialGroup()
-                .addGroup(MenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btSubirFormatoA, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btRespuestas, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(57, 57, 57)
+                .addComponent(Icon, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(Titulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(btSubirFormatoA, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(btRespuestas, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(btRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         MenuLayout.setVerticalGroup(
             MenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -148,7 +171,9 @@ public class GUIMenuDocente extends javax.swing.JFrame {
                 .addGap(31, 31, 31)
                 .addComponent(btSubirFormatoA, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(btRespuestas, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(btRespuestas, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(btRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         Contenido.setBackground(new java.awt.Color(255, 255, 255));
@@ -198,9 +223,16 @@ public class GUIMenuDocente extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+
     private void btSubirFormatoAMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btSubirFormatoAMouseClicked
        showJPanel( new SubirFormatoA());
     }//GEN-LAST:event_btSubirFormatoAMouseClicked
+
+    private void btRegresarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btRegresarMouseClicked
+       GUIMenuPrincipal ventanaPrincipal = new GUIMenuPrincipal(usuarioLogueado);
+    ventanaPrincipal.setVisible(true);
+    this.dispose(); 
+    }//GEN-LAST:event_btRegresarMouseClicked
 
     /**
      * @param args the command line arguments
@@ -215,7 +247,9 @@ public class GUIMenuDocente extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+
                 new GUIMenuDocente(usuarioLogueado).setVisible(true);
+
             }
         });
     }
@@ -225,6 +259,7 @@ public class GUIMenuDocente extends javax.swing.JFrame {
     private javax.swing.JLabel Icon;
     private javax.swing.JPanel Menu;
     private javax.swing.JPanel Titulo;
+    private javax.swing.JButton btRegresar;
     private javax.swing.JButton btRespuestas;
     private javax.swing.JButton btSubirFormatoA;
     private javax.swing.JLabel jLabel1;

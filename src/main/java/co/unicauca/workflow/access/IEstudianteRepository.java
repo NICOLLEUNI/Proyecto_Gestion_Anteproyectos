@@ -4,17 +4,15 @@
  */
 package co.unicauca.workflow.access;
 
-import co.unicauca.workflow.domain.entities.FormatoA;
 import java.util.List;
+import co.unicauca.workflow.domain.entities.Estudiante;
 
 /**
  *
- * @author User
+ * @author CRISTHIAN TORRES
  */
-public interface IFormatoARepository {
-        
-    boolean save(FormatoA newFormatoA);
-
-    List<FormatoA > list();
-    public FormatoA findById(int id);
+public interface IEstudianteRepository {
+    
+    boolean save(Estudiante newEstudiante);
+    List<Estudiante> list();
 }

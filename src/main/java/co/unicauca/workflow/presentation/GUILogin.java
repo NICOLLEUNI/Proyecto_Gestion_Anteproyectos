@@ -8,6 +8,10 @@ import co.unicauca.workflow.access.UserRepository;
 import co.unicauca.workflow.domain.entities.User;
 import co.unicauca.workflow.domain.entities.enumRol;
 
+//Debemos usar la instancia de factory no crear un nuevo repositorio
+
+//DEBES IMPLEMENTAR TODA ESTA LOGICA CON LA CLASE PERSONA
+
 public class GUILogin extends javax.swing.JFrame {
 
     private final UserService userService;
@@ -283,10 +287,12 @@ public class GUILogin extends javax.swing.JFrame {
                 "Inicio de sesión exitoso",
                 JOptionPane.INFORMATION_MESSAGE);
 
+
      
                 GUIMenuPrincipal guiPrincipal = new GUIMenuPrincipal(logueado);
                guiPrincipal .setVisible(true);
            
+
 
             this.dispose(); // cerrar el login
         } else {
