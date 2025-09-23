@@ -8,6 +8,10 @@ import co.unicauca.workflow.access.UserRepository;
 import co.unicauca.workflow.domain.entities.User;
 import co.unicauca.workflow.domain.entities.enumRol;
 
+//Debemos usar la instancia de factory no crear un nuevo repositorio
+
+//DEBES IMPLEMENTAR TODA ESTA LOGICA CON LA CLASE PERSONA
+
 public class GUILogin extends javax.swing.JFrame {
 
     private final UserService userService;

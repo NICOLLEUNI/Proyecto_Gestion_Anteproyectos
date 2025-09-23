@@ -10,8 +10,15 @@ package co.unicauca.workflow.domain.service;
  */
 public class PersonaService {
     
+    //crear el metodo de cerrar sesion
     
-     public boolean validatePassword(String password) {
+    //RICARDO - implementar los metodos de inicio y registro. 
+    //Implementar el inicio de sesion con la clase persona y sus clases hijas 
+    
+    //implementar el registro de usuarios: docente, estudiante o coordinador
+    
+    
+    public boolean validatePassword(String password) {
     if (password == null) return false;
     // min 6, al menos una minúscula, una mayúscula, un dígito y un caracter especial
     String regex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^A-Za-z\\d])[A-Za-z\\d\\W_]{6,}$";

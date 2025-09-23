@@ -4,6 +4,10 @@
  */
 package co.unicauca.workflow.presentation;
 
+//implementar boton cerrar sesion
+//implementar subir formato A y consultar respuestas
+//puede implememtar el pane para doc respuestas  
+
 import co.unicauca.workflow.presentation.views.Principal;
 import co.unicauca.workflow.domain.entities.User;
 import co.unicauca.workflow.presentation.views.ConsultarFormatoA;

@@ -4,6 +4,8 @@
  */
 package co.unicauca.workflow.presentation.views;
 
+//ya no debe usar user, implementar con persona
+
 import co.unicauca.workflow.domain.entities.User;
 
 /**

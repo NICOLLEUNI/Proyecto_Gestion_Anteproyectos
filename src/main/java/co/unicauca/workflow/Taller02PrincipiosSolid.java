@@ -20,4 +20,7 @@ public class Taller02PrincipiosSolid {
             }
         });
     }
+    
+    //Se deben instanciar cada uno de los repositorios usando el metodo creado en la factory
+    
 }

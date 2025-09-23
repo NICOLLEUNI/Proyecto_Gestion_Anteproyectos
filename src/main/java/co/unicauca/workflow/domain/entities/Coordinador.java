@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class Coordinador extends Persona {
     
-    private int  codigoCoordinador;
+    private int  codigoCoordinador; //es generico 
     private List<FormatoA> listaProyectos;
 
     public Coordinador(int codigoCoordinador, List<FormatoA> listaProyectos, int idUsuario, String name, String lastname, String phone, String email, String password) throws ValidationException {

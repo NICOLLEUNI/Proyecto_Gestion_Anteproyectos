@@ -3,12 +3,14 @@ package co.unicauca.workflow.domain.service;
 import java.util.Locale; // 
 import co.unicauca.workflow.domain.entities.enumRol;
 import co.unicauca.workflow.domain.entities.enumProgram;
-
+import co.unicauca.workflow.domain.exceptions.ValidationException;
 import co.unicauca.workflow.domain.entities.User;
 import co.unicauca.workflow.access.IUserRepository;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.List;
+
 
 public class UserService {
 
@@ -48,13 +50,15 @@ public class UserService {
      */
 public boolean saveUser(String nombre, String apellidos, String celular,
                         String email, String password, enumRol rol, enumProgram program) {
+    
     if (nombre == null || nombre.isBlank()
             || apellidos == null || apellidos.isBlank()
             || email == null || email.isBlank()
             || password == null || password.isBlank()) {
         return false;
     }
-
+    
+    
     String normalizedEmail = email.trim().toLowerCase(Locale.ROOT);
     if (!validateEmail(normalizedEmail)) {
         return false;

@@ -9,8 +9,10 @@ package co.unicauca.workflow.domain.entities;
  * @author User
  */
 public class Programa {
-   private int codPrograma;
+   private int codPrograma; //generico
    private  String nombrePrograma;
+   
+   //es una llave foranea de la clase Departamento 
    private Departamento departamento;
 
     public Programa(int codPrograma, String nombrePrograma, Departamento departamento) {

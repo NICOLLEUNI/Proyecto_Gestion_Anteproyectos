@@ -4,6 +4,18 @@
  */
 package co.unicauca.workflow.presentation.views;
 
+//modalidad es una lista
+//si la modalidad es practica profesional se debe entregar una carta de aceptacion
+//de la empresa (puee hacerse como pdf formato A)
+
+//Si la modalidad es investigacion pueden seleccionarse dos estudiantes
+//manejar estudiante 1 y estudiante 2 (manejar listas de estudiantes por correo) 
+
+//el objetivos especificos hay que manejar un text areo (debe haceptar mucho texto) 
+
+//la fecha se debe manejar con un calendario 
+
+
 import co.unicauca.workflow.domain.entities.FormatoA;
 import co.unicauca.workflow.domain.service.FormatoAService;
 import co.unicauca.workflow.domain.service.UserService;
@@ -424,6 +436,7 @@ private void initStyles(){
                        txtModalidad, txtDirector, txtCodirector, txtFecha, txtObGen, txtTitulo);
     }//GEN-LAST:event_txtObjEspecificoMousePressed
 
+    //logica para subir el pdf
     private void btPDFMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btPDFMousePressed
       JFileChooser fileChooser = new JFileChooser();
     fileChooser.setDialogTitle("Seleccionar archivo PDF");

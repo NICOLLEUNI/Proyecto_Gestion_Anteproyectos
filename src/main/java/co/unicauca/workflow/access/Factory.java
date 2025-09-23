@@ -46,6 +46,10 @@ public class Factory {
         }
 
         return result;
-
     }
+    
+    
+    
+    //Por cada repositorio creado se deben crear dos metodos: el que instancia la repositorio y 
+    // el que le asigna el tipo de BDD (los metodos se deben llamar diferentes por cada repositorio)  
 }

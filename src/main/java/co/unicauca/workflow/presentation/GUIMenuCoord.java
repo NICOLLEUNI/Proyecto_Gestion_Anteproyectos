@@ -4,6 +4,7 @@
  */
 package co.unicauca.workflow.presentation;
 
+//Añadir el boton de cerrar sesion (devuelve al login)
 
 import co.unicauca.workflow.domain.entities.User;
 import co.unicauca.workflow.presentation.views.Principal;
