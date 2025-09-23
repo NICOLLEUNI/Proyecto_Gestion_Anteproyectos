@@ -30,8 +30,7 @@ import java.util.List;
         validarCamposEstudiante();
     }
 
-    public Estudiante() {
-    }
+   
     
     
     
