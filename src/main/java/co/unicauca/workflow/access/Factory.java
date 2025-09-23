@@ -73,6 +73,19 @@ public class Factory {
 
         return result;
     }
+          public static IEstudianteRepository getEstudianteRepository(String type) {
+        IEstudianteRepository result = null;
+
+        switch (type.toLowerCase()) {
+            case "default":
+                result = new EstudianteRepository();
+                break;
+            // Si en el futuro tienes otro tipo de repositorio, agregas otro case
+            // case "mock": result = new PersonaRepositoryMock(); break;
+        }
+
+        return result;
+    }
     
     
     //Por cada repositorio creado se deben crear dos metodos: el que instancia la repositorio y 
