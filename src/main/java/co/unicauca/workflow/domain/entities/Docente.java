@@ -22,6 +22,11 @@ public class Docente extends Persona{
         super(name, lastname, phone, email, password);
         this.Departamento = Departamento;
     }
+
+    public Docente() {
+    }
+    
+    
     
     public void validarCamposDocente() throws ValidationException{
         List<String> errores = new ArrayList<>();

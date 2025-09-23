@@ -24,6 +24,11 @@ import java.util.List;
         
         validarCamposEstudiante();
     }
+
+    public Estudiante() {
+    }
+    
+    
     
     private void validarCamposEstudiante() throws ValidationException{
         List<String> errores = new ArrayList<>();

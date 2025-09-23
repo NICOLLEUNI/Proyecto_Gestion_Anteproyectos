@@ -34,7 +34,7 @@ private void cargarDatos() {
     for (FormatoA f : lista) {
         Object[] fila = {
             f.getTitle(),
-            f.getProyectManager(),
+            f.getProjectManager(),
             f.getDate() != null ? f.getDate().toString() : "", // Fecha segura
             f.getState() != null ? f.getState() : "Pendiente", // Estado real si existe
             f.getObservations() != null ? f.getObservations() : "" // Observaciones reales

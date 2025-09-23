@@ -17,5 +17,4 @@ public interface IFormatoARepository {
 
     List<FormatoA > list();
     public FormatoA findById(int id);
-    
 }

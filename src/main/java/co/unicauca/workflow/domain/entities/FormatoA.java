@@ -13,90 +13,76 @@ import java.util.List;
  * @author User
  */
 public class FormatoA {
-    private int id;
+    
+    private int id; 
     private String title;
-    private String mode;
-    private String proyectManager;  
-    private String projectCoManager;
+    private enumModalidad mode; // Modalidad (Investigación, Práctica laboral, etc.)
+    private Docente projectManager;     // Director
+    private Docente projectCoManager;   // Codirector (opcional)
     private LocalDate date;
     private String generalObjetive;
     private String specificObjetives;
     private String archivoPDF;
-    private String studentCode;
-    private int counter; 
-    private String state; 
-    private String observations; 
-    
-    
+    private String cartaLaboral;        // Solo si es práctica laboral
+    private List<Estudiante> estudiantes; 
+    private int counter;                // Veces rechazado (máx. 3)
+    private enumEstado state = enumEstado.ENTREGADO; // entregado (default), rechazado, aprobado
+    private String observations;        // Observaciones del coordinador
 
-    public FormatoA(String title, String mode, String proyectManager, String projectCoManager, LocalDate date, String generalObjetive, String specificObjetives,  String archivoPDF, String studentCode, int counter, String state, String observations) {
+    public FormatoA(int id, String title, enumModalidad mode, Docente projectManager, Docente projectCoManager, LocalDate date, String generalObjetive, String specificObjetives, String archivoPDF, String cartaLaboral, List<Estudiante> estudiantes, int counter, String observations) {
+        this.id = id;
         this.title = title;
         this.mode = mode;
-        this.proyectManager = proyectManager;
+        this.projectManager = projectManager;
         this.projectCoManager = projectCoManager;
         this.date = date;
         this.generalObjetive = generalObjetive;
         this.specificObjetives = specificObjetives;
-        this.studentCode = studentCode;
+        this.archivoPDF = archivoPDF;
+        this.cartaLaboral = cartaLaboral;
+        this.estudiantes = estudiantes;
         this.counter = counter;
-        this.state = state;
         this.observations = observations;
-
-        
     }
-
-
     
     public FormatoA() {
     }
-
-    //
-   public void validarCampos() throws ValidationException {
+    
+    //Método de validación
+    public void validar() throws ValidationException {
         List<String> errores = new ArrayList<>();
 
-        // 🔹 Validaciones básicas
-        if (title == null || title.trim().isEmpty()) {
-            errores.add("El título no puede estar vacío.");
+        if (title == null || title.isBlank()) {
+            errores.add("El título no puede ser nulo o vacío.");
         }
-
-        if (mode == null || mode.trim().isEmpty()) {
-            errores.add("Debe especificar la modalidad del proyecto.");
+        if (mode == null) {
+            errores.add("Debe especificar la modalidad.");
         }
-
+        if (projectManager == null) {
+            errores.add("Debe asignar un director.");
+        }
         if (date == null) {
-            errores.add("Debe especificar la fecha.");
+            errores.add("La fecha no puede ser nula.");
+        }
+        if (generalObjetive == null || generalObjetive.isBlank()) {
+            errores.add("El objetivo general es obligatorio.");
+        }
+        if (specificObjetives == null || specificObjetives.isBlank()) {
+            errores.add("Debe definir los objetivos específicos.");
+        }
+        if (archivoPDF == null || archivoPDF.isBlank()) {
+            errores.add("El archivo PDF es obligatorio.");
+        }
+        if (estudiantes == null || estudiantes.isEmpty()) {
+            errores.add("Debe asignarse al menos un estudiante.");
         }
 
-        if (generalObjetive == null || generalObjetive.trim().isEmpty()) {
-            errores.add("Debe especificar el objetivo general.");
-        }
-
-        if (specificObjetives == null || specificObjetives.trim().isEmpty()) {
-            errores.add("Debe especificar al menos un objetivo específico.");
-        }
-
-        if (archivoPDF == null || archivoPDF.trim().isEmpty()) {
-            errores.add("Debe adjuntar el archivo PDF del Formato A.");
-        }
-
-        if (studentCode == null || studentCode.trim().isEmpty()) {
-            errores.add("Debe especificar el código del estudiante.");
-        }
-
-        // 🔹 Validaciones de negocio (ejemplo)
-        if (counter < 0) {
-            errores.add("El número de intentos no puede ser negativo.");
-        }
-        if (counter > 3) {
-            errores.add("El proyecto ya no puede ser enviado después del tercer intento.");
-        }
-
-        // 🔹 Si hay errores → lanzar excepción
+        //Si hay errores, lanzamos la excepción con la lista
         if (!errores.isEmpty()) {
             throw new ValidationException(errores);
         }
-        
     }
+
 
     public int getId() {
         return id;
@@ -114,27 +100,27 @@ public class FormatoA {
         this.title = title;
     }
 
-    public String getMode() {
+    public enumModalidad getMode() {
         return mode;
     }
 
-    public void setMode(String mode) {
+    public void setMode(enumModalidad mode) {
         this.mode = mode;
     }
 
-    public String getProyectManager() {
-        return proyectManager;
+    public Docente getProjectManager() {
+        return projectManager;
     }
 
-    public void setProyectManager(String proyectManager) {
-        this.proyectManager = proyectManager;
+    public void setProjectManager(Docente projectManager) {
+        this.projectManager = projectManager;
     }
 
-    public String getProjectCoManager() {
+    public Docente getProjectCoManager() {
         return projectCoManager;
     }
 
-    public void setProjectCoManager(String projectCoManager) {
+    public void setProjectCoManager(Docente projectCoManager) {
         this.projectCoManager = projectCoManager;
     }
 
@@ -170,12 +156,20 @@ public class FormatoA {
         this.archivoPDF = archivoPDF;
     }
 
-    public String getStudentCode() {
-        return studentCode;
+    public String getCartaLaboral() {
+        return cartaLaboral;
     }
 
-    public void setStudentCode(String studentCode) {
-        this.studentCode = studentCode;
+    public void setCartaLaboral(String cartaLaboral) {
+        this.cartaLaboral = cartaLaboral;
+    }
+
+    public List<Estudiante> getEstudiantes() {
+        return estudiantes;
+    }
+
+    public void setEstudiantes(List<Estudiante> estudiantes) {
+        this.estudiantes = estudiantes;
     }
 
     public int getCounter() {
@@ -186,11 +180,11 @@ public class FormatoA {
         this.counter = counter;
     }
 
-    public String getState() {
+    public enumEstado getState() {
         return state;
     }
 
-    public void setState(String state) {
+    public void setState(enumEstado state) {
         this.state = state;
     }
 
@@ -201,7 +195,7 @@ public class FormatoA {
     public void setObservations(String observations) {
         this.observations = observations;
     }
-        
-    
-
+   
 }
+
+   
