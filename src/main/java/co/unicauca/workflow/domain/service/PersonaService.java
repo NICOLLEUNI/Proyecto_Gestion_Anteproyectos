@@ -4,11 +4,17 @@
  */
 package co.unicauca.workflow.domain.service;
 
+import co.unicauca.workflow.access.IPersonaRepository;
+
 /**
  *
  * @author User
  */
 public class PersonaService {
+    
+    
+    
+    
     
     //crear el metodo de cerrar sesion
     
@@ -16,7 +22,18 @@ public class PersonaService {
     //Implementar el inicio de sesion con la clase persona y sus clases hijas 
     
     //implementar el registro de usuarios: docente, estudiante o coordinador
-    
+        private IPersonaRepository repository;
+
+    /**
+     * Inyección de dependencias en el constructor. Ya no conviene que el mismo
+     * servicio cree un repositorio concreto
+     *
+     * @param repository una clase hija de IProductRepository
+     */
+    public PersonaService(IPersonaRepository repository) {
+        this.repository = repository;
+    }
+
     
     public boolean validatePassword(String password) {
     if (password == null) return false;
