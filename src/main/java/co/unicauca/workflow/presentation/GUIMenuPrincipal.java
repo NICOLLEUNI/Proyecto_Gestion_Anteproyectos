@@ -4,6 +4,11 @@
  */
 package co.unicauca.workflow.presentation;
 
+//implementar el boton cerrar sesion 
+
+//implementar la ligica que impida acceder a la interfaz 
+//de un rol que no corresponda
+
 import co.unicauca.workflow.domain.entities.User;
 import co.unicauca.workflow.presentation.views.Principal;
 import com.formdev.flatlaf.FlatLightLaf;

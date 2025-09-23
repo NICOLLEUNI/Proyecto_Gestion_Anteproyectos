@@ -4,6 +4,8 @@
  */
 package co.unicauca.workflow.presentation.views;
 
+//al dar click en ruta pdf debe exportar el formato A en la ruta 
+
 import co.unicauca.workflow.domain.entities.FormatoA;
 import java.awt.Color;
 import java.io.File;

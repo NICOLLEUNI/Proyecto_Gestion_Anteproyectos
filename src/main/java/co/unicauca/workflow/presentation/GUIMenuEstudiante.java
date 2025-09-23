@@ -4,6 +4,11 @@
  */
 package co.unicauca.workflow.presentation;
 
+//implementar cerrar sesion 
+
+//Implementar la logica del panel para que muestre el formato A regiatrado 
+//con el correo del estudiante 
+
 import co.unicauca.workflow.presentation.views.Principal;
 import co.unicauca.workflow.domain.entities.User;
 import co.unicauca.workflow.presentation.views.ConsultarFormatoA;

@@ -4,6 +4,8 @@
  */
 package co.unicauca.workflow.domain.service;
 
+import co.unicauca.workflow.access.IPersonaRepository;
+
 /**
  *
  * @author User
@@ -11,7 +13,29 @@ package co.unicauca.workflow.domain.service;
 public class PersonaService {
     
     
-     public boolean validatePassword(String password) {
+    
+    
+    
+    //crear el metodo de cerrar sesion
+    
+    //RICARDO - implementar los metodos de inicio y registro. 
+    //Implementar el inicio de sesion con la clase persona y sus clases hijas 
+    
+    //implementar el registro de usuarios: docente, estudiante o coordinador
+        private IPersonaRepository repository;
+
+    /**
+     * Inyección de dependencias en el constructor. Ya no conviene que el mismo
+     * servicio cree un repositorio concreto
+     *
+     * @param repository una clase hija de IProductRepository
+     */
+    public PersonaService(IPersonaRepository repository) {
+        this.repository = repository;
+    }
+
+    
+    public boolean validatePassword(String password) {
     if (password == null) return false;
     // min 6, al menos una minúscula, una mayúscula, un dígito y un caracter especial
     String regex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^A-Za-z\\d])[A-Za-z\\d\\W_]{6,}$";

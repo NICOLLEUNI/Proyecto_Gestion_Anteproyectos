@@ -4,6 +4,9 @@
  */
 package co.unicauca.workflow.presentation;
 
+//agregar la funcionalidad en los 3 puntos de "volver a la pestaña anterior"
+//añadir logica observer que se va a manejar con una capa de estadisticas 
+
 import co.unicauca.workflow.access.FormatoARepository;
 import co.unicauca.workflow.access.IFormatoARepository;
 import co.unicauca.workflow.domain.entities.FormatoA;
