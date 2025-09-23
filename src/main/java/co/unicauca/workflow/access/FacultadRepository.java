@@ -19,7 +19,7 @@ import java.util.logging.Logger;
  * 
  * @author User
  */
-public class FacultadRepository {
+public class FacultadRepository implements IFacultadRepository{
 
     private Connection conn;
 
@@ -33,112 +33,68 @@ public class FacultadRepository {
      * @param newFacultad entidad Facultad
      * @return true si fue insertada, false en caso contrario
      */
-    public boolean save(Facultad newFacultad) {
+    @Override
+    public boolean save(Facultad fac) {
         try {
-            // Validación de negocio
-            // (la propia clase Facultad ya valida en el constructor/setters)
-            String sql = "INSERT INTO Facultad (facNombre) VALUES (?)";
-            try (PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-                pstmt.setString(1, newFacultad.getNombre());
+            // 🔹 Validación básica
+            if (fac == null || fac.getNombre() == null || fac.getNombre().isBlank()) {
+                return false;
+            }
 
-                int affected = pstmt.executeUpdate();
-                if (affected == 0) {
-                    return false;
-                }
+            String sql = "INSERT INTO Facultad (nombre) VALUES (?)";
 
-                // Obtener clave generada
+            // 🔹 Solicitamos que nos devuelva el codFacultad generado
+            PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            pstmt.setString(1, fac.getNombre());
+
+            int rowsAffected = pstmt.executeUpdate();
+
+            if (rowsAffected > 0) {
+                // Recuperar el codFacultad generado
                 try (ResultSet rs = pstmt.getGeneratedKeys()) {
                     if (rs.next()) {
-                        newFacultad.setCodFacultad(rs.getInt(1));
+                        int idGenerado = rs.getInt(1);
+                        fac.setCodFacultad(idGenerado);
                     }
                 }
                 return true;
             }
-        } catch (ValidationException ex) {
-            System.err.println("Error de validación en Facultad: " + ex.getMessage());
-            return false;
-        } catch (SQLException e) {
-            Logger.getLogger(FacultadRepository.class.getName()).log(Level.SEVERE, null, e);
-            return false;
+
+        } catch (SQLException ex) {
+            Logger.getLogger(FacultadRepository.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return false;
     }
+
 
     /**
      * Lista todas las Facultades de la BD.
      */
+    @Override
     public List<Facultad> list() {
         List<Facultad> facultades = new ArrayList<>();
-        String sql = "SELECT codFacultad, facNombre FROM Facultad";
+        try {
+            String sql = "SELECT codFacultad, nombre FROM Facultad";
 
-        try (Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
 
             while (rs.next()) {
-                Facultad fac = new Facultad(
-                    rs.getInt("codFacultad"),
-                    rs.getString("facNombre")
-                );
+                Facultad fac = new Facultad(rs.getString("nombre"));
+                fac.setCodFacultad(rs.getInt("codFacultad"));
+
                 facultades.add(fac);
             }
 
-        } catch (SQLException e) {
-            Logger.getLogger(FacultadRepository.class.getName()).log(Level.SEVERE, null, e);
+        } catch (SQLException ex) {
+            Logger.getLogger(FacultadRepository.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ValidationException ex) {
-            System.err.println("Error reconstruyendo Facultad: " + ex.getMessage());
+            // En caso de que falle la validación de nombre (aunque ya viene de BD)
+            Logger.getLogger(FacultadRepository.class.getName()).log(Level.WARNING, "Facultad inválida recuperada", ex);
         }
-
         return facultades;
     }
 
-    /**
-     * Busca una Facultad por su ID.
-     */
-    public Facultad findById(int codFacultad) {
-        String sql = "SELECT codFacultad, facNombre FROM Facultad WHERE codFacultad = ?";
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, codFacultad);
-            try (ResultSet rs = pstmt.executeQuery()) {
-                if (rs.next()) {
-                    return new Facultad(
-                        rs.getInt("codFacultad"),
-                        rs.getString("facNombre")
-                    );
-                }
-            }
-        } catch (SQLException | ValidationException e) {
-            Logger.getLogger(FacultadRepository.class.getName()).log(Level.SEVERE, null, e);
-        }
-        return null;
-    }
-
-    /**
-     * Actualiza una Facultad.
-     */
-    public boolean update(Facultad facultad) {
-        String sql = "UPDATE Facultad SET facNombre = ? WHERE codFacultad = ?";
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, facultad.getNombre());
-            pstmt.setInt(2, facultad.getCodFacultad());
-            return pstmt.executeUpdate() > 0;
-        } catch (SQLException e) {
-            Logger.getLogger(FacultadRepository.class.getName()).log(Level.SEVERE, null, e);
-            return false;
-        }
-    }
-
-    /**
-     * Elimina una Facultad por su código.
-     */
-    public boolean delete(int codFacultad) {
-        String sql = "DELETE FROM Facultad WHERE codFacultad = ?";
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, codFacultad);
-            return pstmt.executeUpdate() > 0;
-        } catch (SQLException e) {
-            Logger.getLogger(FacultadRepository.class.getName()).log(Level.SEVERE, null, e);
-            return false;
-        }
-    }
 
     /**
      * Inicializa la BD creando la tabla si no existe.
@@ -161,6 +117,7 @@ public class FacultadRepository {
     /**
      * Conexión a la BD SQLite.
      */
+    @Override
     public void connect() {
         try {
             if (conn == null || conn.isClosed()) {
@@ -179,7 +136,9 @@ public class FacultadRepository {
     public Connection getConnection() {
         return conn;
     }
-
+    
+    
+    @Override
     public void disconnect() {
         try {
             if (conn != null) {

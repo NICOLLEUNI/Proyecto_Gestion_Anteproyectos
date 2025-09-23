@@ -14,14 +14,20 @@ import java.util.List;
  * @author User
  */
 public class Facultad {
+    
     private int codFacultad; // genérico, lo asigna la BD
     private String nombre;
 
-
     public Facultad(String nombre) throws ValidationException {
         this.nombre = nombre;
+        
         validarCamposFacultad();
+        
     }
+    
+    public Facultad(){
+    }
+    
 
     /**
      * Valida los campos de la Facultad
@@ -32,13 +38,7 @@ public class Facultad {
         List<String> errores = new ArrayList<>();
 
         if (nombre == null || nombre.trim().isEmpty()) {
-            errores.add("El nombre de la facultad es obligatorio.");
-        } else {
-            // Validar que sea la FIET (única facultad válida para este sistema)
-            if (!nombre.trim().equalsIgnoreCase("Facultad de Ingeniería Electrónica y Telecomunicaciones") &&
-                !nombre.trim().equalsIgnoreCase("FIET")) {
-                errores.add("El sistema solo maneja la Facultad de Ingeniería Electrónica y Telecomunicaciones (FIET).");
-            }
+            errores.add("La facultad es obligatoria");
         }
 
         if (!errores.isEmpty()) {
@@ -46,11 +46,7 @@ public class Facultad {
         }
 
     }
-    
-    public Facultad()
-    {
-        
-    }
+
     public int getCodFacultad() {
         return codFacultad;
     }
@@ -58,7 +54,7 @@ public class Facultad {
     public void setCodFacultad(int codFacultad) {
         this.codFacultad = codFacultad;
     }
-
+    
     public String getNombre() {
         return nombre;
     }
@@ -68,21 +64,9 @@ public class Facultad {
         validarCamposFacultad();
     }
 
-    @Override
-    public String toString() {
-        return nombre;
-    }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-        Facultad facultad = (Facultad) obj;
-        return nombre.equalsIgnoreCase(facultad.nombre);
-    }
-
-    @Override
-    public int hashCode() {
-        return nombre.toLowerCase().hashCode();
-    }
 }
+    
+
+   
+

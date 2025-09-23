@@ -19,8 +19,7 @@ public class Programa {
     private Departamento departamento;
 
     // CONSTRUCTOR PRINCIPAL (con código)
-    public Programa(int codPrograma, String nombrePrograma, Departamento departamento) throws ValidationException {
-        this.codPrograma = codPrograma;
+    public Programa(String nombrePrograma, Departamento departamento) throws ValidationException {
         this.nombrePrograma = nombrePrograma;
         this.departamento = departamento;
         validarCamposPrograma();

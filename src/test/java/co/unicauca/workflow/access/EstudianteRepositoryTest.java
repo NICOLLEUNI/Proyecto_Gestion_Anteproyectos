@@ -15,9 +15,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -86,7 +84,7 @@ public class EstudianteRepositoryTest {
         fac.setCodFacultad(10);
         Departamento dep = new Departamento("Sistemas", fac);
         dep.setCodDepartamento(20);
-        Programa prog = new Programa(30, "Software", dep);
+        Programa prog = new Programa("Software", dep);
 
         Estudiante est = new Estudiante(
                 1, prog, "Ana", "Gomez", "12345", "ana@mail.com", "secret"
@@ -111,7 +109,7 @@ void testSaveWithNonExistentProgramFails() throws ValidationException {
     fac.setCodFacultad(10);
     Departamento dep = new Departamento("Sistemas", fac);
     dep.setCodDepartamento(20);
-    Programa prog = new Programa(999, "Inexistente", dep); // ⚠️ no existe en BD
+    Programa prog = new Programa("Inexistente", dep); // ⚠️ no existe en BD
 
     Estudiante est = new Estudiante(
             2, prog, "Luis", "Lopez", "54321", "luis@mail.com", "clave"
@@ -139,7 +137,7 @@ void testSaveTwoStudents() throws ValidationException, SQLException {
     fac.setCodFacultad(10);
     Departamento dep = new Departamento("Sistemas", fac);
     dep.setCodDepartamento(20);
-    Programa prog = new Programa(30, "Software", dep);
+    Programa prog = new Programa("Software", dep);
 
     // Estudiante Ana
     Estudiante ana = new Estudiante(
@@ -163,7 +161,7 @@ void testDuplicateStudentFails() throws ValidationException {
     fac.setCodFacultad(10);
     Departamento dep = new Departamento("Sistemas", fac);
     dep.setCodDepartamento(20);
-    Programa prog = new Programa(30, "Software", dep);
+    Programa prog = new Programa("Software", dep);
 
     Estudiante est = new Estudiante(
             1, prog, "Ana", "Gomez", "12345", "ana@mail.com", "secret"

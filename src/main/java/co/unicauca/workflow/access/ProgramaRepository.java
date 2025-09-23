@@ -3,7 +3,6 @@ package co.unicauca.workflow.access;
 import co.unicauca.workflow.domain.entities.Programa;
 import co.unicauca.workflow.domain.entities.Departamento;
 import co.unicauca.workflow.domain.entities.Facultad;
-import co.unicauca.workflow.domain.entities.enumProgram;
 import co.unicauca.workflow.domain.exceptions.ValidationException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -28,83 +27,80 @@ public class ProgramaRepository implements IProgramaRepository {
     public ProgramaRepository() {
         initDatabase();
     }
-@Override
-    public boolean save(Programa newPrograma) {
+    
+    @Override
+    public boolean save(Programa programa) {
         try {
-            // Validación de negocio en la entidad
-            newPrograma.validarCamposPrograma(); 
+            if (programa == null || programa.getNombrePrograma() == null || programa.getNombrePrograma().isBlank()) {
+                return false;
+            }
+            if (programa.getDepartamento() == null || programa.getDepartamento().getCodDepartamento() <= 0) {
+                return false;
+            }
 
-            String sql = "INSERT INTO Programa (nombrePrograma, codDepartamento) VALUES (?, ?)";
-            try (PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-                pstmt.setString(1, newPrograma.getNombrePrograma());
-                pstmt.setInt(2, newPrograma.getDepartamento().getCodDepartamento());
+            String sql = "INSERT INTO Programa (nombre, codDepartamento) VALUES (?, ?)";
 
-                int affected = pstmt.executeUpdate();
+            PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            pstmt.setString(1, programa.getNombrePrograma());
+            pstmt.setInt(2, programa.getDepartamento().getCodDepartamento());
 
-                if (affected == 0) {
-                    return false;
-                }
+            int rows = pstmt.executeUpdate();
 
-                // Obtener la clave generada (codPrograma)
-                try (ResultSet rs = pstmt.getGeneratedKeys()) {
-                    if (rs.next()) {
-                        newPrograma.setCodPrograma(rs.getInt(1));
-                    }
+            if (rows > 0) {
+                ResultSet rs = pstmt.getGeneratedKeys();
+                if (rs.next()) {
+                    programa.setCodPrograma(rs.getInt(1));
+                    System.out.println("Programa creado con ID: " + programa.getCodPrograma());
                 }
                 return true;
             }
-        } catch (ValidationException ex) {
-            System.err.println("Error de validación en Programa: " + ex.getMessage());
-            return false;
-        } catch (SQLException e) {
-            Logger.getLogger(ProgramaRepository.class.getName()).log(Level.SEVERE, null, e);
-            return false;
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ProgramaRepository.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return false;
     }
 
+    @Override
     public List<Programa> list() {
         List<Programa> programas = new ArrayList<>();
+        try {
+            String sql = "SELECT p.codPrograma, p.nombre AS nombrePrograma, " +
+                         "d.codDepartamento, d.nombre AS nombreDepartamento, " +
+                         "f.codFacultad, f.nombre AS nombreFacultad " +
+                         "FROM Programa p " +
+                         "JOIN Departamento d ON p.codDepartamento = d.codDepartamento " +
+                         "JOIN Facultad f ON d.codFacultad = f.codFacultad";
 
-        String sql = "SELECT p.codPrograma, p.nombrePrograma, " +
-                     "d.codDepartamento, d.depNombre, " +
-                     "f.codFacultad, f.facNombre " +
-                     "FROM Programa p " +
-                     "JOIN Departamento d ON p.codDepartamento = d.codDepartamento " +
-                     "JOIN Facultad f ON d.codFacultad = f.codFacultad";
-
-        try (Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
 
             while (rs.next()) {
                 // Crear Facultad
-Facultad fac = new Facultad(
-    rs.getInt("codFacultad"),
-    rs.getString("facNombre")
-);
-
+                Facultad fac = new Facultad(rs.getString("nombreFacultad"));
                 fac.setCodFacultad(rs.getInt("codFacultad"));
 
                 // Crear Departamento
-                Departamento dep = new Departamento(rs.getString("depNombre"), fac);
+                Departamento dep = new Departamento(rs.getString("nombreDepartamento"), fac);
                 dep.setCodDepartamento(rs.getInt("codDepartamento"));
 
                 // Crear Programa
-                Programa prog = new Programa();
+                Programa prog = new Programa(rs.getString("nombrePrograma"), dep);
                 prog.setCodPrograma(rs.getInt("codPrograma"));
-                prog.setNombrePrograma(rs.getString("nombrePrograma"));
-                prog.setDepartamento(dep);
 
                 programas.add(prog);
             }
 
-        } catch (SQLException e) {
-            Logger.getLogger(ProgramaRepository.class.getName()).log(Level.SEVERE, null, e);
+        } catch (SQLException ex) {
+            Logger.getLogger(ProgramaRepository.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ValidationException ex) {
-            System.err.println("Error reconstruyendo Programa: " + ex.getMessage());
+            Logger.getLogger(ProgramaRepository.class.getName()).log(Level.WARNING, "Error validando programa desde BD", ex);
         }
-
         return programas;
     }
+
+
+    
 
     private void initDatabase() {
         String sqlPrograma = "CREATE TABLE IF NOT EXISTS Programa ("
@@ -152,45 +148,5 @@ Facultad fac = new Facultad(
         } catch (SQLException ex) {
             Logger.getLogger(ProgramaRepository.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-
-    @Override
-    public Programa findById(int codPrograma) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public List<Programa> findByPrograma(enumProgram programa) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public List<Programa> findByNombre(String nombrePrograma) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public List<Programa> findByDepartamento(int codDepartamento) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public List<Programa> findByFacultad(int codFacultad) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public boolean update(Programa programa) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public boolean delete(int codPrograma) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public boolean existsByNombreAndFacultad(String nombrePrograma, int codFacultad) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }
