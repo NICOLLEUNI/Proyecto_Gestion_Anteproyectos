@@ -14,9 +14,9 @@ import java.util.List;
  */
 public class Departamento {
 
-    private int codDepartamento; // genérico, lo asigna la BD normalmente
-    private String nombre;       // nombre del departamento
-    private Facultad facultad;   // FK a Facultad
+    private int codDepartamento; 
+    private String nombre;       
+    private Facultad facultad;   
 
     public Departamento(String nombre, Facultad facultad) throws ValidationException {
         this.nombre = nombre;
