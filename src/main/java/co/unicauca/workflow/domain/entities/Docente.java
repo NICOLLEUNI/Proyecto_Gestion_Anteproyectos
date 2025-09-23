@@ -21,6 +21,8 @@ public class Docente extends Persona{
     public Docente(Departamento Departamento, int idUsuario, String name, String lastname, String phone, String email, String password) throws ValidationException {
         super(name, lastname, phone, email, password);
         this.Departamento = Departamento;
+        
+        validarCamposDocente();
     }
 
     public Docente() {

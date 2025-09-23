@@ -16,6 +16,11 @@ import java.util.List;
         
     private int idEstudiante; // generico 
     private Programa program; 
+    
+    public Estudiante()
+    {
+        
+    }
 
     public Estudiante(int idEstudiante, Programa program, int idUsuario, String name, String lastname, String phone, String email, String password) throws ValidationException {
         super(name, lastname, phone, email, password);

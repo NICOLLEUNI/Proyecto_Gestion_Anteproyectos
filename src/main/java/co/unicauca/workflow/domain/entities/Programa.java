@@ -44,5 +44,9 @@ public class Programa {
     public void setDepartamento(Departamento departamento) {
         this.departamento = departamento;
     }
+
+    public String getNombre() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
    
 }

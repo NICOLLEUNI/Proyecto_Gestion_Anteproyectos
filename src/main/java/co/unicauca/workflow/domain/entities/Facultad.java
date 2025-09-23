@@ -13,6 +13,7 @@ public class Facultad {
     private int codFacultad; //generico
     private String Nombre; //txt
 
+    
     public Facultad(String Nombre) {
         this.Nombre = Nombre;
     }
