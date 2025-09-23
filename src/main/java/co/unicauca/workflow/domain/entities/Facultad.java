@@ -17,7 +17,11 @@ public class Facultad {
     public Facultad(String Nombre) {
         this.Nombre = Nombre;
     }
-
+    
+    public Facultad()
+    {
+        
+    }
     public int getCodFacultad() {
         return codFacultad;
     }

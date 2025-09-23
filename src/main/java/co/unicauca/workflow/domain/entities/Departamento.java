@@ -25,6 +25,10 @@ public class Departamento {
         validarCamposDepartamento();
     }
 
+    public Departamento() {
+
+    }
+
     /**
      * Valida los campos del Departamento
      * 
