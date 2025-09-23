@@ -14,7 +14,7 @@ import java.util.List;
  */
     public class Estudiante extends Persona{
         
-    private int idEstudiante; // generico 
+
     private Programa program; 
     
     public Estudiante()
@@ -29,7 +29,7 @@ import java.util.List;
         validarCamposEstudiante();
     }
 
-   
+
     
     
     
