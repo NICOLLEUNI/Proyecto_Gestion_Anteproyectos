@@ -14,7 +14,7 @@ import java.util.List;
  */
     public class Estudiante extends Persona{
         
-    private int idEstudiante; // generico 
+
     private Programa program; 
     
     public Estudiante()
@@ -22,15 +22,14 @@ import java.util.List;
         
     }
 
-    public Estudiante(int idEstudiante, Programa program, int idUsuario, String name, String lastname, String phone, String email, String password) throws ValidationException {
-        super(name, lastname, phone, email, password);
-        this.idEstudiante = idEstudiante;
+    public Estudiante(int idUsuario, Programa program, String name, String lastname, String phone, String email, String password) throws ValidationException {
+        super(idUsuario, name, lastname, phone, email, password);
         this.program = program;
         
         validarCamposEstudiante();
     }
 
-   
+
     
     
     
@@ -54,16 +53,4 @@ import java.util.List;
     public void setProgram(Programa program) {
         this.program = program;
     }
-
-    public int getIdEstudiante() {
-        return idEstudiante;
-    }
-
-    public void setIdEstudiante(int idEstudiante) {
-        this.idEstudiante = idEstudiante;
-    }
-
-    
-    
-    
 }

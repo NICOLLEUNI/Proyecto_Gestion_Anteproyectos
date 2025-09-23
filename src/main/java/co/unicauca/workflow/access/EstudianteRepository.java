@@ -30,103 +30,83 @@ public class EstudianteRepository implements IEstudianteRepository {
         initDatabase();
     }
 
-    @Override
-    public boolean save(Estudiante est) {
-        if (est.getName() == null || est.getName().trim().isEmpty()) return false;
-        if (est.getLastname() == null || est.getLastname().trim().isEmpty()) return false;
-        if (est.getEmail() == null || est.getEmail().trim().isEmpty()) return false;
-        if (est.getPassword() == null || est.getPassword().trim().isEmpty()) return false;
-        if (est.getProgram() == null) return false;
+   @Override
+public boolean save(Estudiante est) {
+    try {
+        // 🔹 Validar que la persona ya exista
+        PersonaRepository personaRepo = new PersonaRepository();
+        personaRepo.conn = this.conn; // reutilizar la misma conexión
 
-        String sqlPersona = "INSERT INTO Persona (name, lastname, phone, email, password) VALUES (?, ?, ?, ?, ?)";
-        String sqlEstudiante = "INSERT INTO Estudiante (idUsuario, CodPrograma) VALUES (?, ?)";
-
-        try (PreparedStatement pstmt1 = conn.prepareStatement(sqlPersona, Statement.RETURN_GENERATED_KEYS)) {
-            pstmt1.setString(1, est.getName());
-            pstmt1.setString(2, est.getLastname());
-            pstmt1.setString(3, est.getPhone());
-            pstmt1.setString(4, est.getEmail());
-            pstmt1.setString(5, est.getPassword());
-
-            int affected = pstmt1.executeUpdate();
-            if (affected == 0) return false;
-
-            try (ResultSet rs = pstmt1.getGeneratedKeys()) {
-                if (rs.next()) {
-                    est.setIdUsuario(rs.getInt(1));
-                }
-            }
-
-            try (PreparedStatement pstmt2 = conn.prepareStatement(sqlEstudiante, Statement.RETURN_GENERATED_KEYS)) {
-                pstmt2.setInt(1, est.getIdUsuario());
-                pstmt2.setInt(2, est.getProgram().getCodPrograma());
-                pstmt2.executeUpdate();
-
-                try (ResultSet rs = pstmt2.getGeneratedKeys()) {
-                    if (rs.next()) {
-                        est.setIdEstudiante(rs.getInt(1));
-                    }
-                }
-            }
-
-            return true;
-
-        } catch (SQLException e) {
-            Logger.getLogger(EstudianteRepository.class.getName()).log(Level.SEVERE, null, e);
+        if (!personaRepo.exists(est.getIdUsuario())) {
+            System.err.println("La persona con idUsuario=" + est.getIdUsuario() + " no existe en Persona.");
             return false;
         }
-    }
 
-    @Override
+        // 🔹 Insertar en Estudiante (datos específicos)
+        String sqlEst = "INSERT INTO Estudiante (idUsuario, codPrograma) VALUES (?, ?)";
+        try (PreparedStatement psEst = conn.prepareStatement(sqlEst)) {
+            psEst.setInt(1, est.getIdUsuario());
+
+            if (est.getProgram() != null) {
+                psEst.setInt(2, est.getProgram().getCodPrograma());
+            } else {
+                psEst.setNull(2, java.sql.Types.INTEGER);
+            }
+
+            psEst.executeUpdate();
+        }
+
+        return true;
+
+    } catch (SQLException e) {
+        Logger.getLogger(EstudianteRepository.class.getName()).log(Level.SEVERE, null, e);
+        return false;
+    }
+}
+
+@Override
 public List<Estudiante> list() {
     List<Estudiante> estudiantes = new ArrayList<>();
+    try {
+        String sql = "SELECT e.idUsuario, p.name, p.lastname, p.phone, p.email, p.password, "
+                   + "pr.codPrograma, pr.nombre AS nombrePrograma, "
+                   + "d.codDepartamento, d.nombre AS nombreDepartamento, "
+                   + "f.codFacultad, f.nombre AS nombreFacultad "
+                   + "FROM Estudiante e "
+                   + "JOIN Persona p ON e.idUsuario = p.idUsuario "
+                   + "JOIN Programa pr ON e.codPrograma = pr.codPrograma "
+                   + "JOIN Departamento d ON pr.codDepartamento = d.codDepartamento "
+                   + "JOIN Facultad f ON d.codFacultad = f.codFacultad";
 
-    String sql = "SELECT " +
-                "e.idEstudiante,"+
-                "e.idUsuario,"+
-                 "p.name, p.lastname, p.phone, p.email, p.password, " +
-                 "pr.codPrograma, pr.nombre AS nombrePrograma, " +
-                 "d.idDepartamento, d.nombre AS nombreDepartamento, " +
-                 "f.idFacultad, f.nombre AS nombreFacultad " +
-                 "FROM Estudiante e " +
-                 "JOIN Persona p ON e.idUsuario = p.idUsuario " +
-                 "JOIN Programa pr ON e.CodPrograma = pr.CodPrograma " +
-                 "JOIN Departamento d ON pr.idDepartamento = d.idDepartamento " +
-                 "JOIN Facultad f ON d.idFacultad = f.idFacultad";
-
-    try (Statement stmt = conn.createStatement();
-         ResultSet rs = stmt.executeQuery(sql)) {
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery(sql);
 
         while (rs.next()) {
-            Facultad fac = new Facultad(
-                rs.getString("nombreFacultad")
-            );
+            // Facultad
+            Facultad facultad = new Facultad(rs.getString("nombreFacultad"));
+            facultad.setCodFacultad(rs.getInt("codFacultad"));
 
-            Departamento depto = new Departamento(
-                rs.getString("nombreDepartamento"),
-                fac
-            );
+            // Departamento
+            Departamento departamento = new Departamento(rs.getString("nombreDepartamento"), facultad);
+            departamento.setCodDepartamento(rs.getInt("codDepartamento"));
 
-            Programa prog = new Programa(
+            // Programa (usando el constructor completo)
+            Programa programa = new Programa(
                 rs.getInt("codPrograma"),
                 rs.getString("nombrePrograma"),
-                depto
+                departamento
             );
 
+            // Estudiante
             Estudiante est = new Estudiante(
-                
-                rs.getInt("idEstudiante"),
-                prog,
-                rs.getInt("idUsuario"),   
-                rs.getString("name"),
-                rs.getString("lastname"),
-                rs.getString("phone"),
-                rs.getString("email"),
-                rs.getString("password")
-                 
+                    rs.getInt("idUsuario"),
+                    programa,
+                    rs.getString("name"),
+                    rs.getString("lastname"),
+                    rs.getString("phone"),
+                    rs.getString("email"),
+                    rs.getString("password")
             );
-            
-         
 
             estudiantes.add(est);
         }
@@ -134,58 +114,28 @@ public List<Estudiante> list() {
     } catch (SQLException | ValidationException ex) {
         Logger.getLogger(EstudianteRepository.class.getName()).log(Level.SEVERE, null, ex);
     }
-
     return estudiantes;
 }
-    private void initDatabase() {
-        String sqlPersona = "CREATE TABLE IF NOT EXISTS Persona ("
-                + "idUsuario INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
-                + "name TEXT NOT NULL, "
-                + "lastname TEXT NOT NULL, "
-                + "phone TEXT, "
-                + "email TEXT NOT NULL UNIQUE, "
-                + "password TEXT NOT NULL"
-                + ");";
 
-        String sqlFacultad = "CREATE TABLE IF NOT EXISTS Facultad ("
-                + "idFacultad INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
-                + "nombre TEXT NOT NULL UNIQUE"
-                + ");";
 
-        String sqlDepartamento = "CREATE TABLE IF NOT EXISTS Departamento ("
-                + "idDepartamento INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
-                + "nombre TEXT NOT NULL, "
-                + "idFacultad INTEGER NOT NULL, "
-                + "FOREIGN KEY (idFacultad) REFERENCES Facultad(idFacultad)"
-                + ");";
 
-        String sqlPrograma = "CREATE TABLE IF NOT EXISTS Programa ("
-                + "CodPrograma INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
-                + "nombre TEXT NOT NULL, "
-                + "idDepartamento INTEGER NOT NULL, "
-                + "FOREIGN KEY (idDepartamento) REFERENCES Departamento(idDepartamento)"
-                + ");";
+   private void initDatabase() {
+    String sql = "CREATE TABLE IF NOT EXISTS Estudiante ("
+               + "idUsuario INTEGER PRIMARY KEY, "
+               + "codPrograma INTEGER NOT NULL, "
+               + "FOREIGN KEY (idUsuario) REFERENCES Persona(idUsuario), "
+               + "FOREIGN KEY (codPrograma) REFERENCES Programa(codPrograma)"
+               + ");";
 
-        String sqlEstudiante = "CREATE TABLE IF NOT EXISTS Estudiante ("
-                + "idEstudiante INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
-                + "idUsuario INTEGER NOT NULL,"
-                + "CodPrograma INTEGER NOT NULL, "
-                + "FOREIGN KEY (idUsuario) REFERENCES Persona(idUsuario), "
-                + "FOREIGN KEY (CodPrograma) REFERENCES Programa(CodPrograma)"
-                + ");";
+    try {
+        this.connect();
+        Statement stmt = conn.createStatement();
+        stmt.execute(sql);
 
-        try {
-            this.connect();
-            Statement stmt = conn.createStatement();
-            stmt.execute(sqlPersona);
-            stmt.execute(sqlFacultad);
-            stmt.execute(sqlDepartamento);
-            stmt.execute(sqlPrograma);
-            stmt.execute(sqlEstudiante);
-        } catch (SQLException ex) {
-            Logger.getLogger(EstudianteRepository.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    } catch (SQLException ex) {
+        Logger.getLogger(EstudianteRepository.class.getName()).log(Level.SEVERE, null, ex);
     }
+}
 
     public void connect() {
         try {

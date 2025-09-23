@@ -71,7 +71,7 @@ public class DepartamentoRepository implements IDepartamentoRepository{
         List<Departamento> departamentos = new ArrayList<>();
 
         String sql = "SELECT d.codDepartamento, d.depNombre, " +
-                     "f.codFacultad, f.Nombre AS facNombre " +
+                     "f.codFacultad, f.facNombre AS facNombre " +
                      "FROM Departamento d " +
                      "JOIN Facultad f ON d.codFacultad = f.codFacultad";
 
@@ -105,10 +105,7 @@ public class DepartamentoRepository implements IDepartamentoRepository{
     }
 
     private void initDatabase() {
-        String sqlFacultad = "CREATE TABLE IF NOT EXISTS Facultad ("
-                + "codFacultad INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
-                + "Nombre TEXT NOT NULL UNIQUE"
-                + ");";
+        
 
         String sqlDepartamento = "CREATE TABLE IF NOT EXISTS Departamento ("
                 + "codDepartamento INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
@@ -116,11 +113,11 @@ public class DepartamentoRepository implements IDepartamentoRepository{
                 + "codFacultad INTEGER NOT NULL, "
                 + "FOREIGN KEY (codFacultad) REFERENCES Facultad(codFacultad)"
                 + ");";
-
+       
         try {
             this.connect();
             Statement stmt = conn.createStatement();
-            stmt.execute(sqlFacultad);
+            
             stmt.execute(sqlDepartamento);
         } catch (SQLException ex) {
             Logger.getLogger(DepartamentoRepository.class.getName()).log(Level.SEVERE, null, ex);

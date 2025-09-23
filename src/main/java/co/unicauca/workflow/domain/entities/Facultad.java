@@ -46,7 +46,11 @@ public class Facultad {
         }
 
     }
-
+    
+    public Facultad()
+    {
+        
+    }
     public int getCodFacultad() {
         return codFacultad;
     }
