@@ -177,7 +177,16 @@ public class PersonaRepository implements IPersonaRepository{
         Logger.getLogger(PersonaRepository.class.getName()).log(Level.SEVERE, null, ex);
     }
 }
-    
+    public boolean exists(int idUsuario) {
+    String sql = "SELECT 1 FROM Persona WHERE idUsuario = ?";
+    try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setInt(1, idUsuario);
+        ResultSet rs = ps.executeQuery();
+        return rs.next();
+    } catch (SQLException e) {
+        return false;
+    }
+}
 public void connect() {
     try {
         if (conn == null || conn.isClosed()) {

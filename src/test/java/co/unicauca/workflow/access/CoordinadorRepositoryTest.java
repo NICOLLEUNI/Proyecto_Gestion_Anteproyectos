@@ -20,114 +20,112 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class CoordinadorRepositoryTest{
 
-    private static CoordinadorRepository repo;
+public class CoordinadorRepositoryTest {
+
+    private Connection conn;
+    private CoordinadorRepository repo;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() throws Exception {
+        // 🔹 BD en memoria
+        conn = DriverManager.getConnection("jdbc:sqlite::memory:");
         repo = new CoordinadorRepository();
-        repo.connect();
+        repo.disconnect();
 
-        // Asegurar que existan registros base para FK
-        try (Statement stmt = repo.getConnection().createStatement()) {
-            stmt.execute("INSERT OR IGNORE INTO Facultad (codFacultad, nombre) VALUES (1, 'Ingeniería')");
-            stmt.execute("INSERT OR IGNORE INTO Departamento (codDepartamento, nombre, codFacultad) VALUES (1, 'Sistemas', 1)");
-        } catch (SQLException e) {
-            fail("Error preparando datos iniciales: " + e.getMessage());
+        // Inyectamos conexión en memoria
+        var field = CoordinadorRepository.class.getDeclaredField("conn");
+        field.setAccessible(true);
+        field.set(repo, conn);
+
+        try (Statement stmt = conn.createStatement()) {
+            // Crear tablas mínimas
+            stmt.execute("CREATE TABLE Persona (" +
+                    "idUsuario INTEGER PRIMARY KEY, " +
+                    "name TEXT, lastname TEXT, phone TEXT, email TEXT UNIQUE, password TEXT)");
+
+            stmt.execute("CREATE TABLE Facultad (" +
+                    "codFacultad INTEGER PRIMARY KEY, nombre TEXT)");
+
+            stmt.execute("CREATE TABLE Departamento (" +
+                    "codDepartamento INTEGER PRIMARY KEY, nombre TEXT, codFacultad INTEGER, " +
+                    "FOREIGN KEY (codFacultad) REFERENCES Facultad(codFacultad))");
+
+            stmt.execute("CREATE TABLE Coordinador (" +
+                    "idUsuario INTEGER PRIMARY KEY, codDepartamento INTEGER NOT NULL, " +
+                    "FOREIGN KEY (idUsuario) REFERENCES Persona(idUsuario), " +
+                    "FOREIGN KEY (codDepartamento) REFERENCES Departamento(codDepartamento))");
+        }
+
+        // Insertar datos base
+        try (Statement stmt = conn.createStatement()) {
+            stmt.execute("INSERT INTO Persona VALUES (1, 'Carlos', 'Perez', '99999', 'carlos@mail.com', 'clave')");
+            stmt.execute("INSERT INTO Facultad VALUES (10, 'Ingeniería')");
+            stmt.execute("INSERT INTO Departamento VALUES (20, 'Sistemas', 10)");
         }
     }
 
     @AfterEach
-    void resetDB() {
-        if (repo != null) {
-            repo.disconnect();
-        }
-        try {
-            String url = "jdbc:sqlite:" + System.getProperty("user.dir") + "/BD.db";
-            try (Connection conn = DriverManager.getConnection(url);
-                 Statement stmt = conn.createStatement()) {
-                stmt.execute("DELETE FROM Coordinador");
-                stmt.execute("DELETE FROM User");
-                stmt.execute("DELETE FROM Departamento");
-                stmt.execute("DELETE FROM Facultad");
-            }
-        } catch (SQLException e) {
-            System.out.println("⚠️ Error limpiando tablas: " + e.getMessage());
-        }
+    void tearDown() throws Exception {
+        conn.close();
     }
 
-    /**
-     * Test guardar un coordinador válido.
-     */
     @Test
-    public void testSaveCoordinador() throws ValidationException {
-        Facultad facultad = new Facultad("Ingeniería");
-        facultad.setCodFacultad(1);
+    void testSaveAndList() throws ValidationException {
+        Facultad fac = new Facultad("Ingeniería");
+        fac.setCodFacultad(10);
+        Departamento dep = new Departamento("Sistemas", fac);
+        dep.setCodDepartamento(20);
 
-        Departamento depto = new Departamento("Sistemas", facultad);
-        depto.setCodDepartamento(1);
+        Coordinador coord = new Coordinador(
+                1, dep, "Carlos", "Perez", "99999", "carlos@mail.com", "clave"
+        );
 
-        Coordinador coord = new Coordinador(0, depto, "Pedro", "Martínez", "12345", "pedro@example.com", "clave123");
-
-        boolean result = repo.save(coord);
-
-        assertTrue(result, "El coordinador debería guardarse correctamente");
-        assertTrue(coord.getCodigoCoordinador() > 0, "El código debería generarse automáticamente");
-        assertTrue(coord.getIdUsuario() > 0, "El idUsuario debería generarse al guardar como Persona");
-    }
-
-    /**
-     * Test guardar coordinador sin departamento (FK nula).
-     */
-    @Test
-    public void testSaveCoordinadorWithoutDepartamento() throws ValidationException {
-        Coordinador coord = new Coordinador(0, null, "Laura", "Gómez", "98765", "laura@example.com", "claveSegura");
-
-        boolean result = repo.save(coord);
-
-        assertTrue(result, "Debería permitir guardar un coordinador sin departamento");
-    }
-
-    /**
-     * Test del método list().
-     */
-    @Test
-    public void testListCoordinadores() throws ValidationException {
-        Facultad facultad = new Facultad("Ingeniería");
-        facultad.setCodFacultad(1);
-
-        Departamento depto = new Departamento("Sistemas", facultad);
-        depto.setCodDepartamento(1);
-
-        Coordinador coord = new Coordinador(0, depto, "Carlos", "Ramírez", "55555", "carlos@example.com", "clave123");
-        repo.save(coord);
+        boolean saved = repo.save(coord);
+        assertTrue(saved, "El coordinador debería guardarse correctamente");
 
         List<Coordinador> coordinadores = repo.list();
-        assertNotNull(coordinadores, "La lista no debería ser nula");
-        assertTrue(coordinadores.size() > 0, "La lista debería contener al menos un coordinador");
-    }
+        assertEquals(1, coordinadores.size());
 
-    /**
-     * Test conexión.
-     */
-    @Test
-    public void testConnect() {
-        repo.connect();
-        Connection conn = repo.getConnection();
-        assertNotNull(conn, "La conexión no debería ser nula después de connect()");
+        Coordinador result = coordinadores.get(0);
+        assertEquals("Carlos", result.getName());
+        assertEquals("Sistemas", result.getDepartamento().getNombre());
+        assertEquals("Ingeniería", result.getDepartamento().getFacultad().getNombre());
     }
 
     @Test
-    public void testGetConnection() {
-        Connection conn = repo.getConnection();
-        assertNotNull(conn, "Debería retornar la conexión establecida");
+    void testSaveWithoutPersonaFails() throws ValidationException {
+        Facultad fac = new Facultad("Ingeniería");
+        fac.setCodFacultad(10);
+        Departamento dep = new Departamento("Sistemas", fac);
+        dep.setCodDepartamento(20);
+
+        Coordinador coord = new Coordinador(
+                99, dep, "Fake", "User", "00000", "fake@mail.com", "clave"
+        );
+
+        boolean saved = repo.save(coord);
+        assertFalse(saved, "No debería guardarse un coordinador sin persona existente");
     }
 
     @Test
-    public void testDisconnect() {
-        repo.disconnect();
-        Connection conn = repo.getConnection();
-        assertNull(conn, "La conexión debería ser nula después de disconnect()");
+    void testDuplicateCoordinatorFails() throws ValidationException {
+        Facultad fac = new Facultad("Ingeniería");
+        fac.setCodFacultad(10);
+        Departamento dep = new Departamento("Sistemas", fac);
+        dep.setCodDepartamento(20);
+
+        Coordinador coord = new Coordinador(
+                1, dep, "Carlos", "Perez", "99999", "carlos@mail.com", "clave"
+        );
+
+        assertTrue(repo.save(coord));
+        assertFalse(repo.save(coord), "No debería permitir duplicar coordinador con el mismo idUsuario");
+    }
+
+    @Test
+    void testListWhenEmpty() {
+        // Nueva BD en memoria vacía
+        assertTrue(repo.list().isEmpty(), "La lista debería estar vacía si no se han guardado coordinadores");
     }
 }
