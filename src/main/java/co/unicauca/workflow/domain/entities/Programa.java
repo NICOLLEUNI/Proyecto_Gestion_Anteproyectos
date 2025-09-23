@@ -4,23 +4,57 @@
  */
 package co.unicauca.workflow.domain.entities;
 
+import co.unicauca.workflow.domain.exceptions.ValidationException;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- *
+ * Clase que representa un Programa académico de la FIET
+ * 
  * @author User
  */
 public class Programa {
-   private int codPrograma; //generico
-   private  String nombrePrograma;
-   
-   //es una llave foranea de la clase Departamento 
-   private Departamento departamento;
+    private int codPrograma; // GENÉRICO - lo asigna la BD (auto-increment)
+    private String nombrePrograma; // 👈 CAMBIO: String en lugar de enum
+    private Departamento departamento;
 
-    public Programa(int codPrograma, String nombrePrograma, Departamento departamento) {
+    // CONSTRUCTOR PRINCIPAL (con código)
+    public Programa(int codPrograma, String nombrePrograma, Departamento departamento) throws ValidationException {
         this.codPrograma = codPrograma;
         this.nombrePrograma = nombrePrograma;
         this.departamento = departamento;
+        validarCamposPrograma();
     }
 
+    public Programa() {
+    }
+
+
+
+    /**
+     * Valida los campos del Programa según las reglas de negocio
+     * 
+     * @throws ValidationException si hay errores de validación
+     */
+    private void validarCamposPrograma() throws ValidationException {
+        List<String> errores = new ArrayList<>();
+
+        // Validación de nombre
+        if (nombrePrograma == null || nombrePrograma.trim().isEmpty()) {
+            errores.add("El nombre del programa es obligatorio.");
+        }
+
+        // Validación de departamento
+        if (departamento == null) {
+            errores.add("El departamento es obligatorio.");
+        }
+
+        if (!errores.isEmpty()) {
+            throw new ValidationException(errores);
+        }
+    }
+
+    // Getters y Setters SIMPLIFICADOS
     public int getCodPrograma() {
         return codPrograma;
     }
@@ -33,20 +67,19 @@ public class Programa {
         return nombrePrograma;
     }
 
-    public void setNombrePrograma(String nombrePrograma) {
+    public void setNombrePrograma(String nombrePrograma) throws ValidationException {
         this.nombrePrograma = nombrePrograma;
+        validarCamposPrograma();
     }
 
     public Departamento getDepartamento() {
         return departamento;
     }
 
-    public void setDepartamento(Departamento departamento) {
+    public void setDepartamento(Departamento departamento) throws ValidationException {
         this.departamento = departamento;
+        validarCamposPrograma();
     }
 
-    public String getNombre() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-   
 }
+
