@@ -25,6 +25,12 @@ public class Programa {
         validarCamposPrograma();
     }
 
+    public Programa(int codPrograma, String nombrePrograma, Departamento departamento) {
+        this.codPrograma = codPrograma;
+        this.nombrePrograma = nombrePrograma;
+        this.departamento = departamento;
+    }
+
     public Programa() {
     }
 
