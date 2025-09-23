@@ -30,15 +30,7 @@ public class Observaciones extends javax.swing.JPanel {
         initComponents();
     }
 public void setFormatoA(FormatoA formato) {
-    lblUTitulo.setText(formato.getTitle());
-    lblUEstudiante.setText(formato.getStudentCode()); // O nombre si tienes
-    lblUDirector.setText(formato.getProyectManager());
-    lblUModalidad.setText(formato.getMode()); // Aquí puse el modo como "programa"
-    lblPDF.setText(formato.getArchivoPDF() != null ? formato.getArchivoPDF() : "Sin PDF");
-
-    // Estado
-    CBXAprovado.setSelected("Aprobado".equalsIgnoreCase(formato.getState()));
-    CBXRechazado.setSelected("Rechazado".equalsIgnoreCase(formato.getState()));
+    
 }
 
     /**

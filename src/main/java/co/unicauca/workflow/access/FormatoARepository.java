@@ -5,6 +5,7 @@ import co.unicauca.workflow.domain.entities.Docente;
 import co.unicauca.workflow.domain.entities.Estudiante;
 import co.unicauca.workflow.domain.entities.enumModalidad;
 import co.unicauca.workflow.domain.entities.enumEstado;
+import co.unicauca.workflow.domain.service.FormatoAService;
 import co.unicauca.workflow.domain.service.UserService;
 
 import java.sql.Connection;
@@ -245,7 +246,7 @@ public class FormatoARepository implements IFormatoARepository {
             conn = DriverManager.getConnection(url);
             System.out.println("Conectado a la BD en archivo");
         } catch (SQLException ex) {
-            Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FormatoAService.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
