@@ -9,6 +9,7 @@ package co.unicauca.workflow.presentation;
 //implementar la ligica que impida acceder a la interfaz 
 //de un rol que no corresponda
 
+import co.unicauca.workflow.domain.entities.Persona;
 import co.unicauca.workflow.domain.entities.User;
 import co.unicauca.workflow.domain.entities.enumRol;
 import co.unicauca.workflow.presentation.views.Principal;
@@ -28,9 +29,9 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
     /**
      * Creates new form GUIMenuPrincipal
      */
-    private User usuarioLogueado;
-    public GUIMenuPrincipal(User logueado) {
-       this.usuarioLogueado = logueado;
+    private Persona personaLogueado;
+    public GUIMenuPrincipal(Persona logueado) {
+       this.personaLogueado = logueado;
         initComponents();
         initStyles();
         initContent();
@@ -56,7 +57,7 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
          
      }
      private void initContent(){
-    showJPanel( new Principal(usuarioLogueado));
+    showJPanel( new Principal(personaLogueado));
      
      }
     /**
@@ -230,8 +231,8 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btDocMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btDocMouseClicked
-        if(usuarioLogueado.getRol()==enumRol.DOCENTE){
-        GUIMenuDocente ventanaDocente = new GUIMenuDocente(usuarioLogueado); // crear la nueva ventana
+        if(personaLogueado.tieneRol(enumRol.DOCENTE)){
+        GUIMenuDocente ventanaDocente = new GUIMenuDocente(personaLogueado); // crear la nueva ventana
         ventanaDocente.setVisible(true);            // mostrarla
         this.dispose(); 
         }else{
@@ -243,10 +244,10 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_btDocMouseClicked
 
     private void btEstMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btEstMouseClicked
-       if (usuarioLogueado.getRol()== enumRol.ESTUDIANTE) {
-           GUIMenuEstudiante ventanaEstudiante = new GUIMenuEstudiante(usuarioLogueado);
-           ventanaEstudiante.setVisible(true);
-           this.dispose();
+        if (personaLogueado.tieneRol(enumRol.ESTUDIANTE)) {
+        GUIMenuEstudiante ventanaEstudiante = new GUIMenuEstudiante(personaLogueado);
+        ventanaEstudiante.setVisible(true);
+        this.dispose();
        } else {
            javax.swing.JOptionPane.showMessageDialog(this,
                    "Acceso denegado: No tienes permisos para ingresar al menú de Estudiante",
@@ -256,9 +257,9 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_btEstMouseClicked
 
     private void btCoordMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btCoordMouseClicked
-        if(usuarioLogueado.getRol()==enumRol.COORDINADOR)
+        if(personaLogueado.tieneRol(enumRol.COORDINADOR))
         {
-        GUIMenuCoord ventanaCoord = new GUIMenuCoord(usuarioLogueado); // crear la nueva ventana
+        GUIMenuCoord ventanaCoord = new GUIMenuCoord(personaLogueado); // crear la nueva ventana
         ventanaCoord.setVisible(true);            // mostrarla
         this.dispose();   
         }else{
