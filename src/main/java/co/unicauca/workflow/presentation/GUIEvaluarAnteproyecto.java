@@ -238,9 +238,9 @@ private void cargarDatos() {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btVolverMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btVolverMouseClicked
-      GUIMenuCoord ventanaCoord = new  GUIMenuCoord(usuarioLogueado);
+      /*GUIMenuCoord ventanaCoord = new  GUIMenuCoord(usuarioLogueado);
       ventanaCoord.setVisible(true);
-      this.dispose(); 
+      this.dispose(); */
     }//GEN-LAST:event_btVolverMouseClicked
 
     /**

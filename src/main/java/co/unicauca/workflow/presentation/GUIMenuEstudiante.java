@@ -14,6 +14,7 @@ import co.unicauca.workflow.domain.entities.User;
 import co.unicauca.workflow.presentation.views.ConsultarFormatoA;
 import co.unicauca.workflow.presentation.views.SubirFormatoA;
 import com.formdev.flatlaf.FlatLightLaf;
+import co.unicauca.workflow.domain.entities.Persona;
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMTMaterialLighterIJTheme;
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
@@ -28,9 +29,9 @@ public class GUIMenuEstudiante extends javax.swing.JFrame {
      * Creates new form GUIEstudiante
      */
 
-    private static User usuarioLogueado;
-   public GUIMenuEstudiante(User logueado) {
-     this.usuarioLogueado=logueado;
+    private static Persona personaLogueado;
+   public GUIMenuEstudiante(Persona logueado) {
+     this.personaLogueado=logueado;
 
         initComponents();
        
@@ -53,7 +54,7 @@ public class GUIMenuEstudiante extends javax.swing.JFrame {
      }
      private void initContent(){
 
-     showJPanel( new Principal(usuarioLogueado));
+     showJPanel( new Principal(personaLogueado));
 
     
      }
@@ -143,6 +144,7 @@ public class GUIMenuEstudiante extends javax.swing.JFrame {
         Menu.add(btConsultarFormatoA, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 213, 258, 64));
 
         JButtonCloseSesion.setBackground(new java.awt.Color(65, 55, 171));
+        JButtonCloseSesion.setForeground(new java.awt.Color(255, 255, 255));
         JButtonCloseSesion.setText("Cerrar Sesión");
         JButtonCloseSesion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -208,7 +210,7 @@ public class GUIMenuEstudiante extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btRegresarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btRegresarMouseClicked
-     GUIMenuPrincipal ventanaPrincipal = new GUIMenuPrincipal(usuarioLogueado);
+     GUIMenuPrincipal ventanaPrincipal = new GUIMenuPrincipal(personaLogueado);
     ventanaPrincipal.setVisible(true);
     this.dispose(); 
     }//GEN-LAST:event_btRegresarMouseClicked
@@ -237,7 +239,7 @@ public class GUIMenuEstudiante extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
 
-                new GUIMenuEstudiante(usuarioLogueado).setVisible(true);
+                new GUIMenuEstudiante(personaLogueado).setVisible(true);
 
             }
         });
