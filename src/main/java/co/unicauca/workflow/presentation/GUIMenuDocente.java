@@ -8,6 +8,7 @@ package co.unicauca.workflow.presentation;
 //implementar subir formato A y consultar respuestas
 //puede implememtar el pane para doc respuestas  
 
+import co.unicauca.workflow.domain.entities.Persona;
 import co.unicauca.workflow.presentation.views.Principal;
 import co.unicauca.workflow.domain.entities.User;
 import co.unicauca.workflow.presentation.views.ConsultarFormatoA;
@@ -26,9 +27,9 @@ public class GUIMenuDocente extends javax.swing.JFrame {
      * Creates new form GUIDocente
      */
 
-    private static User usuarioLogueado;
-    public GUIMenuDocente (User logueado) {
-     this.usuarioLogueado=logueado;
+    private static Persona personaLogueado;
+    public GUIMenuDocente (Persona logueado) {
+     this.personaLogueado=logueado;
 
         initComponents();
       
@@ -53,7 +54,7 @@ public class GUIMenuDocente extends javax.swing.JFrame {
      }
      private void initContent(){
 
-     showJPanel( new Principal(usuarioLogueado));
+     showJPanel( new Principal(personaLogueado));
 
     
      }
@@ -250,7 +251,7 @@ public class GUIMenuDocente extends javax.swing.JFrame {
     }//GEN-LAST:event_btSubirFormatoAMouseClicked
 
     private void btRegresarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btRegresarMouseClicked
-       GUIMenuPrincipal ventanaPrincipal = new GUIMenuPrincipal(usuarioLogueado);
+       GUIMenuPrincipal ventanaPrincipal = new GUIMenuPrincipal(personaLogueado);
     ventanaPrincipal.setVisible(true);
     this.dispose(); 
     }//GEN-LAST:event_btRegresarMouseClicked
@@ -275,7 +276,7 @@ public class GUIMenuDocente extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
 
-                new GUIMenuDocente(usuarioLogueado).setVisible(true);
+                new GUIMenuDocente(personaLogueado).setVisible(true);
 
             }
         });

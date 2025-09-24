@@ -5,6 +5,7 @@ import javax.swing.JOptionPane;
 import co.unicauca.workflow.domain.service.UserService;
 import co.unicauca.workflow.access.IUserRepository;
 import co.unicauca.workflow.access.UserRepository;
+import co.unicauca.workflow.domain.entities.Persona;
 import co.unicauca.workflow.domain.entities.User;
 import co.unicauca.workflow.domain.entities.enumRol;
 
@@ -249,7 +250,7 @@ public class GUILogin extends javax.swing.JFrame {
     }//GEN-LAST:event_pnlBttLoginMouseEntered
 
     private void lblLoginMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblLoginMouseClicked
-    String usuario = tfEmail.getText().trim();
+    /*String usuario = tfEmail.getText().trim();
     String clave = String.valueOf(tfContrasenia.getPassword()).trim();
 
     // Validar campos vacíos
@@ -279,7 +280,7 @@ public class GUILogin extends javax.swing.JFrame {
 
 
     try {
-        User logueado = userService.authenticateUser(usuario, clave);
+        Persona logueado = PersonaService.authenticateUser(usuario, clave);
 
         if (logueado != null) {
             JOptionPane.showMessageDialog(this,
@@ -308,7 +309,7 @@ public class GUILogin extends javax.swing.JFrame {
             "Error",
             JOptionPane.ERROR_MESSAGE);
         e.printStackTrace();
-    }
+    }*/
     }//GEN-LAST:event_lblLoginMouseClicked
 
     
