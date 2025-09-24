@@ -73,6 +73,7 @@ public class GUIMenuEstudiante extends javax.swing.JFrame {
         Titulo = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         btConsultarFormatoA = new javax.swing.JButton();
+        JButtonCloseSesion = new javax.swing.JButton();
         Contenido = new javax.swing.JPanel();
         jSeparator1 = new javax.swing.JSeparator();
 
@@ -95,7 +96,7 @@ public class GUIMenuEstudiante extends javax.swing.JFrame {
         btRegresar.setText("Volver");
         btRegresar.setToolTipText("");
         btRegresar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
-        btRegresar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btRegresar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btRegresar.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btRegresar.setIconTextGap(7);
         btRegresar.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -104,7 +105,6 @@ public class GUIMenuEstudiante extends javax.swing.JFrame {
             }
         });
         Menu.add(btRegresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 277, 258, 64));
-
 
         Titulo.setBackground(new java.awt.Color(204, 204, 204));
 
@@ -133,7 +133,7 @@ public class GUIMenuEstudiante extends javax.swing.JFrame {
         btConsultarFormatoA.setText("Consultar FormatoA");
         btConsultarFormatoA.setToolTipText("");
         btConsultarFormatoA.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
-        btConsultarFormatoA.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btConsultarFormatoA.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btConsultarFormatoA.setIconTextGap(7);
         btConsultarFormatoA.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -141,6 +141,15 @@ public class GUIMenuEstudiante extends javax.swing.JFrame {
             }
         });
         Menu.add(btConsultarFormatoA, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 213, 258, 64));
+
+        JButtonCloseSesion.setBackground(new java.awt.Color(65, 55, 171));
+        JButtonCloseSesion.setText("Cerrar Sesión");
+        JButtonCloseSesion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JButtonCloseSesionActionPerformed(evt);
+            }
+        });
+        Menu.add(JButtonCloseSesion, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 450, -1, -1));
 
         Contenido.setBackground(new java.awt.Color(255, 255, 255));
         Contenido.setPreferredSize(new java.awt.Dimension(641, 498));
@@ -208,6 +217,12 @@ public class GUIMenuEstudiante extends javax.swing.JFrame {
          showJPanel( new ConsultarFormatoA());
     }//GEN-LAST:event_btConsultarFormatoAMouseClicked
 
+    private void JButtonCloseSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JButtonCloseSesionActionPerformed
+        GUILogin login = new GUILogin();
+        login.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_JButtonCloseSesionActionPerformed
+
 
     /**
      * @param args the command line arguments
@@ -231,6 +246,7 @@ public class GUIMenuEstudiante extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Background;
     private javax.swing.JPanel Contenido;
+    private javax.swing.JButton JButtonCloseSesion;
     private javax.swing.JPanel Menu;
     private javax.swing.JPanel Titulo;
     private javax.swing.JButton btConsultarFormatoA;
