@@ -15,15 +15,14 @@ import java.util.List;
 public class Docente extends Persona{
     
     
-
-    
    private Departamento Departamento; // fk id 
 
-    public Docente(int idUsuario,Departamento Departamento,  String name, String lastname, String phone, String email, String password) throws ValidationException {
-        super(idUsuario,name, lastname, phone, email, password);
+    public Docente(int idUsuario, Departamento Departamento, String name, String lastname, String phone, String email, String password) throws ValidationException {
+        super(idUsuario, name, lastname, phone, email, password);
         this.Departamento = Departamento;
         
         validarCamposDocente();
+        
     }
 
     public Docente() {
@@ -43,9 +42,6 @@ public class Docente extends Persona{
         }
          
     }
-
-  
-    
 
     public Departamento getDepartamento() {
         return Departamento;

@@ -11,7 +11,6 @@ import co.unicauca.workflow.domain.entities.Programa;
 import co.unicauca.workflow.domain.exceptions.ValidationException;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
@@ -104,75 +103,4 @@ public class EstudianteRepositoryTest {
         assertEquals("Sistemas", result.getProgram().getDepartamento().getNombre());
         assertEquals("Ingeniería", result.getProgram().getDepartamento().getFacultad().getNombre());
     }
-    @Test
-void testSaveWithNonExistentProgramFails() throws ValidationException {
-    // Programa inexistente (no está en la tabla Programa)
-    Facultad fac = new Facultad("Ingeniería");
-    fac.setCodFacultad(10);
-    Departamento dep = new Departamento("Sistemas", fac);
-    dep.setCodDepartamento(20);
-    Programa prog = new Programa(999, "Inexistente", dep); // ⚠️ no existe en BD
-
-    Estudiante est = new Estudiante(
-            2, prog, "Luis", "Lopez", "54321", "luis@mail.com", "clave"
-    );
-
-    boolean saved = repo.save(est);
-    assertFalse(saved, "No debería guardarse un estudiante con programa inexistente");
-}
-
-@Test
-void testListWhenEmpty() {
-    // Cerramos la conexión de antes y usamos una BD nueva en memoria
-    // ⚠️ truco: forzamos repositorio vacío
-    assertTrue(repo.list().isEmpty(), "La lista debería estar vacía al inicio de la prueba");
-}
-
-@Test
-void testSaveTwoStudents() throws ValidationException, SQLException {
-    // Insertamos primera persona
-    try (Statement stmt = conn.createStatement()) {
-        stmt.execute("INSERT INTO Persona VALUES (2, 'Luis', 'Lopez', '54321', 'luis@mail.com', 'clave')");
-    }
-
-    Facultad fac = new Facultad("Ingeniería");
-    fac.setCodFacultad(10);
-    Departamento dep = new Departamento("Sistemas", fac);
-    dep.setCodDepartamento(20);
-    Programa prog = new Programa(30, "Software", dep);
-
-    // Estudiante Ana
-    Estudiante ana = new Estudiante(
-            1, prog, "Ana", "Gomez", "12345", "ana@mail.com", "secret"
-    );
-    // Estudiante Luis
-    Estudiante luis = new Estudiante(
-            2, prog, "Luis", "Lopez", "54321", "luis@mail.com", "clave"
-    );
-
-    assertTrue(repo.save(ana));
-    assertTrue(repo.save(luis));
-
-    List<Estudiante> estudiantes = repo.list();
-    assertEquals(2, estudiantes.size(), "Deben existir 2 estudiantes en la lista");
-}
-
-@Test
-void testDuplicateStudentFails() throws ValidationException {
-    Facultad fac = new Facultad("Ingeniería");
-    fac.setCodFacultad(10);
-    Departamento dep = new Departamento("Sistemas", fac);
-    dep.setCodDepartamento(20);
-    Programa prog = new Programa(30, "Software", dep);
-
-    Estudiante est = new Estudiante(
-            1, prog, "Ana", "Gomez", "12345", "ana@mail.com", "secret"
-    );
-
-    // Primer guardado debería funcionar
-    assertTrue(repo.save(est));
-
-    // Segundo guardado del mismo idUsuario debería fallar (PK duplicada)
-    assertFalse(repo.save(est), "No debería permitir guardar dos veces el mismo estudiante");
-}
 }

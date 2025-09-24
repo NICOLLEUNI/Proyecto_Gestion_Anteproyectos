@@ -47,7 +47,8 @@ public class Factory {
 
         return result;
     }
-        public static IPersonaRepository getPersonaRepository(String type) {
+    
+    public static IPersonaRepository getPersonaRepository(String type) {
         IPersonaRepository result = null;
 
         switch (type.toLowerCase()) {
@@ -60,7 +61,8 @@ public class Factory {
 
         return result;
     }
-         public static ICoordinadorRepository getCoordinadorRepository(String type) {
+        
+    public static ICoordinadorRepository getCoordinadorRepository(String type) {
         ICoordinadorRepository result = null;
 
         switch (type.toLowerCase()) {
@@ -86,6 +88,35 @@ public class Factory {
 
         return result;
     }
+    
+    public static IFormatoARepository getFormatoARepository(String type) {
+        IFormatoARepository result = null;
+
+        switch (type.toLowerCase()) {
+            case "default":
+                result = new FormatoARepository();
+                break;
+            // Si en el futuro tienes otro tipo de repositorio, agregas otro case
+            // case "mock": result = new PersonaRepositoryMock(); break;
+        }
+
+        return result;
+    }
+    
+    public static IDocenteRepository getDocenteRepository(String type) {
+        IDocenteRepository result = null;
+
+        switch (type.toLowerCase()) {
+            case "default":
+                result = new DocenteRepository();
+                break;
+            // Si en el futuro tienes otro tipo de repositorio, agregas otro case
+            // case "mock": result = new PersonaRepositoryMock(); break;
+        }
+
+        return result;
+    }
+    
     
     
     //Por cada repositorio creado se deben crear dos metodos: el que instancia la repositorio y 

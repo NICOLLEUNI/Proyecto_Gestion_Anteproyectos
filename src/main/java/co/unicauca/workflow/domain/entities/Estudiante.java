@@ -22,8 +22,8 @@ import java.util.List;
         
     }
 
-    public Estudiante( int idUsuario, Programa program, String name, String lastname, String phone, String email, String password) throws ValidationException {
-        super(idUsuario,name, lastname, phone, email, password);
+    public Estudiante(int idUsuario, Programa program, String name, String lastname, String phone, String email, String password) throws ValidationException {
+        super(idUsuario, name, lastname, phone, email, password);
         this.program = program;
         
         validarCamposEstudiante();
@@ -53,9 +53,4 @@ import java.util.List;
     public void setProgram(Programa program) {
         this.program = program;
     }
-
-
-    
-    
-    
 }

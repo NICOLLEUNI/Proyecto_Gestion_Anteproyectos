@@ -10,6 +10,7 @@ package co.unicauca.workflow.presentation;
 //de un rol que no corresponda
 
 import co.unicauca.workflow.domain.entities.User;
+import co.unicauca.workflow.domain.entities.enumRol;
 import co.unicauca.workflow.presentation.views.Principal;
 import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMTMaterialLighterIJTheme;
@@ -35,6 +36,11 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
         initContent();
  
     }
+    
+    public GUIMenuPrincipal()
+    {
+        
+    }
 
      private void initStyles(){
      
@@ -50,8 +56,8 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
          
      }
      private void initContent(){
-     showJPanel( new Principal(usuarioLogueado));
-    
+    showJPanel( new Principal(usuarioLogueado));
+     
      }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -68,6 +74,7 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
         btEst = new javax.swing.JButton();
         btCoord = new javax.swing.JButton();
         btDoc = new javax.swing.JButton();
+        jButtonCloseSesion = new javax.swing.JButton();
         Contenido = new javax.swing.JPanel();
         jSeparator7 = new javax.swing.JSeparator();
 
@@ -88,7 +95,7 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
         btEst.setIcon(new javax.swing.ImageIcon(getClass().getResource("/co/unicauca/workflow/presentation/images/account-multiple.png"))); // NOI18N
         btEst.setText("ESTUDIANTE");
         btEst.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
-        btEst.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btEst.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btEst.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btEst.setIconTextGap(7);
         btEst.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -118,7 +125,7 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
         btDoc.setText("DOCENTE");
         btDoc.setAlignmentY(0.0F);
         btDoc.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
-        btDoc.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btDoc.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btDoc.setDefaultCapable(false);
         btDoc.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btDoc.setIconTextGap(7);
@@ -128,16 +135,31 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
             }
         });
 
+        jButtonCloseSesion.setBackground(new java.awt.Color(65, 55, 171));
+        jButtonCloseSesion.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonCloseSesion.setText("Cerrar sesión");
+        jButtonCloseSesion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCloseSesionActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout MenuLayout = new javax.swing.GroupLayout(Menu);
         Menu.setLayout(MenuLayout);
         MenuLayout.setHorizontalGroup(
             MenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(MenuLayout.createSequentialGroup()
-                .addGap(38, 38, 38)
-                .addComponent(Icono))
             .addComponent(btDoc, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(btEst, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(btCoord, javax.swing.GroupLayout.DEFAULT_SIZE, 270, Short.MAX_VALUE)
+            .addGroup(MenuLayout.createSequentialGroup()
+                .addGroup(MenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(MenuLayout.createSequentialGroup()
+                        .addGap(38, 38, 38)
+                        .addComponent(Icono))
+                    .addGroup(MenuLayout.createSequentialGroup()
+                        .addGap(64, 64, 64)
+                        .addComponent(jButtonCloseSesion)))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         MenuLayout.setVerticalGroup(
             MenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -150,7 +172,9 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
                 .addComponent(btEst, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(btCoord, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(172, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 113, Short.MAX_VALUE)
+                .addComponent(jButtonCloseSesion)
+                .addGap(36, 36, 36))
         );
 
         Contenido.setBackground(new java.awt.Color(255, 255, 255));
@@ -206,22 +230,50 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btDocMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btDocMouseClicked
-         GUIMenuDocente ventanaDocente = new GUIMenuDocente(usuarioLogueado); // crear la nueva ventana
+        if(usuarioLogueado.getRol()==enumRol.DOCENTE){
+        GUIMenuDocente ventanaDocente = new GUIMenuDocente(usuarioLogueado); // crear la nueva ventana
         ventanaDocente.setVisible(true);            // mostrarla
-        this.dispose();       
+        this.dispose(); 
+        }else{
+            javax.swing.JOptionPane.showMessageDialog(this,
+                   "Acceso denegado: No tienes permisos para ingresar al menú de Docente",
+                   "Error de autorización",
+                   javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btDocMouseClicked
 
     private void btEstMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btEstMouseClicked
-         GUIMenuEstudiante ventanaEstudiante = new GUIMenuEstudiante(usuarioLogueado); // crear la nueva ventana
-        ventanaEstudiante.setVisible(true);            // mostrarla
-        this.dispose();       
+       if (usuarioLogueado.getRol()== enumRol.ESTUDIANTE) {
+           GUIMenuEstudiante ventanaEstudiante = new GUIMenuEstudiante(usuarioLogueado);
+           ventanaEstudiante.setVisible(true);
+           this.dispose();
+       } else {
+           javax.swing.JOptionPane.showMessageDialog(this,
+                   "Acceso denegado: No tienes permisos para ingresar al menú de Estudiante",
+                   "Error de autorización",
+                   javax.swing.JOptionPane.ERROR_MESSAGE);
+       } 
     }//GEN-LAST:event_btEstMouseClicked
 
     private void btCoordMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btCoordMouseClicked
-         GUIMenuCoord ventanaCoord = new GUIMenuCoord(usuarioLogueado); // crear la nueva ventana
+        if(usuarioLogueado.getRol()==enumRol.COORDINADOR)
+        {
+        GUIMenuCoord ventanaCoord = new GUIMenuCoord(usuarioLogueado); // crear la nueva ventana
         ventanaCoord.setVisible(true);            // mostrarla
-        this.dispose();       
+        this.dispose();   
+        }else{
+            javax.swing.JOptionPane.showMessageDialog(this,
+                   "Acceso denegado: No tienes permisos para ingresar al menú de Coordinador",
+                   "Error de autorización",
+                   javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btCoordMouseClicked
+
+    private void jButtonCloseSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCloseSesionActionPerformed
+       GUILogin login = new GUILogin();
+       login.setVisible(rootPaneCheckingEnabled);
+       this.setVisible(false);
+    }//GEN-LAST:event_jButtonCloseSesionActionPerformed
 
     /**
      * @param args the command line arguments
@@ -248,6 +300,7 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton btCoord;
     private javax.swing.JButton btDoc;
     private javax.swing.JButton btEst;
+    private javax.swing.JButton jButtonCloseSesion;
     private javax.swing.JSeparator jSeparator7;
     // End of variables declaration//GEN-END:variables
 }

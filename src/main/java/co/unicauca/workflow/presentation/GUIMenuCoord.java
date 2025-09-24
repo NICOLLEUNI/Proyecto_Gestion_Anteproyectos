@@ -70,6 +70,7 @@ public class GUIMenuCoord extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         btEvaluarFormatoA = new javax.swing.JButton();
         btRegresar = new javax.swing.JButton();
+        jButtonCloseSesion = new javax.swing.JButton();
         Contenido = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -109,10 +110,9 @@ public class GUIMenuCoord extends javax.swing.JFrame {
         btEvaluarFormatoA.setText("Evaluar FormatoA");
         btEvaluarFormatoA.setToolTipText("");
         btEvaluarFormatoA.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
-        btEvaluarFormatoA.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btEvaluarFormatoA.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btEvaluarFormatoA.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btEvaluarFormatoA.setIconTextGap(7);
-
         btEvaluarFormatoA.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btEvaluarFormatoAMouseClicked(evt);
@@ -126,7 +126,7 @@ public class GUIMenuCoord extends javax.swing.JFrame {
         btRegresar.setText("Volver");
         btRegresar.setToolTipText("");
         btRegresar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
-        btRegresar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btRegresar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btRegresar.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btRegresar.setIconTextGap(7);
         btRegresar.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -135,30 +135,47 @@ public class GUIMenuCoord extends javax.swing.JFrame {
             }
         });
 
+        jButtonCloseSesion.setBackground(new java.awt.Color(65, 55, 171));
+        jButtonCloseSesion.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonCloseSesion.setText("Cerrar Sesión");
+        jButtonCloseSesion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCloseSesionActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout MenuLayout = new javax.swing.GroupLayout(Menu);
         Menu.setLayout(MenuLayout);
         MenuLayout.setHorizontalGroup(
             MenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(MenuLayout.createSequentialGroup()
-                .addGap(58, 58, 58)
-                .addComponent(Icon, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addComponent(Titulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(btEvaluarFormatoA, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(btRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(MenuLayout.createSequentialGroup()
+                .addGroup(MenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(MenuLayout.createSequentialGroup()
+                        .addGap(58, 58, 58)
+                        .addComponent(Icon, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btEvaluarFormatoA, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(MenuLayout.createSequentialGroup()
+                .addGap(84, 84, 84)
+                .addComponent(jButtonCloseSesion)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         MenuLayout.setVerticalGroup(
             MenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(MenuLayout.createSequentialGroup()
-
                 .addGap(21, 21, 21)
                 .addComponent(Icon)
                 .addGap(45, 45, 45)
-
                 .addComponent(Titulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(37, 37, 37)
                 .addComponent(btEvaluarFormatoA, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(btRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(btRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 98, Short.MAX_VALUE)
+                .addComponent(jButtonCloseSesion)
+                .addGap(41, 41, 41))
         );
 
         Contenido.setBackground(new java.awt.Color(255, 255, 255));
@@ -220,6 +237,12 @@ public class GUIMenuCoord extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btRegresarMouseClicked
 
+    private void jButtonCloseSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCloseSesionActionPerformed
+        GUILogin login = new GUILogin();
+        login.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_jButtonCloseSesionActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -243,6 +266,7 @@ public class GUIMenuCoord extends javax.swing.JFrame {
     private javax.swing.JPanel Titulo;
     private javax.swing.JButton btEvaluarFormatoA;
     private javax.swing.JButton btRegresar;
+    private javax.swing.JButton jButtonCloseSesion;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }

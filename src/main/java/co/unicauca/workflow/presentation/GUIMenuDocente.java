@@ -35,6 +35,8 @@ public class GUIMenuDocente extends javax.swing.JFrame {
     initContent();
  
     }
+    
+    
 
      private void initStyles(){
      
@@ -72,6 +74,7 @@ public class GUIMenuDocente extends javax.swing.JFrame {
         btRespuestas = new javax.swing.JButton();
         btSubirFormatoA = new javax.swing.JButton();
         btRegresar = new javax.swing.JButton();
+        jButtonCloseSesion = new javax.swing.JButton();
         Contenido = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -112,7 +115,7 @@ public class GUIMenuDocente extends javax.swing.JFrame {
         btRespuestas.setText("Respuestas");
         btRespuestas.setToolTipText("");
         btRespuestas.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
-        btRespuestas.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btRespuestas.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btRespuestas.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btRespuestas.setIconTextGap(7);
 
@@ -123,10 +126,9 @@ public class GUIMenuDocente extends javax.swing.JFrame {
         btSubirFormatoA.setText("Subir FormatoA");
         btSubirFormatoA.setToolTipText("");
         btSubirFormatoA.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
-        btSubirFormatoA.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btSubirFormatoA.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btSubirFormatoA.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btSubirFormatoA.setIconTextGap(7);
-
         btSubirFormatoA.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btSubirFormatoAMouseClicked(evt);
@@ -140,7 +142,7 @@ public class GUIMenuDocente extends javax.swing.JFrame {
         btRegresar.setText("Volver");
         btRegresar.setToolTipText("");
         btRegresar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
-        btRegresar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btRegresar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btRegresar.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btRegresar.setIconTextGap(7);
         btRegresar.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -149,17 +151,33 @@ public class GUIMenuDocente extends javax.swing.JFrame {
             }
         });
 
+        jButtonCloseSesion.setBackground(new java.awt.Color(65, 55, 171));
+        jButtonCloseSesion.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonCloseSesion.setText("Cerrar Sesión");
+        jButtonCloseSesion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCloseSesionActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout MenuLayout = new javax.swing.GroupLayout(Menu);
         Menu.setLayout(MenuLayout);
         MenuLayout.setHorizontalGroup(
             MenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(MenuLayout.createSequentialGroup()
-                .addGap(57, 57, 57)
-                .addComponent(Icon, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addComponent(Titulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(btSubirFormatoA, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(btRespuestas, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(btRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(MenuLayout.createSequentialGroup()
+                .addGroup(MenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(MenuLayout.createSequentialGroup()
+                        .addGap(57, 57, 57)
+                        .addComponent(Icon, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btSubirFormatoA, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btRespuestas, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(MenuLayout.createSequentialGroup()
+                .addGap(81, 81, 81)
+                .addComponent(jButtonCloseSesion)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         MenuLayout.setVerticalGroup(
             MenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -173,7 +191,10 @@ public class GUIMenuDocente extends javax.swing.JFrame {
                 .addGap(0, 0, 0)
                 .addComponent(btRespuestas, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(btRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(btRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButtonCloseSesion)
+                .addGap(33, 33, 33))
         );
 
         Contenido.setBackground(new java.awt.Color(255, 255, 255));
@@ -234,6 +255,12 @@ public class GUIMenuDocente extends javax.swing.JFrame {
     this.dispose(); 
     }//GEN-LAST:event_btRegresarMouseClicked
 
+    private void jButtonCloseSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCloseSesionActionPerformed
+        GUILogin login = new GUILogin();
+        login.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_jButtonCloseSesionActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -262,6 +289,7 @@ public class GUIMenuDocente extends javax.swing.JFrame {
     private javax.swing.JButton btRegresar;
     private javax.swing.JButton btRespuestas;
     private javax.swing.JButton btSubirFormatoA;
+    private javax.swing.JButton jButtonCloseSesion;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }
