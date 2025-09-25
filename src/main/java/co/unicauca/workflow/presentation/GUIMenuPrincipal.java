@@ -10,15 +10,12 @@ package co.unicauca.workflow.presentation;
 //de un rol que no corresponda
 
 import co.unicauca.workflow.domain.entities.Persona;
-import co.unicauca.workflow.domain.entities.User;
 import co.unicauca.workflow.domain.entities.enumRol;
 import co.unicauca.workflow.presentation.views.Principal;
-import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMTMaterialLighterIJTheme;
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
 
-import javax.swing.UIManager;
 
 /**
  *

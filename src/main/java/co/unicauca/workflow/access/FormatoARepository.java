@@ -123,56 +123,61 @@ public class FormatoARepository implements IFormatoARepository {
 
 
     private FormatoA mapFormatoA(ResultSet rs) throws SQLException {
-        FormatoA f = new FormatoA();
-        f.setId(rs.getInt("id"));
-        f.setTitle(rs.getString("title"));
-        f.setMode(enumModalidad.valueOf(rs.getString("mode")));
+    FormatoA f = new FormatoA();
+    f.setId(rs.getInt("id"));
+    f.setTitle(rs.getString("title"));
+    f.setMode(enumModalidad.valueOf(rs.getString("mode")));
 
-        Docente manager = new Docente();
-        manager.setIdUsuario(rs.getInt("projectManager"));
-        f.setProjectManager(manager);
-
-        int coManagerId = rs.getInt("projectCoManager");
-        if (!rs.wasNull()) {
-            Docente coManager = new Docente();
-            coManager.setIdUsuario(coManagerId);
-            f.setProjectCoManager(coManager);
-        }
-
-        f.setDate(rs.getString("date") != null ? LocalDate.parse(rs.getString("date")) : null);
-        f.setGeneralObjetive(rs.getString("generalObjetive"));
-        f.setSpecificObjetives(rs.getString("specificObjetives"));
-        f.setArchivoPDF(rs.getString("archivoPDF"));
-        f.setCartaLaboral(rs.getString("cartaLaboral"));
-        f.setCounter(rs.getInt("counter"));
-
-        String stateValue = rs.getString("state");
-        f.setState(stateValue != null ? enumEstado.valueOf(stateValue) : enumEstado.ENTREGADO);
-        f.setObservations(rs.getString("observations"));
-
-        f.setEstudiantes(loadEstudiantesByFormato(f.getId()));
-
-        // ⚠️ Las versiones deben cargarse desde FormatoAVersionRepository
-        f.setVersiones(new ArrayList<>());
-
-        return f;
+    // 🔹 Cargar director completo
+    int managerId = rs.getInt("projectManager");
+    if (managerId > 0) {
+        DocenteRepository repoDoc = new DocenteRepository();
+        f.setProjectManager(repoDoc.findById(managerId));
     }
 
-    private List<Estudiante> loadEstudiantesByFormato(int formatoId) throws SQLException {
-        List<Estudiante> estudiantes = new ArrayList<>();
-        String sql = "SELECT estudiante_id FROM FormatoA_Estudiante WHERE formatoA_id = ?";
-        PreparedStatement pstmt = conn.prepareStatement(sql);
-        pstmt.setInt(1, formatoId);
-        ResultSet rs = pstmt.executeQuery();
-
-        while (rs.next()) {
-            Estudiante e = new Estudiante();
-            e.setIdUsuario(rs.getInt("estudiante_id"));
-            estudiantes.add(e);
-        }
-        return estudiantes;
+    // 🔹 Cargar codirector completo
+    int coManagerId = rs.getInt("projectCoManager");
+    if (!rs.wasNull() && coManagerId > 0) {
+        DocenteRepository repoDoc = new DocenteRepository();
+        f.setProjectCoManager(repoDoc.findById(coManagerId));
     }
 
+    f.setDate(rs.getString("date") != null ? LocalDate.parse(rs.getString("date")) : null);
+    f.setGeneralObjetive(rs.getString("generalObjetive"));
+    f.setSpecificObjetives(rs.getString("specificObjetives"));
+    f.setArchivoPDF(rs.getString("archivoPDF"));
+    f.setCartaLaboral(rs.getString("cartaLaboral"));
+    f.setCounter(rs.getInt("counter"));
+
+    String stateValue = rs.getString("state");
+    f.setState(stateValue != null ? enumEstado.valueOf(stateValue) : enumEstado.ENTREGADO);
+    f.setObservations(rs.getString("observations"));
+
+    // 🔹 Estudiantes completos
+    f.setEstudiantes(loadEstudiantesByFormato(f.getId()));
+
+    f.setVersiones(new ArrayList<>());
+    return f;
+}
+
+   private List<Estudiante> loadEstudiantesByFormato(int formatoId) throws SQLException {
+    List<Estudiante> estudiantes = new ArrayList<>();
+    String sql = "SELECT estudiante_id FROM FormatoA_Estudiante WHERE formatoA_id = ?";
+    PreparedStatement pstmt = conn.prepareStatement(sql);
+    pstmt.setInt(1, formatoId);
+    ResultSet rs = pstmt.executeQuery();
+
+    EstudianteRepository repoEst = new EstudianteRepository();
+
+    while (rs.next()) {
+        int estId = rs.getInt("estudiante_id");
+        Estudiante est = repoEst.findById(estId);
+        if (est != null) {
+            estudiantes.add(est);
+        }
+    }
+    return estudiantes;
+}
     // CREACIÓN DE TABLAS
     private void initDatabase() {
         String sqlFormatoA = "CREATE TABLE IF NOT EXISTS FormatoA (\n"
@@ -235,4 +240,20 @@ public class FormatoARepository implements IFormatoARepository {
     public Connection getConnection() {
         return conn;
     }
+    public boolean updateEstadoYObservaciones(int id, String estado, String observaciones) {
+    try {
+        String sql = "UPDATE formatoA SET state = ?, observations = ? WHERE id = ?";
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setString(1, estado);
+        ps.setString(2, observaciones);
+        ps.setInt(3, id);
+
+        int filas = ps.executeUpdate();
+        return filas > 0;
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return false;
+    }
+}
+
 }
