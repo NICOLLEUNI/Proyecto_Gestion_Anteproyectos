@@ -9,14 +9,26 @@ package co.unicauca.workflow.presentation;
 
 import co.unicauca.workflow.access.FormatoARepository;
 import co.unicauca.workflow.access.IFormatoARepository;
+import co.unicauca.workflow.domain.entities.Departamento;
+import co.unicauca.workflow.domain.entities.Docente;
+import co.unicauca.workflow.domain.entities.Estudiante;
+import co.unicauca.workflow.domain.entities.Facultad;
 import co.unicauca.workflow.domain.entities.FormatoA;
+import co.unicauca.workflow.domain.entities.Persona;
+import co.unicauca.workflow.domain.entities.Programa;
 import co.unicauca.workflow.domain.entities.User;
+import co.unicauca.workflow.domain.entities.enumModalidad;
+import co.unicauca.workflow.domain.exceptions.ValidationException;
 import co.unicauca.workflow.presentation.views.Observaciones;
 import co.unicauca.workflow.presentation.views.SubirFormatoA;
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMTMaterialLighterIJTheme;
 import java.awt.BorderLayout;
+import java.time.LocalDate;
+import java.util.ArrayList;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 
@@ -30,16 +42,99 @@ public class GUIEvaluarAnteproyecto extends javax.swing.JFrame {
     /**
      * Creates new form GUIEvaluarAnteproyecto
      */
-     private static User usuarioLogueado;
-    public GUIEvaluarAnteproyecto(User logueado) {
-         this.usuarioLogueado=logueado;
+     private static Persona personaLogueado;
+     private List<FormatoA> listaFormateada = new ArrayList<>();
+    public GUIEvaluarAnteproyecto(Persona logueado) throws ValidationException {
+         this.personaLogueado=logueado;
         initComponents();
    initContent();
 
-        cargarDatos();
+       cargarDatos();
  
+ 
+  
     }
-private void cargarDatos() {
+    
+   private void cargarDatos() throws ValidationException {
+    // 1. Crear Facultad, Departamento y Programa
+    Facultad fac = new Facultad("Ingeniería");
+    fac.setCodFacultad(10);
+
+    Departamento dep = new Departamento("Sistemas", fac);
+    dep.setCodDepartamento(20);
+
+    Programa prog = new Programa(30, "Software", dep);
+
+    // 2. Crear Estudiantes
+    Estudiante e1 = new Estudiante(1, prog, "Ana", "Gómez", "12345", "ana@mail.com", "clave1");
+    Estudiante e2 = new Estudiante(2, prog, "Luis", "Pérez", "67890", "luis@mail.com", "clave2");
+    List<Estudiante> estudiantes = new ArrayList<>();
+    estudiantes.add(e1);
+    estudiantes.add(e2);
+
+    // 3. Crear Docentes
+    Docente director = new Docente(3, dep, "Carlos", "Torres", "111111", "carlos@unicauca.edu.co", "pass123");
+    Docente codirector = new Docente(4, dep, "María", "López", "222222", "maria@unicauca.edu.co", "pass456");
+
+    // 4. Crear FormatosA
+    FormatoA formato1 = new FormatoA(
+            100,
+            "Sistema de Gestión de Tareas",
+            enumModalidad.INVESTIGACION,
+            director,
+            codirector,
+            LocalDate.now(),
+            "Crear un sistema de gestión de tareas para estudiantes",
+            "Implementar login, tareas, reportes",
+             "C:/Users/User/Desktop/Taller02/Taller02_SOLID/archivosPDF/Extracto.pdf",
+            null,
+            estudiantes,
+            0,
+            "Sin observaciones"
+    );
+
+    FormatoA formato2 = new FormatoA(
+            101,
+            "App de Seguimiento Académico",
+            enumModalidad.INVESTIGACION,
+            director,
+            codirector,
+            LocalDate.now(),
+            "Monitorear notas y asistencias",
+            "Diseñar interfaz móvil",
+            "C:\\Users\\User\\Desktop\\Escritorio\\Taller02\\Taller02_SOLID\\archivosPDF\\Extracto.pdf",
+            null,
+            estudiantes,
+            0,
+            "Observaciones iniciales"
+    );
+
+    // 5. Guardar en atributo global
+    listaFormateada.clear();
+    listaFormateada.add(formato1);
+    listaFormateada.add(formato2);
+
+    // 6. Cargar JTable
+    String[] columnas = {"ID", "Título", "Estado"};
+    DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
+
+    for (FormatoA f : listaFormateada) {
+        Object[] fila = {
+            f.getId(),
+            f.getTitle(),
+            f.getState() != null ? f.getState() : "Entregado"
+        };
+        modelo.addRow(fila);
+    }
+
+    jTable1.setModel(modelo);
+}
+
+    
+  
+    
+/*private void cargarDatos() {
+    
      IFormatoARepository repo = new FormatoARepository();
     List<FormatoA> lista = repo.list();
 
@@ -50,13 +145,13 @@ private void cargarDatos() {
         Object[] fila = {
             f.getId(),
             f.getTitle(),
-            f.getState() != null ? f.getState() : "Pendiente", // Estado real si existe
+            f.getState() != null ? f.getState() : "Entregado", // Estado real si existe
         };
         modelo.addRow(fila);
     }
 
     jTable1.setModel(modelo);
-}
+}*/
 
      private void initStyles(){
      
@@ -77,6 +172,10 @@ private void cargarDatos() {
     
 
     // Listener para tabla
+    /*
+    -----------------------------------------
+            PARA TABLA REPOSITORY
+    ------------------------------------------                
     jTable1.getSelectionModel().addListSelectionListener(e -> {
         if (!e.getValueIsAdjusting() && jTable1.getSelectedRow() != -1) {
             int fila = jTable1.getSelectedRow();
@@ -93,9 +192,31 @@ private void cargarDatos() {
             }
         }
     });
+*/
+     // Listener para tabla con datos quemados
+    jTable1.getSelectionModel().addListSelectionListener(e -> {
+        if (!e.getValueIsAdjusting() && jTable1.getSelectedRow() != -1) {
+            int fila = jTable1.getSelectedRow();
+            int id = (int) jTable1.getValueAt(fila, 0);
 
-    
+            // Buscar FormatoA en lista quemada
+            FormatoA formatoSeleccionado = listaFormateada.stream()
+                    .filter(f -> f.getId() == id)
+                    .findFirst()
+                    .orElse(null);
+
+            if (formatoSeleccionado != null) {
+                Observaciones panelObs = new Observaciones();
+                panelObs.setFormatoA(formatoSeleccionado);
+                showJPanel(panelObs);
+            }
+        }
+    });
      }
+     
+     
+     
+     
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -107,7 +228,6 @@ private void cargarDatos() {
 
         jPanel1 = new javax.swing.JPanel();
         Menu = new javax.swing.JPanel();
-
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
@@ -125,13 +245,11 @@ private void cargarDatos() {
         Menu.setPreferredSize(new java.awt.Dimension(226, 510));
         Menu.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-
         jLabel2.setFont(new java.awt.Font("Roboto Medium", 1, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("PROYECTOS");
         Menu.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(73, 14, 206, 28));
-
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -174,6 +292,11 @@ private void cargarDatos() {
         btEvaluar.setText("EVALUAR");
         btEvaluar.setBorderPainted(false);
         btEvaluar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btEvaluar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btEvaluarMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout ContenidoLayout = new javax.swing.GroupLayout(Contenido);
         Contenido.setLayout(ContenidoLayout);
@@ -238,10 +361,14 @@ private void cargarDatos() {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btVolverMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btVolverMouseClicked
-      /*GUIMenuCoord ventanaCoord = new  GUIMenuCoord(usuarioLogueado);
-      ventanaCoord.setVisible(true);
-      this.dispose(); */
+        GUIMenuCoord ventanaCoord = new GUIMenuCoord(personaLogueado); // Opcional: mostrar un mensaje al usuario
+        ventanaCoord.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btVolverMouseClicked
+
+    private void btEvaluarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btEvaluarMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btEvaluarMouseClicked
 
     /**
      * @param args the command line arguments
@@ -253,7 +380,11 @@ private void cargarDatos() {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GUIEvaluarAnteproyecto(usuarioLogueado).setVisible(true);
+                try {
+                    new GUIEvaluarAnteproyecto(personaLogueado).setVisible(true);
+                } catch (ValidationException ex) {
+                    Logger.getLogger(GUIEvaluarAnteproyecto.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
@@ -267,9 +398,7 @@ private void cargarDatos() {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
-
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-
     // End of variables declaration//GEN-END:variables
 }

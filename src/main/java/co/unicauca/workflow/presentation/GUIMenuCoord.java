@@ -12,6 +12,9 @@ import com.formdev.flatlaf.FlatLightLaf;
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import co.unicauca.workflow.domain.entities.Persona;
+import co.unicauca.workflow.domain.exceptions.ValidationException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -226,9 +229,14 @@ public class GUIMenuCoord extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btEvaluarFormatoAMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btEvaluarFormatoAMouseClicked
-     /* GUIEvaluarAnteproyecto ventanaEvaluar = new GUIEvaluarAnteproyecto(personaLogueado); // crear la nueva ventana
+     GUIEvaluarAnteproyecto ventanaEvaluar = null;
+         try {
+             ventanaEvaluar = new GUIEvaluarAnteproyecto(personaLogueado); // crear la nueva ventana
+         } catch (ValidationException ex) {
+             Logger.getLogger(GUIMenuCoord.class.getName()).log(Level.SEVERE, null, ex);
+         }
         ventanaEvaluar.setVisible(true);            // mostrarla
-        this.dispose();*/ //chicos ojito que esta comentado pq no quiero tocar otras interfaces
+        this.dispose(); 
     }//GEN-LAST:event_btEvaluarFormatoAMouseClicked
 
     private void btRegresarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btRegresarMouseClicked
@@ -240,7 +248,7 @@ public class GUIMenuCoord extends javax.swing.JFrame {
     private void jButtonCloseSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCloseSesionActionPerformed
         GUILogin login = new GUILogin();
         login.setVisible(true);
-        this.setVisible(false);
+        this.dispose();
     }//GEN-LAST:event_jButtonCloseSesionActionPerformed
 
     /**
