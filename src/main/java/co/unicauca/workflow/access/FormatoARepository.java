@@ -1,19 +1,9 @@
 package co.unicauca.workflow.access;
 
-import co.unicauca.workflow.domain.entities.FormatoA;
-import co.unicauca.workflow.domain.entities.Docente;
-import co.unicauca.workflow.domain.entities.Estudiante;
-import co.unicauca.workflow.domain.entities.enumModalidad;
-import co.unicauca.workflow.domain.entities.enumEstado;
+import co.unicauca.workflow.domain.entities.*;
 import co.unicauca.workflow.domain.service.FormatoAService;
-import co.unicauca.workflow.domain.service.UserService;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +34,7 @@ public class FormatoARepository implements IFormatoARepository {
 
             PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             pstmt.setString(1, newFormatoA.getTitle());
-            pstmt.setString(2, newFormatoA.getMode().name()); // enum como texto
+            pstmt.setString(2, newFormatoA.getMode().name());
             pstmt.setObject(3, newFormatoA.getProjectManager().getIdUsuario());
             pstmt.setObject(4, newFormatoA.getProjectCoManager() != null ? newFormatoA.getProjectCoManager().getIdUsuario() : null);
             pstmt.setString(5, newFormatoA.getDate() != null ? newFormatoA.getDate().toString() : null);
@@ -53,7 +43,7 @@ public class FormatoARepository implements IFormatoARepository {
             pstmt.setString(8, newFormatoA.getArchivoPDF());
             pstmt.setString(9, newFormatoA.getCartaLaboral());
             pstmt.setInt(10, newFormatoA.getCounter());
-            pstmt.setString(11, newFormatoA.getState() != null ? newFormatoA.getState().name() : null);
+            pstmt.setString(11, newFormatoA.getState() != null ? newFormatoA.getState().name() : enumEstado.ENTREGADO.name());
             pstmt.setString(12, newFormatoA.getObservations());
 
             int rows = pstmt.executeUpdate();
@@ -63,7 +53,7 @@ public class FormatoARepository implements IFormatoARepository {
                 if (generatedKeys.next()) {
                     int formatoId = generatedKeys.getInt(1);
 
-                    // Insertar estudiantes en tabla intermedia
+                    // Guardar estudiantes en tabla intermedia
                     if (newFormatoA.getEstudiantes() != null) {
                         for (Estudiante est : newFormatoA.getEstudiantes()) {
                             String sqlEst = "INSERT INTO FormatoA_Estudiante (formatoA_id, estudiante_id) VALUES (?, ?)";
@@ -90,41 +80,16 @@ public class FormatoARepository implements IFormatoARepository {
             String sql = "SELECT * FROM FormatoA";
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
+            
+            FormatoAVersionRepository repoVersiones = new FormatoAVersionRepository();
 
             while (rs.next()) {
-                FormatoA f = new FormatoA();
-                f.setId(rs.getInt("id"));
-                f.setTitle(rs.getString("title"));
-                f.setMode(enumModalidad.valueOf(rs.getString("mode")));
-
-                // Manager
-                Docente manager = new Docente();
-                manager.setIdUsuario(rs.getInt("projectManager"));
-                f.setProjectManager(manager);
-
-                // CoManager
-                int coManagerId = rs.getInt("projectCoManager");
-                if (!rs.wasNull()) {
-                    Docente coManager = new Docente();
-                    coManager.setIdUsuario(coManagerId);
-                    f.setProjectCoManager(coManager);
-                }
-
-                f.setDate(rs.getString("date") != null ? LocalDate.parse(rs.getString("date")) : null);
-                f.setGeneralObjetive(rs.getString("generalObjetive"));
-                f.setSpecificObjetives(rs.getString("specificObjetives"));
-                f.setArchivoPDF(rs.getString("archivoPDF"));
-                f.setCartaLaboral(rs.getString("cartaLaboral"));
-                f.setCounter(rs.getInt("counter"));
-
-                String stateValue = rs.getString("state");
-                f.setState(stateValue != null ? enumEstado.valueOf(stateValue) : null);
-                f.setObservations(rs.getString("observations"));
-
-                // Cargar estudiantes relacionados
-                f.setEstudiantes(loadEstudiantesByFormato(f.getId()));
-
-                formatos.add(f);
+                
+                FormatoA f = mapFormatoA(rs);
+                
+                //aquí conectamos el formatoA con sus versiones 
+                f.setVersiones(repoVersiones.listByFormatoA(f.getId()));
+                formatos.add(mapFormatoA(rs));
             }
 
         } catch (SQLException ex) {
@@ -142,43 +107,55 @@ public class FormatoARepository implements IFormatoARepository {
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-                FormatoA f = new FormatoA();
-                f.setId(rs.getInt("id"));
-                f.setTitle(rs.getString("title"));
-                f.setMode(enumModalidad.valueOf(rs.getString("mode")));
+                FormatoA f = mapFormatoA(rs);
 
-                Docente manager = new Docente();
-                manager.setIdUsuario(rs.getInt("projectManager"));  // usar el id heredado de Persona
-                f.setProjectManager(manager);
-
-                int coManagerId = rs.getInt("projectCoManager");
-                if (!rs.wasNull()) {
-                    Docente coManager = new Docente();
-                    coManager.setIdUsuario(coManagerId);  // igual aquí
-                    f.setProjectCoManager(coManager);
-                }
-
-
-                f.setDate(rs.getString("date") != null ? LocalDate.parse(rs.getString("date")) : null);
-                f.setGeneralObjetive(rs.getString("generalObjetive"));
-                f.setSpecificObjetives(rs.getString("specificObjetives"));
-                f.setArchivoPDF(rs.getString("archivoPDF"));
-                f.setCartaLaboral(rs.getString("cartaLaboral"));
-                f.setCounter(rs.getInt("counter"));
-
-                String stateValue = rs.getString("state");
-                f.setState(stateValue != null ? enumEstado.valueOf(stateValue) : null);
-                f.setObservations(rs.getString("observations"));
-
-                // estudiantes relacionados
-                f.setEstudiantes(loadEstudiantesByFormato(f.getId()));
+                // 👇 Aquí conectamos con las versiones
+                FormatoAVersionRepository repoVersiones = new FormatoAVersionRepository();
+                f.setVersiones(repoVersiones.listByFormatoA(f.getId()));
 
                 return f;
             }
         } catch (SQLException e) {
-            System.out.println(" Error al buscar FormatoA por id: " + e.getMessage());
+            System.out.println("Error al buscar FormatoA por id: " + e.getMessage());
         }
         return null;
+    }
+
+
+    private FormatoA mapFormatoA(ResultSet rs) throws SQLException {
+        FormatoA f = new FormatoA();
+        f.setId(rs.getInt("id"));
+        f.setTitle(rs.getString("title"));
+        f.setMode(enumModalidad.valueOf(rs.getString("mode")));
+
+        Docente manager = new Docente();
+        manager.setIdUsuario(rs.getInt("projectManager"));
+        f.setProjectManager(manager);
+
+        int coManagerId = rs.getInt("projectCoManager");
+        if (!rs.wasNull()) {
+            Docente coManager = new Docente();
+            coManager.setIdUsuario(coManagerId);
+            f.setProjectCoManager(coManager);
+        }
+
+        f.setDate(rs.getString("date") != null ? LocalDate.parse(rs.getString("date")) : null);
+        f.setGeneralObjetive(rs.getString("generalObjetive"));
+        f.setSpecificObjetives(rs.getString("specificObjetives"));
+        f.setArchivoPDF(rs.getString("archivoPDF"));
+        f.setCartaLaboral(rs.getString("cartaLaboral"));
+        f.setCounter(rs.getInt("counter"));
+
+        String stateValue = rs.getString("state");
+        f.setState(stateValue != null ? enumEstado.valueOf(stateValue) : enumEstado.ENTREGADO);
+        f.setObservations(rs.getString("observations"));
+
+        f.setEstudiantes(loadEstudiantesByFormato(f.getId()));
+
+        // ⚠️ Las versiones deben cargarse desde FormatoAVersionRepository
+        f.setVersiones(new ArrayList<>());
+
+        return f;
     }
 
     private List<Estudiante> loadEstudiantesByFormato(int formatoId) throws SQLException {
@@ -211,23 +188,18 @@ public class FormatoARepository implements IFormatoARepository {
                 + "cartaLaboral TEXT,\n"
                 + "counter INTEGER,\n"
                 + "state TEXT CHECK(state IN ('RECHAZADO','APROBADO','ENTREGADO')),\n"
-                + "observations TEXT\n"
-                /*
+                + "observations TEXT,\n"
                 + "FOREIGN KEY (projectManager) REFERENCES Docente(idUsuario),\n"
                 + "FOREIGN KEY (projectCoManager) REFERENCES Docente(idUsuario)\n"
-                */
                 + ");";
 
         String sqlFormatoEst = "CREATE TABLE IF NOT EXISTS FormatoA_Estudiante (\n"
                 + "formatoA_id INTEGER NOT NULL,\n"
                 + "estudiante_id INTEGER NOT NULL,\n"
-                + "PRIMARY KEY (formatoA_id, estudiante_id)\n"
-                /*
+                + "PRIMARY KEY (formatoA_id, estudiante_id),\n"
                 + "FOREIGN KEY (formatoA_id) REFERENCES FormatoA(id),\n"
                 + "FOREIGN KEY (estudiante_id) REFERENCES Estudiante(idUsuario)\n"
-                */
                 + ");";
-
 
         try {
             this.connect();
@@ -238,7 +210,6 @@ public class FormatoARepository implements IFormatoARepository {
             Logger.getLogger(FormatoARepository.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
 
     public void connect() {
         String url = "jdbc:sqlite:" + System.getProperty("user.dir") + "/BD.db";
