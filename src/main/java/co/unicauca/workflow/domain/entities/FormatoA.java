@@ -25,6 +25,7 @@ public class FormatoA {
     private String archivoPDF;
     private String cartaLaboral;        // Solo si es práctica laboral
     private List<Estudiante> estudiantes; 
+    private List<FormatoAVersion> versiones = new ArrayList<>(); //lista de las versiones del formatoA 
     private int counter;                // Veces rechazado (máx. 3)
     private enumEstado state = enumEstado.ENTREGADO; // entregado (default), rechazado, aprobado
     private String observations;        // Observaciones del coordinador
@@ -196,6 +197,14 @@ public class FormatoA {
         this.observations = observations;
     }
    
+    public List<FormatoAVersion> getVersiones() {
+    return versiones;
+}
+
+    public void setVersiones(List<FormatoAVersion> versiones) {
+        this.versiones = versiones;
+    }
+
 }
 
    
