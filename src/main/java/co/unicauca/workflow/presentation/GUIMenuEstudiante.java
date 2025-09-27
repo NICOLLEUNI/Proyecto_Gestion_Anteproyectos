@@ -10,7 +10,7 @@ package co.unicauca.workflow.presentation;
 //con el correo del estudiante 
 
 import co.unicauca.workflow.presentation.views.Principal;
-import co.unicauca.workflow.domain.entities.User;
+import co.unicauca.workflow.domain.entities.Persona;
 import co.unicauca.workflow.presentation.views.ConsultarFormatoA;
 import co.unicauca.workflow.presentation.views.SubirFormatoA;
 import com.formdev.flatlaf.FlatLightLaf;
@@ -28,8 +28,8 @@ public class GUIMenuEstudiante extends javax.swing.JFrame {
      * Creates new form GUIEstudiante
      */
 
-    private static User usuarioLogueado;
-   public GUIMenuEstudiante(User logueado) {
+    private static Persona usuarioLogueado;
+   public GUIMenuEstudiante(Persona logueado) {
      this.usuarioLogueado=logueado;
 
         initComponents();

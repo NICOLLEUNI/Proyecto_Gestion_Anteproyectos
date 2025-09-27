@@ -9,7 +9,7 @@ package co.unicauca.workflow.presentation;
 //puede implememtar el pane para doc respuestas  
 
 import co.unicauca.workflow.presentation.views.Principal;
-import co.unicauca.workflow.domain.entities.User;
+import co.unicauca.workflow.domain.entities.Persona;
 import co.unicauca.workflow.presentation.views.ConsultarFormatoA;
 import co.unicauca.workflow.presentation.views.SubirFormatoA;
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMTMaterialLighterIJTheme;
@@ -26,8 +26,8 @@ public class GUIMenuDocente extends javax.swing.JFrame {
      * Creates new form GUIDocente
      */
 
-    private static User usuarioLogueado;
-    public GUIMenuDocente (User logueado) {
+    private static Persona usuarioLogueado;
+    public GUIMenuDocente (Persona logueado) {
      this.usuarioLogueado=logueado;
 
         initComponents();

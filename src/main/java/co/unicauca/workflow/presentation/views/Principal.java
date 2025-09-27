@@ -6,7 +6,7 @@ package co.unicauca.workflow.presentation.views;
 
 //ya no debe usar user, implementar con persona
 
-import co.unicauca.workflow.domain.entities.User;
+import co.unicauca.workflow.domain.entities.Persona;
 
 /**
  *
@@ -20,18 +20,18 @@ public class Principal extends javax.swing.JPanel {
     public Principal() {
         initComponents();
     }
-    public Principal(User user) {
+    public Principal(Persona user) {
         initComponents();
         cargarDatos(user);
     }
 
-    private void cargarDatos(User user) {
+    private void cargarDatos(Persona user) {
         lbNombre.setText("Nombre: " + user.getName());
         lbApellido.setText("Apellido: " + user.getLastname());
         lbCodigo.setText("Código: " + user.getIdUsuario());
-        lbPrograma.setText("Programa: " + user.getProgram().getDescripcion());
+      // lbPrograma.setText("Programa: " + user.getProgram().getDescripcion());
         lbCelular.setText("Celular: " + user.getPhone());
-        lbRol.setText("Rol: " + user.getRol());
+        lbRol.setText("Rol: " + user.getRoles());
         lbRol1.setText("Email: " + user.getEmail());
     }
     /**

@@ -6,7 +6,7 @@ package co.unicauca.workflow.presentation;
 
 //Añadir el boton de cerrar sesion (devuelve al login)
 
-import co.unicauca.workflow.domain.entities.User;
+import co.unicauca.workflow.domain.entities.Persona;
 import co.unicauca.workflow.presentation.views.Principal;
 import com.formdev.flatlaf.FlatLightLaf;
 import java.awt.BorderLayout;
@@ -22,9 +22,9 @@ public class GUIMenuCoord extends javax.swing.JFrame {
     /**
      * Creates new form GUIMenuCoord
      */
-     private static User usuarioLogueado;
-    public GUIMenuCoord(User logueado) {
-     this.usuarioLogueado=logueado;
+     private static Persona personaLogueada;
+    public GUIMenuCoord(Persona logueado) {
+     this.personaLogueada=logueado;
         initComponents();
          initStyles();
 
@@ -50,7 +50,7 @@ public class GUIMenuCoord extends javax.swing.JFrame {
          
      }
      private void initContent(){
-     showJPanel( new Principal(usuarioLogueado));
+     showJPanel( new Principal(personaLogueada));
     
 
      }
@@ -226,13 +226,13 @@ public class GUIMenuCoord extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btEvaluarFormatoAMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btEvaluarFormatoAMouseClicked
-       GUIEvaluarAnteproyecto ventanaEvaluar = new GUIEvaluarAnteproyecto(usuarioLogueado); // crear la nueva ventana
+       GUIEvaluarAnteproyecto ventanaEvaluar = new GUIEvaluarAnteproyecto(personaLogueada); // crear la nueva ventana
         ventanaEvaluar.setVisible(true);            // mostrarla
         this.dispose();
     }//GEN-LAST:event_btEvaluarFormatoAMouseClicked
 
     private void btRegresarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btRegresarMouseClicked
-        GUIMenuPrincipal ventanaPrincipal = new GUIMenuPrincipal(usuarioLogueado);
+        GUIMenuPrincipal ventanaPrincipal = new GUIMenuPrincipal(personaLogueada);
         ventanaPrincipal.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btRegresarMouseClicked
@@ -253,7 +253,7 @@ public class GUIMenuCoord extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GUIMenuCoord(usuarioLogueado).setVisible(true);
+                new GUIMenuCoord(personaLogueada).setVisible(true);
             }
         });
     }

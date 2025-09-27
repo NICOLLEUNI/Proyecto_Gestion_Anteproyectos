@@ -19,7 +19,7 @@ public class DepartamentoTest {
 
     @BeforeEach
     void setUp() throws Exception {
-        // 🔹 BD temporal en memoria
+        // 🔹  temporal en memoria
         conn = DriverManager.getConnection("jdbc:sqlite::memory:");
 
         // 🔹 Instanciar repo y forzar conexión en memoria

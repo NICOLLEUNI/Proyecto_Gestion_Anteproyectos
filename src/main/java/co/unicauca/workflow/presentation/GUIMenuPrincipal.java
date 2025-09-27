@@ -9,10 +9,10 @@ package co.unicauca.workflow.presentation;
 //implementar la ligica que impida acceder a la interfaz 
 //de un rol que no corresponda
 
-import co.unicauca.workflow.domain.entities.User;
 import co.unicauca.workflow.domain.entities.enumRol;
 import co.unicauca.workflow.presentation.views.Principal;
 import com.formdev.flatlaf.FlatLightLaf;
+import co.unicauca.workflow.domain.entities.Persona;
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMTMaterialLighterIJTheme;
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
@@ -28,13 +28,12 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
     /**
      * Creates new form GUIMenuPrincipal
      */
-    private User usuarioLogueado;
-    public GUIMenuPrincipal(User logueado) {
-       this.usuarioLogueado = logueado;
+  private Persona personaLogueada;
+       public GUIMenuPrincipal(Persona logueado) {
+        this.personaLogueada = logueado;
         initComponents();
         initStyles();
         initContent();
- 
     }
     
     public GUIMenuPrincipal()
@@ -56,9 +55,22 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
          
      }
      private void initContent(){
-    showJPanel( new Principal(usuarioLogueado));
+    showJPanel( new Principal(personaLogueada));
      
      }
+     
+     
+    /**
+     * Getter para obtener el usuario logueado
+     * @return La persona actualmente logueada
+     */
+    public Persona getUsuarioLogueado() {
+        return personaLogueada;
+    }
+     public void setUsuarioLogueado(Persona usuarioLogueado) {
+        this.personaLogueada = usuarioLogueado;
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -230,8 +242,8 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btDocMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btDocMouseClicked
-        if(usuarioLogueado.getRol()==enumRol.DOCENTE){
-        GUIMenuDocente ventanaDocente = new GUIMenuDocente(usuarioLogueado); // crear la nueva ventana
+        if(personaLogueada.tieneRol(enumRol.DOCENTE)){
+        GUIMenuDocente ventanaDocente = new GUIMenuDocente(personaLogueada); // crear la nueva ventana
         ventanaDocente.setVisible(true);            // mostrarla
         this.dispose(); 
         }else{
@@ -243,8 +255,8 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_btDocMouseClicked
 
     private void btEstMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btEstMouseClicked
-       if (usuarioLogueado.getRol()== enumRol.ESTUDIANTE) {
-           GUIMenuEstudiante ventanaEstudiante = new GUIMenuEstudiante(usuarioLogueado);
+       if (personaLogueada.tieneRol(enumRol.ESTUDIANTE)) {
+           GUIMenuEstudiante ventanaEstudiante = new GUIMenuEstudiante(personaLogueada);
            ventanaEstudiante.setVisible(true);
            this.dispose();
        } else {
@@ -256,9 +268,9 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_btEstMouseClicked
 
     private void btCoordMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btCoordMouseClicked
-        if(usuarioLogueado.getRol()==enumRol.COORDINADOR)
+        if(personaLogueada.tieneRol(enumRol.COORDINADOR))
         {
-        GUIMenuCoord ventanaCoord = new GUIMenuCoord(usuarioLogueado); // crear la nueva ventana
+        GUIMenuCoord ventanaCoord = new GUIMenuCoord(personaLogueada); // crear la nueva ventana
         ventanaCoord.setVisible(true);            // mostrarla
         this.dispose();   
         }else{

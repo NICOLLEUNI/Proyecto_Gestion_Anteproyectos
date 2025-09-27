@@ -43,12 +43,22 @@ public class Persona {
         this.email = email;
         this.password = password;
     }
+    // Agregar este constructor a tu clase Persona
+public Persona(String name, String lastname, String phone, String email, String password, EnumSet<enumRol> roles) throws ValidationException {
+    this.name = name;
+    this.lastname = lastname;
+    this.phone = phone;
+    this.email = email;
+    this.password = password;
+    this.roles = (roles != null) ? EnumSet.copyOf(roles) : EnumSet.noneOf(enumRol.class);
+    validarCampos();
+}
     
      /**
      * Método que valida los campos de la entidad
      * @throws ValidationException si encuentra errores
      */ 
-    private void validarCampos() throws ValidationException {
+    /**private void validarCampos() throws ValidationException {
         List<String> errores = new ArrayList<>();
 
         // Validaciones básicas
@@ -76,7 +86,38 @@ public class Persona {
         if (!errores.isEmpty()) {
             throw new ValidationException(errores);
         }
+    }*/
+
+
+private void validarCampos() throws ValidationException {
+    List<String> errores = new ArrayList<>();
+
+    if (name == null || name.trim().isEmpty()) {
+        errores.add("El nombre es obligatorio.");
     }
+    if (lastname == null || lastname.trim().isEmpty()) {
+        errores.add("El apellido es obligatorio.");
+    }
+    if (email == null || email.trim().isEmpty()) {
+        errores.add("El correo electrónico es obligatorio.");
+    }
+    if (password == null || password.trim().isEmpty()) {
+        errores.add("La contraseña es obligatoria.");
+    }
+
+    // teléfono opcional: si se provee, validar formato
+    if (phone != null && !phone.trim().isEmpty()) {
+        if (!phone.matches("\\d+")) {
+            errores.add("El teléfono debe contener solo dígitos.");
+        }
+    }
+
+    // NOTA: validación de roles la hace el Service (no la exigimos aquí)
+    if (!errores.isEmpty()) {
+        throw new ValidationException(errores);
+    }
+}
+
 
     public Persona() {
     }

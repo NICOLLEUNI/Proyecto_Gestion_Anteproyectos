@@ -27,6 +27,7 @@ public interface IFacultadRepository {
      * @return Lista de facultades
      */
     List<Facultad> list();
+
     /**
      * Conecta a la base de datos
      */

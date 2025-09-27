@@ -10,7 +10,7 @@ package co.unicauca.workflow.presentation;
 import co.unicauca.workflow.access.FormatoARepository;
 import co.unicauca.workflow.access.IFormatoARepository;
 import co.unicauca.workflow.domain.entities.FormatoA;
-import co.unicauca.workflow.domain.entities.User;
+import co.unicauca.workflow.domain.entities.Persona;
 import co.unicauca.workflow.presentation.views.Observaciones;
 import co.unicauca.workflow.presentation.views.SubirFormatoA;
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMTMaterialLighterIJTheme;
@@ -30,9 +30,9 @@ public class GUIEvaluarAnteproyecto extends javax.swing.JFrame {
     /**
      * Creates new form GUIEvaluarAnteproyecto
      */
-     private static User usuarioLogueado;
-    public GUIEvaluarAnteproyecto(User logueado) {
-         this.usuarioLogueado=logueado;
+     private static Persona personaLogueada;
+    public GUIEvaluarAnteproyecto(Persona logueado) {
+         this.personaLogueada=logueado;
         initComponents();
    initContent();
 
@@ -238,7 +238,7 @@ private void cargarDatos() {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btVolverMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btVolverMouseClicked
-      GUIMenuCoord ventanaCoord = new  GUIMenuCoord(usuarioLogueado);
+      GUIMenuCoord ventanaCoord = new  GUIMenuCoord(personaLogueada);
       ventanaCoord.setVisible(true);
       this.dispose(); 
     }//GEN-LAST:event_btVolverMouseClicked
@@ -253,7 +253,7 @@ private void cargarDatos() {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GUIEvaluarAnteproyecto(usuarioLogueado).setVisible(true);
+                new GUIEvaluarAnteproyecto(personaLogueada).setVisible(true);
             }
         });
     }
