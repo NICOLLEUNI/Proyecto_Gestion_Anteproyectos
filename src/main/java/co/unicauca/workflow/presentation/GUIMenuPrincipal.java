@@ -89,6 +89,7 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
         jSeparator7 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setLocationByPlatform(true);
         setMinimumSize(new java.awt.Dimension(910, 510));
 
         Background.setBackground(new java.awt.Color(26, 55, 171));

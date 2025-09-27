@@ -12,6 +12,9 @@ import co.unicauca.workflow.access.IFormatoARepository;
 import co.unicauca.workflow.domain.entities.FormatoA;
 import co.unicauca.workflow.domain.entities.Persona;
 import co.unicauca.workflow.domain.exceptions.ValidationException;
+import co.unicauca.workflow.domain.service.FormatoAService;
+import co.unicauca.workflow.presentation.views.GraficoBarras;
+import co.unicauca.workflow.presentation.views.GraficoPastel;
 import co.unicauca.workflow.presentation.views.Observaciones;
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMTMaterialLighterIJTheme;
 import java.awt.BorderLayout;
@@ -20,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 
@@ -30,21 +34,49 @@ import javax.swing.table.DefaultTableModel;
  */
 public class GUIEvaluarAnteproyecto extends javax.swing.JFrame {
 
-
+    private FormatoAService formatoAService;
     private static Persona personaLogueado;
     private IFormatoARepository repoFormatoA = Factory.getInstance().getFormatoARepository("default");
     
     //private List<FormatoA> listaFormateada = new ArrayList<>();
     
    public GUIEvaluarAnteproyecto(Persona logueado) throws ValidationException {
+       this.formatoAService = new FormatoAService(repoFormatoA);
         this.personaLogueado=logueado;
         initComponents();
         initContent();
         cargarDatos();
+        inicializarObservadores();
          }
+   private void inicializarObservadores() {
+    GraficoPastel graficoPastel = new GraficoPastel(formatoAService);
+    GraficoBarras graficoBarras = new GraficoBarras(formatoAService);
 
+    formatoAService.addObserver(graficoPastel);
+    formatoAService.addObserver(graficoBarras);
+
+    // Coordenadas de la ventana principal
+    int xPrincipal = this.getX();
+    int yPrincipal = this.getY();
+    int anchoPrincipal = this.getWidth();
+
+    // Frame Pastel
+    JFrame framePastel = new JFrame("Gráfico Pastel");
+    framePastel.getContentPane().add(graficoPastel);
+    framePastel.pack();
+    framePastel.setLocation(xPrincipal + anchoPrincipal + 10, yPrincipal); // a la derecha
+    framePastel.setVisible(true);
+
+    // Frame Barras (debajo o al lado)
+    JFrame frameBarras = new JFrame("Gráfico Barras");
+    frameBarras.getContentPane().add(graficoBarras);
+    frameBarras.pack();
+    frameBarras.setLocation(xPrincipal + anchoPrincipal + 10, 
+                            yPrincipal + framePastel.getHeight() + 30);
+    frameBarras.setVisible(true);
+}
    private void cargarDatos() {
-    List<FormatoA> lista = repoFormatoA.list();
+    List<FormatoA> lista = formatoAService.listFormatoA();
 
     String[] columnas = {"ID",  "Titulo", "Estado"};
     DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
@@ -81,10 +113,10 @@ public class GUIEvaluarAnteproyecto extends javax.swing.JFrame {
         int id = (int) jTable1.getValueAt(fila, 0); // ID está en la columna 0
 
         // Buscar el FormatoA desde repo
-        FormatoA formato = repoFormatoA.findById(id); // ⚠️ Necesitas implementar este método en FormatoARepository
+        FormatoA formato = formatoAService.findById(id); 
 
         if (formato != null) {
-            Observaciones panelObs = new Observaciones();
+            Observaciones panelObs = new Observaciones(formatoAService);
             panelObs.setFormatoA(formato);
             showJPanel(panelObs);
         }}
@@ -106,6 +138,7 @@ public class GUIEvaluarAnteproyecto extends javax.swing.JFrame {
         Contenido = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setLocationByPlatform(true);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 

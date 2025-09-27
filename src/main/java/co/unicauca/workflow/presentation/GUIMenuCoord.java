@@ -70,6 +70,7 @@ public class GUIMenuCoord extends javax.swing.JFrame {
         Contenido = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setLocationByPlatform(true);
 
         Background.setBackground(new java.awt.Color(26, 55, 171));
 

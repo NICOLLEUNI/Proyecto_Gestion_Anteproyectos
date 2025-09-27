@@ -4,6 +4,7 @@ package co.unicauca.workflow;
 import co.unicauca.workflow.access.DocenteRepository;
 import co.unicauca.workflow.access.Factory;
 import co.unicauca.workflow.access.ICoordinadorRepository;
+import co.unicauca.workflow.access.IFormatoARepository;
 import co.unicauca.workflow.access.IPersonaRepository;
 import co.unicauca.workflow.domain.entities.Departamento;
 import co.unicauca.workflow.domain.entities.Docente;
@@ -24,6 +25,7 @@ import co.unicauca.workflow.presentation.GUILogin;
 import co.unicauca.workflow.presentation.GUIMenuPrincipal;
 import java.util.EnumSet;
 import co.unicauca.workflow.domain.exceptions.ValidationException;
+import co.unicauca.workflow.domain.service.FormatoAService;
 import co.unicauca.workflow.presentation.GUIMenuCoord;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -41,6 +43,8 @@ public class Taller02PrincipiosSolid {
         
         IPersonaRepository repository = Factory.getInstance().getPersonaRepository("default");
         PersonaService service = new PersonaService();
+        IFormatoARepository repoFomratoA = Factory.getInstance().getFormatoARepository("default");
+        FormatoAService serviceFormato = new FormatoAService(repoFomratoA);
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override

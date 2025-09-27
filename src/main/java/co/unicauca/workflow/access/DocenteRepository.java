@@ -63,7 +63,7 @@ public class DocenteRepository implements IDocenteRepository {
         try {
             String sql = "SELECT d.idUsuario, p.name, p.lastname, p.phone, p.email, p.password, "
                        + "dep.codDepartamento, dep.depNombre AS nombreDepartamento, "
-                       + "f.codFacultad, f.facNombre AS nombreFacultad "
+                       + "f.codFacultad, f.nombre AS nombreFacultad "
                        + "FROM Docente d "
                        + "JOIN Persona p ON d.idUsuario = p.idUsuario "
                        + "JOIN Departamento dep ON d.codDepartamento = dep.codDepartamento "
