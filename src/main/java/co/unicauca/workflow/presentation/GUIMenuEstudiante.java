@@ -9,6 +9,8 @@ package co.unicauca.workflow.presentation;
 //Implementar la logica del panel para que muestre el formato A regiatrado 
 //con el correo del estudiante 
 
+import co.unicauca.workflow.access.FormatoARepository;
+import co.unicauca.workflow.access.IFormatoARepository;
 import co.unicauca.workflow.presentation.views.Principal;
 import co.unicauca.workflow.domain.entities.User;
 import co.unicauca.workflow.presentation.views.ConsultarFormatoA;
@@ -88,7 +90,7 @@ public class GUIMenuEstudiante extends javax.swing.JFrame {
 
         lblLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/co/unicauca/workflow/presentation/images/LogoPequeño.png"))); // NOI18N
         lblLogo.setText("jLabel2");
-        Menu.add(lblLogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(34, 6, 157, -1));
+        Menu.add(lblLogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 10, 157, -1));
 
         btRegresar.setBackground(new java.awt.Color(65, 55, 171));
         btRegresar.setFont(new java.awt.Font("Roboto Medium", 0, 24)); // NOI18N
@@ -216,7 +218,8 @@ public class GUIMenuEstudiante extends javax.swing.JFrame {
     }//GEN-LAST:event_btRegresarMouseClicked
 
     private void btConsultarFormatoAMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btConsultarFormatoAMouseClicked
-         showJPanel( new ConsultarFormatoA());
+         IFormatoARepository repo = new FormatoARepository(); 
+        showJPanel(new ConsultarFormatoA(personaLogueado));
     }//GEN-LAST:event_btConsultarFormatoAMouseClicked
 
     private void JButtonCloseSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JButtonCloseSesionActionPerformed

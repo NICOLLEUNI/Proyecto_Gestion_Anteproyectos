@@ -5,6 +5,12 @@
 package co.unicauca.workflow.domain.service;
 
 import co.unicauca.workflow.access.IPersonaRepository;
+import co.unicauca.workflow.domain.entities.Persona;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.List;
+import java.util.Locale;
 
 /**
  *
@@ -51,4 +57,49 @@ public class PersonaService {
         String regex = "^[A-Za-z0-9._%+-]+@unicauca\\.edu\\.co$";
         return email != null && email.matches(regex);
     }
+    
+    public Persona authenticateUser(String email, String password) {
+    if (email == null || email.isBlank() || password == null || password.isBlank()) {
+        return null;
+    }
+
+    // Normalizar email
+    String normalizedEmail = email.trim().toLowerCase(Locale.ROOT);
+
+    // Hashear la contraseña ingresada
+    String hashedPassword = hashPassword(password);
+    if (hashedPassword == null) {
+        return null;
+    }
+
+    // Obtener todas las personas desde el repositorio
+    List<Persona> personas = repository.list();
+    for (Persona p : personas) {
+        if (p.getEmail() != null
+                && p.getEmail().equalsIgnoreCase(normalizedEmail)
+                && p.getPassword().equals(hashedPassword)) {
+            return p; // 👈 Retorna el objeto completo (puede ser Estudiante, Docente, Coordinador)
+        }
+    }
+    return null;
+}
+
+/**
+ * Método auxiliar para hashear la contraseña.
+ * Puedes usar el mismo algoritmo que en UserService para mantener consistencia.
+ */
+private String hashPassword(String password) {
+    try {
+        MessageDigest md = MessageDigest.getInstance("SHA-256");
+        byte[] hashedBytes = md.digest(password.getBytes(StandardCharsets.UTF_8));
+        StringBuilder sb = new StringBuilder();
+        for (byte b : hashedBytes) {
+            sb.append(String.format("%02x", b));
+        }
+        return sb.toString();
+    } catch (NoSuchAlgorithmException e) {
+        return null;
+    }
+}
+
 }

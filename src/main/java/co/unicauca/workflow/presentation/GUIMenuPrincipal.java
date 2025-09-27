@@ -9,6 +9,8 @@ package co.unicauca.workflow.presentation;
 //implementar la ligica que impida acceder a la interfaz 
 //de un rol que no corresponda
 
+import co.unicauca.workflow.access.IFormatoARepository;
+import co.unicauca.workflow.domain.entities.Estudiante;
 import co.unicauca.workflow.domain.entities.Persona;
 import co.unicauca.workflow.domain.entities.enumRol;
 import co.unicauca.workflow.presentation.views.Principal;
@@ -27,6 +29,9 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
      * Creates new form GUIMenuPrincipal
      */
     private Persona personaLogueado;
+    
+    private Estudiante estudiante;
+    
     public GUIMenuPrincipal(Persona logueado) {
        this.personaLogueado = logueado;
         initComponents();
@@ -269,7 +274,7 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
 
     private void jButtonCloseSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCloseSesionActionPerformed
        GUILogin login = new GUILogin();
-       login.setVisible(rootPaneCheckingEnabled);
+       login.setVisible(true);
        this.setVisible(false);
     }//GEN-LAST:event_jButtonCloseSesionActionPerformed
 

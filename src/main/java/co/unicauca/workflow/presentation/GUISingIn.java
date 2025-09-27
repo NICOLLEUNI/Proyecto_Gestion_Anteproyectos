@@ -88,6 +88,7 @@ private final UserService userService;
         jSeparator13 = new javax.swing.JSeparator();
         jSeparator14 = new javax.swing.JSeparator();
         jSeparator15 = new javax.swing.JSeparator();
+        BtnBack = new javax.swing.JButton();
         BgImage = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -109,7 +110,7 @@ private final UserService userService;
         lblTitulo.setForeground(new java.awt.Color(0, 0, 0));
         lblTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblTitulo.setText("REGISTRO");
-        pnlBack.add(lblTitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 310, 50));
+        pnlBack.add(lblTitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, 300, 50));
 
         lblCelular.setFont(new java.awt.Font("Roboto Light", 1, 14)); // NOI18N
         lblCelular.setForeground(new java.awt.Color(0, 0, 0));
@@ -160,7 +161,7 @@ private final UserService userService;
         lblBttRegistrar.setForeground(new java.awt.Color(255, 255, 255));
         lblBttRegistrar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblBttRegistrar.setText("REGISTRARME");
-        lblBttRegistrar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblBttRegistrar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         lblBttRegistrar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lblBttRegistrarMouseClicked(evt);
@@ -278,11 +279,24 @@ private final UserService userService;
         pnlBack.add(jSeparator14, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 360, 230, 20));
         pnlBack.add(jSeparator15, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 360, 230, 20));
 
+        BtnBack.setBackground(new java.awt.Color(255, 255, 255));
+        BtnBack.setFont(new java.awt.Font("Goudy Stout", 1, 18)); // NOI18N
+        BtnBack.setForeground(new java.awt.Color(0, 0, 0));
+        BtnBack.setText("<");
+        BtnBack.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
+        BtnBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnBackActionPerformed(evt);
+            }
+        });
+        pnlBack.add(BtnBack, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 50, -1, -1));
+
         BackGround.add(pnlBack, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 20, 640, 470));
 
         BgImage.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         BgImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/co/unicauca/workflow/presentation/images/BackGroundSingIn.png"))); // NOI18N
-        BackGround.add(BgImage, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 770, -1));
+        BgImage.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        BackGround.add(BgImage, new org.netbeans.lib.awtextra.AbsoluteConstraints(-80, 0, 770, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -438,6 +452,12 @@ private final UserService userService;
        
 
     }//GEN-LAST:event_lblBttRegistrarMouseClicked
+
+    private void BtnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnBackActionPerformed
+       GUILogin login = new GUILogin();
+       login.setVisible(true);
+       this.setVisible(false);
+    }//GEN-LAST:event_BtnBackActionPerformed
    
 public void irALogin(){
     GUILogin ventanaLogin = new GUILogin(); // crear la nueva ventana
@@ -548,6 +568,7 @@ private void restaurarPlaceholderPassword(JPasswordField campo) {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel BackGround;
     private javax.swing.JLabel BgImage;
+    private javax.swing.JButton BtnBack;
     private javax.swing.JCheckBox CBDocente;
     private javax.swing.JCheckBox CBEstudiante;
     private javax.swing.JComboBox<String> ComBoxPrograma;
