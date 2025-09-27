@@ -145,7 +145,7 @@ public boolean save(Facultad fac) {
         try {
             if (conn == null || conn.isClosed()) {
                 String url = "jdbc:sqlite:" + System.getProperty("user.dir") + "/BD.db";
-                conn = DriverManager.getConnection(url);
+                conn = ConexionSQLite.getConnection();
                 try (Statement stmt = conn.createStatement()) {
                     stmt.execute("PRAGMA busy_timeout = 5000");
                 }

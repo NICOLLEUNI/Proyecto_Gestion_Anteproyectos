@@ -141,7 +141,7 @@ public List<Estudiante> list() {
         try {
             if (conn == null || conn.isClosed()) {
                 String url = "jdbc:sqlite:" + System.getProperty("user.dir") + "/BD.db";
-                conn = DriverManager.getConnection(url);
+                conn = ConexionSQLite.getConnection();
                 try (Statement stmt = conn.createStatement()) {
                     stmt.execute("PRAGMA busy_timeout = 5000");
                 }
@@ -168,7 +168,7 @@ public List<Estudiante> list() {
     }
      public Estudiante findById(int id) {
         String sql = "SELECT p.idUsuario, p.name, p.lastname, p.phone, p.email, p.password, " +
-                     "e.codPrograma, prog.nombrePrograma " +
+                     "e.codPrograma, prog.nombre AS nombrePrograma " +
                      "FROM Estudiante e " +
                      "INNER JOIN Persona p ON e.idUsuario = p.idUsuario " +
                      "LEFT JOIN Programa prog ON e.codPrograma = prog.codPrograma " +

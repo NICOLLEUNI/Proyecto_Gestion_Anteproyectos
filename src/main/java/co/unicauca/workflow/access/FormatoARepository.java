@@ -219,7 +219,7 @@ public class FormatoARepository implements IFormatoARepository {
     public void connect() {
         String url = "jdbc:sqlite:" + System.getProperty("user.dir") + "/BD.db";
         try {
-            conn = DriverManager.getConnection(url);
+            conn =ConexionSQLite.getConnection();
             System.out.println("Conectado a la BD en archivo");
         } catch (SQLException ex) {
             Logger.getLogger(FormatoAService.class.getName()).log(Level.SEVERE, null, ex);

@@ -162,7 +162,7 @@ public class FormatoAVersionRepository implements IFormatoAVersionRepository {
     public void connect() {
         String url = "jdbc:sqlite:" + System.getProperty("user.dir") + "/BD.db";
         try {
-            conn = DriverManager.getConnection(url);
+            conn =ConexionSQLite.getConnection();
             System.out.println("Conectado a la BD (FormatoAVersion)");
         } catch (SQLException ex) {
             Logger.getLogger(FormatoAService.class.getName()).log(Level.SEVERE, null, ex);

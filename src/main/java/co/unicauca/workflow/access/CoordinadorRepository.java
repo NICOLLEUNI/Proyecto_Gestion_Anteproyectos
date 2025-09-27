@@ -67,7 +67,7 @@ public class CoordinadorRepository implements ICoordinadorRepository {
         List<Coordinador> coordinadores = new ArrayList<>();
         try {
             String sql = "SELECT c.idUsuario, p.name, p.lastname, p.phone, p.email, p.password, "
-                       + "d.codDepartamento, d.nombre AS nombreDepartamento, "
+                       + "d.codDepartamento, d.depNombre AS nombreDepartamento, "
                        + "f.codFacultad, f.nombre AS nombreFacultad "
                        + "FROM Coordinador c "
                        + "JOIN Persona p ON c.idUsuario = p.idUsuario "
@@ -127,7 +127,7 @@ public class CoordinadorRepository implements ICoordinadorRepository {
     public void connect() {
         String url = "jdbc:sqlite:" + System.getProperty("user.dir") + "/BD.db";
         try {
-            conn = DriverManager.getConnection(url);
+            conn = ConexionSQLite.getConnection();
             System.out.println("Conectado a la BD en archivo");
         } catch (SQLException ex) {
             Logger.getLogger(CoordinadorRepository.class.getName()).log(Level.SEVERE, null, ex);

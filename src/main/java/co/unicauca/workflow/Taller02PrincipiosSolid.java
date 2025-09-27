@@ -40,7 +40,7 @@ public class Taller02PrincipiosSolid {
     public static void main(String[] args) {
         
         IPersonaRepository repository = Factory.getInstance().getPersonaRepository("default");
-        PersonaService service = new PersonaService(repository);
+        PersonaService service = new PersonaService();
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override

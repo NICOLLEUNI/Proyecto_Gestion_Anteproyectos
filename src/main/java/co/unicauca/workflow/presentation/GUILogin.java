@@ -8,6 +8,7 @@ import co.unicauca.workflow.access.UserRepository;
 import co.unicauca.workflow.domain.entities.Persona;
 import co.unicauca.workflow.domain.entities.User;
 import co.unicauca.workflow.domain.entities.enumRol;
+import co.unicauca.workflow.domain.service.PersonaService;
 
 //Debemos usar la instancia de factory no crear un nuevo repositorio
 

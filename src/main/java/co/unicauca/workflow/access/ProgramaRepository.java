@@ -66,7 +66,7 @@ public class ProgramaRepository implements IProgramaRepository {
         List<Programa> programas = new ArrayList<>();
         try {
             String sql = "SELECT p.codPrograma, p.nombre AS nombrePrograma, " +
-                         "d.codDepartamento, d.nombre AS nombreDepartamento, " +
+                         "d.codDepartamento, d.depNombre AS nombreDepartamento, " +
                          "f.codFacultad, f.nombre AS nombreFacultad " +
                          "FROM Programa p " +
                          "JOIN Departamento d ON p.codDepartamento = d.codDepartamento " +
@@ -105,7 +105,7 @@ public class ProgramaRepository implements IProgramaRepository {
     private void initDatabase() {
         String sqlPrograma = "CREATE TABLE IF NOT EXISTS Programa ("
                 + "codPrograma INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
-                + "nombrePrograma TEXT NOT NULL, "
+                + "nombre TEXT NOT NULL, "
                 + "codDepartamento INTEGER NOT NULL, "
                 + "FOREIGN KEY (codDepartamento) REFERENCES Departamento(codDepartamento)"
                 + ");";
@@ -123,7 +123,7 @@ public class ProgramaRepository implements IProgramaRepository {
         try {
             if (conn == null || conn.isClosed()) {
                 String url = "jdbc:sqlite:" + System.getProperty("user.dir") + "/BD.db";
-                conn = DriverManager.getConnection(url);
+                conn = ConexionSQLite.getConnection();
                 try (Statement stmt = conn.createStatement()) {
                     stmt.execute("PRAGMA busy_timeout = 5000");
                 }

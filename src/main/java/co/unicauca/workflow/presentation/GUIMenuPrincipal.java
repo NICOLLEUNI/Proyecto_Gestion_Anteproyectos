@@ -63,10 +63,10 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
      * @return La persona actualmente logueada
      */
     public Persona getUsuarioLogueado() {
-        return personaLogueada;
+        return personaLogueado;
     }
      public void setUsuarioLogueado(Persona usuarioLogueado) {
-        this.personaLogueada = usuarioLogueado;
+        this.personaLogueado = usuarioLogueado;
     }
     
     /**
