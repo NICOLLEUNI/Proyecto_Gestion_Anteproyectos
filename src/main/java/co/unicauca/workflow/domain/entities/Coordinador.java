@@ -25,8 +25,12 @@ public class Coordinador extends Persona {
         super(idUsuario,name, lastname, phone, email, password);
 
         this.Departamento = Departamento;
-         validarCampos();
+        validarCampos();
     }
+
+    public Coordinador() {
+    }
+    
     private void validarCampos() throws ValidationException {
            List<String> errores = new ArrayList<>();
      
@@ -37,6 +41,7 @@ public class Coordinador extends Persona {
             throw new ValidationException(errores);
         }
     }
+    
     public Departamento getDepartamento() {
         return Departamento;
     }

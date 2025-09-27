@@ -6,7 +6,12 @@ package co.unicauca.workflow.presentation.views;
 
 import co.unicauca.workflow.access.FormatoARepository;
 import co.unicauca.workflow.access.IFormatoARepository;
+import co.unicauca.workflow.domain.entities.Docente;
+import co.unicauca.workflow.domain.entities.Estudiante;
 import co.unicauca.workflow.domain.entities.FormatoA;
+import co.unicauca.workflow.domain.entities.Persona;
+import co.unicauca.workflow.domain.service.FormatoAService;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
@@ -19,31 +24,51 @@ public class ConsultarFormatoA extends javax.swing.JPanel {
     /**
      * Creates new form ConsultarFormatoA
      */
-    public ConsultarFormatoA() {
+    
+    private Persona personaLogueado;
+    private IFormatoARepository repo;
+    private FormatoAService service;
+    
+    public ConsultarFormatoA(Persona personaLogueado) {
         initComponents();
+        this.personaLogueado = personaLogueado;
+        
+        this.service = new FormatoAService(repo);
         initStyles();
-         cargarDatos();
+        cargarDatos();
     }
 private void cargarDatos() {
-     IFormatoARepository repo = new FormatoARepository();
-    List<FormatoA> lista = repo.list();
+    
+    List<FormatoA> lista;
 
-    String[] columnas = {"Título", "Director", "Entrega", "Estado", "Observaciones"};
-    DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
+        if (personaLogueado instanceof Estudiante) {
+            // 🔎 Traer solo los FormatoA asociados a este estudiante
+            lista = service.consultarFormatoAEstudiante(personaLogueado);
+        } else if (personaLogueado instanceof Docente) {
+            // 🔎 Traer solo los FormatoA donde este docente es director o codirector
+            lista = service.consultarFormatoADocente(personaLogueado);
+        } else {
+            // Otros roles no ven nada
+            lista = new ArrayList<>();
+        }
 
-    for (FormatoA f : lista) {
-        Object[] fila = {
-            f.getTitle(),
-            f.getProjectManager(),
-            f.getDate() != null ? f.getDate().toString() : "", // Fecha segura
-            f.getState() != null ? f.getState() : "Pendiente", // Estado real si existe
-            f.getObservations() != null ? f.getObservations() : "" // Observaciones reales
-        };
-        modelo.addRow(fila);
-    }
+        String[] columnas = {"Título", "Director", "Entrega", "Estado", "Observaciones"};
+        DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
 
-    jTable1.setModel(modelo);
+        for (FormatoA f : lista) {
+            Object[] fila = {
+                f.getTitle(),
+                f.getProjectManager() != null ? f.getProjectManager().getIdUsuario() : "", // id del director
+                f.getDate() != null ? f.getDate().toString() : "", // fecha de entrega
+                f.getState() != null ? f.getState().name() : "Pendiente", // estado
+                f.getObservations() != null ? f.getObservations() : "" // observaciones
+            };
+            modelo.addRow(fila);
+        }
+
+        jTable1.setModel(modelo);
 }
+
      private void initStyles(){
          // Ajustes de tabla para que combine con FlatLaf
 jTable1.setRowHeight(30); // filas más altas

@@ -17,4 +17,6 @@ public interface IFormatoARepository {
 
     List<FormatoA > list();
     public FormatoA findById(int id);
+     boolean updateEstadoYObservaciones(int idFormato, String estado, String observaciones);
+
 }

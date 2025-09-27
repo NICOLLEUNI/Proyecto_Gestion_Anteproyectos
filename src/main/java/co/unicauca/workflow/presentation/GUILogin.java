@@ -1,12 +1,16 @@
 
 package co.unicauca.workflow.presentation;
+import co.unicauca.workflow.access.IPersonaRepository;
 import java.awt.Color;
 import javax.swing.JOptionPane;
 import co.unicauca.workflow.domain.service.UserService;
 import co.unicauca.workflow.access.IUserRepository;
+import co.unicauca.workflow.access.PersonaRepository;
 import co.unicauca.workflow.access.UserRepository;
+import co.unicauca.workflow.domain.entities.Persona;
 import co.unicauca.workflow.domain.entities.User;
 import co.unicauca.workflow.domain.entities.enumRol;
+import co.unicauca.workflow.domain.service.PersonaService;
 
 //Debemos usar la instancia de factory no crear un nuevo repositorio
 
@@ -276,10 +280,12 @@ public class GUILogin extends javax.swing.JFrame {
             JOptionPane.WARNING_MESSAGE);
         return;
     }
-
-
     try {
-        User logueado = userService.authenticateUser(usuario, clave);
+        IPersonaRepository repo = new PersonaRepository(); 
+        PersonaService service = new PersonaService(repo);
+
+        
+        Persona logueado = service.authenticateUser(usuario, clave);
 
         if (logueado != null) {
             JOptionPane.showMessageDialog(this,
@@ -287,12 +293,9 @@ public class GUILogin extends javax.swing.JFrame {
                 "Inicio de sesión exitoso",
                 JOptionPane.INFORMATION_MESSAGE);
 
-
-     
-                GUIMenuPrincipal guiPrincipal = new GUIMenuPrincipal(logueado);
-               guiPrincipal .setVisible(true);
-           
-
+            // Abrir menú principal con el usuario autenticado
+            GUIMenuPrincipal guiPrincipal = new GUIMenuPrincipal(logueado);
+            guiPrincipal.setVisible(true);
 
             this.dispose(); // cerrar el login
         } else {

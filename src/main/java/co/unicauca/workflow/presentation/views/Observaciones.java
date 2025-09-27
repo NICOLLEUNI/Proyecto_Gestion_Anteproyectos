@@ -6,8 +6,13 @@ package co.unicauca.workflow.presentation.views;
 
 //al dar click en ruta pdf debe exportar el formato A en la ruta 
 
+import co.unicauca.workflow.access.Factory;
+import co.unicauca.workflow.access.IFormatoARepository;
 import co.unicauca.workflow.domain.entities.FormatoA;
+import co.unicauca.workflow.domain.entities.enumEstado;
+import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMTMaterialLighterIJTheme;
 import java.awt.Color;
+import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -22,18 +27,120 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * @author User
  */
 public class Observaciones extends javax.swing.JPanel {
-
+private FormatoA formatoActual;
+ private IFormatoARepository repoFormatoA = Factory.getInstance().getFormatoARepository("default");
     /**
      * Creates new form Observaciones
      */
     public Observaciones() {
+        FlatMTMaterialLighterIJTheme.setup();
         initComponents();
+        initStyles();
+        initEvents();
     }
-public void setFormatoA(FormatoA formato) {
+    private void initEvents() {
+    lblPDF.addMouseListener(new java.awt.event.MouseAdapter() {
+        @Override
+        public void mouseClicked(java.awt.event.MouseEvent evt) {
+            abrirPDF();
+        }
+    });
+}
+    private void initStyles() {
+    // estilos del lblPDF
+    lblPDF.setForeground(new java.awt.Color(33, 150, 243)); // azul estilo material
+    lblPDF.setFont(new java.awt.Font("Roboto", java.awt.Font.BOLD, 13));
+    lblPDF.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR)); // manito
+    lblPDF.setToolTipText("Abrir PDF"); // tooltip al pasar el mouse
     
+    // opcional: subrayar el texto como link
+  //  lblPDF.setText("<html><u>" + lblPDF.getText() + "</u></html>");
+}
+    private void abrirPDF() {
+    try {
+        String ruta = lblPDF.getText();  // 🔹 en tu lblPDF estará la ruta (ej: "C:/Users/User/Desktop/archivo.pdf")
+        File file = new File(ruta);
+
+        if (file.exists()) {
+            if (Desktop.isDesktopSupported()) {
+                Desktop.getDesktop().open(file);  // abre con el programa por defecto
+            } else {
+                JOptionPane.showMessageDialog(this, "La función Desktop no está soportada en este sistema.");
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "El archivo no existe: " + ruta);
+        }
+    } catch (IOException e) {
+        JOptionPane.showMessageDialog(this, "Error al abrir el archivo: " + e.getMessage());
+    }
 }
 
-    /**
+public void setFormatoA(FormatoA formato) {
+    if (formato == null) return;
+
+    // Guardar referencia para usar luego en btEvaluar
+    this.formatoActual = formato;
+
+
+
+    // Asignar datos a los labels
+    lblUTitulo.setText(formato.getTitle() != null ? formato.getTitle() : "Sin título");
+    lblUModalidad.setText(formato.getMode() != null ? formato.getMode().toString() : "N/A");
+    lblUDirector.setText(formato.getProjectManager() != null
+            ? formato.getProjectManager().getName() + " " + formato.getProjectManager().getLastname()
+            : "Sin director");
+
+    // Estudiantes
+    if (formato.getEstudiantes() != null && !formato.getEstudiantes().isEmpty()) {
+        lblUEstudiante.setText(formato.getEstudiantes().get(0).getName() + " " +
+                               formato.getEstudiantes().get(0).getLastname());
+
+        if (formato.getEstudiantes().size() > 1) {
+            lblUEstudiante2.setText(formato.getEstudiantes().get(1).getName() + " " +
+                                    formato.getEstudiantes().get(1).getLastname());
+        } else {
+            lblUEstudiante2.setText("Sin segundo estudiante");
+        }
+    } else {
+        lblUEstudiante.setText("Sin estudiantes");
+        lblUEstudiante2.setText("Sin segundo estudiante");
+    }
+
+    // PDF
+    String rutaPDF = formato.getArchivoPDF();
+    if (rutaPDF != null && !rutaPDF.trim().isEmpty()) {
+        if (!rutaPDF.toLowerCase().endsWith(".pdf")) {
+            rutaPDF += ".pdf";
+        }
+        lblPDF.setText(rutaPDF);
+    } else {
+        lblPDF.setText("Sin archivo");
+    }
+
+    // Observaciones previas (si las tiene en BD)
+    if (formato.getObservations() != null) {
+        txtObservaciones.setText(formato.getObservations());
+    }
+
+// Estado previo (si ya fue evaluado)
+if (formato.getState() != null) {
+    if (formato.getState() == enumEstado.APROBADO) {
+        CBXAprobado.setSelected(true);
+        CBXRechazado.setSelected(false);
+    } else if (formato.getState() == enumEstado.RECHAZADO) {
+        CBXRechazado.setSelected(true);
+        CBXAprobado.setSelected(false);
+    } else {
+        CBXAprobado.setSelected(false);
+        CBXRechazado.setSelected(false);
+    }
+} else {
+    CBXAprobado.setSelected(false);
+    CBXRechazado.setSelected(false);
+}
+
+    System.out.println("=== setFormatoA terminado ===");
+}  /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
      * regenerated by the Form Editor.
@@ -58,14 +165,21 @@ public void setFormatoA(FormatoA formato) {
         jPanel1 = new javax.swing.JPanel();
         lblPDF = new javax.swing.JLabel();
         lblObservaciones = new javax.swing.JLabel();
-        CBXAprovado = new javax.swing.JCheckBox();
+        CBXAprobado = new javax.swing.JCheckBox();
         CBXRechazado = new javax.swing.JCheckBox();
-        txtObservaciones = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        txtObservaciones = new javax.swing.JTextArea();
+        lblEstudiante2 = new javax.swing.JLabel();
+        lblUEstudiante2 = new javax.swing.JLabel();
+        jSeparator13 = new javax.swing.JSeparator();
+        Icon = new javax.swing.JLabel();
+        btEvaluar = new javax.swing.JButton();
 
-        setPreferredSize(new java.awt.Dimension(533, 371));
-        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        setMinimumSize(new java.awt.Dimension(533, 456));
+        setPreferredSize(new java.awt.Dimension(533, 456));
 
         Contenido.setBackground(new java.awt.Color(255, 255, 255));
+        Contenido.setPreferredSize(new java.awt.Dimension(533, 456));
 
         lblTitulo.setFont(new java.awt.Font("Roboto Light", 1, 14)); // NOI18N
         lblTitulo.setForeground(new java.awt.Color(0, 0, 0));
@@ -122,18 +236,50 @@ public void setFormatoA(FormatoA formato) {
         lblObservaciones.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblObservaciones.setText("Observaciones");
 
-        CBXAprovado.setText("Aprovado");
+        CBXAprobado.setText("Aprobado");
+        CBXAprobado.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                CBXAprobadoMouseClicked(evt);
+            }
+        });
 
         CBXRechazado.setText("Rechazado");
+        CBXRechazado.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                CBXRechazadoMouseClicked(evt);
+            }
+        });
 
         txtObservaciones.setBackground(new java.awt.Color(255, 255, 255));
-        txtObservaciones.setFont(new java.awt.Font("Roboto Medium", 1, 12)); // NOI18N
-        txtObservaciones.setForeground(new java.awt.Color(153, 153, 153));
+        txtObservaciones.setColumns(20);
+        txtObservaciones.setRows(5);
         txtObservaciones.setText("   Ingrese sus Observaciones");
-        txtObservaciones.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         txtObservaciones.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                txtObservacionesMousePressed(evt);
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txtObservacionesMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(txtObservaciones);
+
+        lblEstudiante2.setFont(new java.awt.Font("Roboto Light", 1, 14)); // NOI18N
+        lblEstudiante2.setForeground(new java.awt.Color(0, 0, 0));
+        lblEstudiante2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lblEstudiante2.setText("Estudiante");
+
+        lblUEstudiante2.setForeground(new java.awt.Color(51, 51, 51));
+        lblUEstudiante2.setText("Estudiante");
+
+        Icon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/co/unicauca/workflow/presentation/images/LogoPequeño.png"))); // NOI18N
+
+        btEvaluar.setBackground(new java.awt.Color(65, 55, 171));
+        btEvaluar.setFont(new java.awt.Font("Roboto Medium", 1, 24)); // NOI18N
+        btEvaluar.setForeground(new java.awt.Color(255, 255, 255));
+        btEvaluar.setText("EVALUAR");
+        btEvaluar.setBorderPainted(false);
+        btEvaluar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btEvaluar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btEvaluarMouseClicked(evt);
             }
         });
 
@@ -142,118 +288,214 @@ public void setFormatoA(FormatoA formato) {
         ContenidoLayout.setHorizontalGroup(
             ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ContenidoLayout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(ContenidoLayout.createSequentialGroup()
-                        .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(ContenidoLayout.createSequentialGroup()
-                                .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(78, 78, 78))
-                            .addComponent(lblDirector, javax.swing.GroupLayout.Alignment.LEADING))
-                        .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jSeparator10, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(lblUEstudiante, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jSeparator9, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(lblUTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jSeparator11, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(lblUDirector, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(ContenidoLayout.createSequentialGroup()
-                                .addGap(3, 3, 3)
-                                .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jSeparator12, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(lblUModalidad, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(137, 137, 137))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, ContenidoLayout.createSequentialGroup()
-                        .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblEstudiante, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblModalidad, javax.swing.GroupLayout.Alignment.LEADING))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addGap(20, 20, 20)
+                .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(38, 38, 38)
+                .addComponent(lblUTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(ContenidoLayout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(ContenidoLayout.createSequentialGroup()
-                        .addComponent(CBXAprovado)
-                        .addGap(106, 106, 106)
-                        .addComponent(CBXRechazado))
-                    .addGroup(ContenidoLayout.createSequentialGroup()
-                        .addComponent(lblObservaciones, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(44, 44, 44)
-                        .addComponent(txtObservaciones, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(122, 122, 122)
+                .addComponent(jSeparator9, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(ContenidoLayout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addComponent(lblEstudiante, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(6, 6, 6)
+                .addComponent(lblUEstudiante, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(ContenidoLayout.createSequentialGroup()
+                .addGap(122, 122, 122)
+                .addComponent(jSeparator10, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(ContenidoLayout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(lblEstudiante2, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(8, 8, 8)
+                .addComponent(lblUEstudiante2, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(ContenidoLayout.createSequentialGroup()
+                .addGap(120, 120, 120)
+                .addComponent(jSeparator13, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(ContenidoLayout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(lblDirector)
+                .addGap(18, 18, 18)
+                .addComponent(lblUDirector, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(ContenidoLayout.createSequentialGroup()
+                .addGap(120, 120, 120)
+                .addComponent(jSeparator11, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(ContenidoLayout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(lblModalidad)
+                .addGap(29, 29, 29)
+                .addComponent(lblUModalidad, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(ContenidoLayout.createSequentialGroup()
+                .addGap(120, 120, 120)
+                .addComponent(jSeparator12, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(ContenidoLayout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(ContenidoLayout.createSequentialGroup()
+                .addGap(50, 50, 50)
+                .addComponent(lblObservaciones, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(35, 35, 35)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(ContenidoLayout.createSequentialGroup()
+                .addGap(80, 80, 80)
+                .addComponent(CBXAprobado)
+                .addGap(164, 164, 164)
+                .addComponent(CBXRechazado))
+            .addGroup(ContenidoLayout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addComponent(Icon)
+                .addGap(173, 173, 173)
+                .addComponent(btEvaluar))
         );
         ContenidoLayout.setVerticalGroup(
             ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ContenidoLayout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblTitulo)
+                .addGap(12, 12, 12)
+                .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(ContenidoLayout.createSequentialGroup()
+                        .addGap(3, 3, 3)
+                        .addComponent(lblTitulo))
                     .addComponent(lblUTitulo))
-                .addGap(3, 3, 3)
                 .addComponent(jSeparator9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(6, 6, 6)
                 .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblEstudiante)
                     .addComponent(lblUEstudiante))
                 .addGap(3, 3, 3)
                 .addComponent(jSeparator10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGap(6, 6, 6)
+                .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblEstudiante2)
+                    .addComponent(lblUEstudiante2))
+                .addGap(3, 3, 3)
+                .addComponent(jSeparator13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(7, 7, 7)
+                .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblDirector)
                     .addComponent(lblUDirector))
                 .addGap(3, 3, 3)
                 .addComponent(jSeparator11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGap(17, 17, 17)
+                .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblModalidad)
                     .addComponent(lblUModalidad))
                 .addGap(3, 3, 3)
                 .addComponent(jSeparator12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(27, 27, 27)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(ContenidoLayout.createSequentialGroup()
-                        .addComponent(lblObservaciones)
-                        .addGap(0, 50, Short.MAX_VALUE))
-                    .addComponent(txtObservaciones))
                 .addGap(18, 18, 18)
-                .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(CBXAprovado)
-                    .addComponent(CBXRechazado))
-                .addGap(53, 53, 53))
+                .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblObservaciones)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(14, 14, 14)
+                .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(CBXRechazado)
+                    .addComponent(CBXAprobado, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(30, 30, 30)
+                .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(Icon)
+                    .addGroup(ContenidoLayout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(btEvaluar))))
         );
 
-        add(Contenido, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 533, 371));
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(Contenido, javax.swing.GroupLayout.PREFERRED_SIZE, 532, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(Contenido, javax.swing.GroupLayout.PREFERRED_SIZE, 455, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtObservacionesMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtObservacionesMousePressed
-     txtObservaciones.getText().equals("   Ingrese sus Observaciones");
-        txtObservaciones.setText("");
-       txtObservaciones.setForeground(Color.BLACK);
-    }//GEN-LAST:event_txtObservacionesMousePressed
+    private void txtObservacionesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtObservacionesMouseClicked
+       if( txtObservaciones.getText().equals("   Ingrese sus Observaciones")){
+       txtObservaciones.setText("");
+      txtObservaciones.setForeground(Color.BLACK);
+      }
+    }//GEN-LAST:event_txtObservacionesMouseClicked
 
+    private void CBXAprobadoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CBXAprobadoMouseClicked
+       if (CBXAprobado.isSelected()) {
+        CBXRechazado.setSelected(false);
+    }
+    }//GEN-LAST:event_CBXAprobadoMouseClicked
+
+    private void CBXRechazadoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CBXRechazadoMouseClicked
+        if (CBXRechazado.isSelected()) {
+        CBXAprobado.setSelected(false);
+    }
+    }//GEN-LAST:event_CBXRechazadoMouseClicked
+
+    private void btEvaluarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btEvaluarMouseClicked
+       try {
+        // Obtener el estado
+        String estado = null;
+        if (CBXAprobado.isSelected()) {
+            estado = "APROBADO";
+        } else if (CBXRechazado.isSelected()) {
+            estado = "RECHAZADO";
+        }
+
+        if (estado == null) {
+            JOptionPane.showMessageDialog(this, "Debes seleccionar Aprobado o Rechazado.");
+            return;
+        }
+
+        // Obtener observaciones
+        String observaciones = txtObservaciones.getText().trim();
+
+        // Validar si está rechazado y no hay observaciones
+        if (estado.equals("RECHAZADO") && (observaciones.isEmpty() || observaciones.equals("Ingrese sus Observaciones"))) {
+            JOptionPane.showMessageDialog(this, "Las observaciones son obligatorias si se rechaza.");
+            return;
+        }
+
+        // 🔹 Supongamos que tienes guardado el ID del formato actual
+        int idFormato = formatoActual.getId();  // guarda este formato cuando haces setFormatoA
+
+        // Llamar al repositorio para actualizar
+        boolean actualizado = repoFormatoA.updateEstadoYObservaciones(idFormato, estado, observaciones);
+
+        if (actualizado) {
+            JOptionPane.showMessageDialog(this, "Formato evaluado correctamente.");
+        } else {
+            JOptionPane.showMessageDialog(this, "No se pudo actualizar el formato.");
+        }
+
+    } catch (Exception ex) {
+        JOptionPane.showMessageDialog(this, "Error al evaluar: " + ex.getMessage());
+    }
+    }//GEN-LAST:event_btEvaluarMouseClicked
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JCheckBox CBXAprovado;
+    private javax.swing.JCheckBox CBXAprobado;
     private javax.swing.JCheckBox CBXRechazado;
     private javax.swing.JPanel Contenido;
+    private javax.swing.JLabel Icon;
+    private javax.swing.JButton btEvaluar;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator10;
     private javax.swing.JSeparator jSeparator11;
     private javax.swing.JSeparator jSeparator12;
+    private javax.swing.JSeparator jSeparator13;
     private javax.swing.JSeparator jSeparator9;
     private javax.swing.JLabel lblDirector;
     private javax.swing.JLabel lblEstudiante;
+    private javax.swing.JLabel lblEstudiante2;
     private javax.swing.JLabel lblModalidad;
     private javax.swing.JLabel lblObservaciones;
     private javax.swing.JLabel lblPDF;
     private javax.swing.JLabel lblTitulo;
     private javax.swing.JLabel lblUDirector;
     private javax.swing.JLabel lblUEstudiante;
+    private javax.swing.JLabel lblUEstudiante2;
     private javax.swing.JLabel lblUModalidad;
     private javax.swing.JLabel lblUTitulo;
-    private javax.swing.JTextField txtObservaciones;
+    private javax.swing.JTextArea txtObservaciones;
     // End of variables declaration//GEN-END:variables
 }

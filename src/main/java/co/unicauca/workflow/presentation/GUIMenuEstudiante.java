@@ -9,11 +9,14 @@ package co.unicauca.workflow.presentation;
 //Implementar la logica del panel para que muestre el formato A regiatrado 
 //con el correo del estudiante 
 
+import co.unicauca.workflow.access.FormatoARepository;
+import co.unicauca.workflow.access.IFormatoARepository;
 import co.unicauca.workflow.presentation.views.Principal;
 import co.unicauca.workflow.domain.entities.User;
 import co.unicauca.workflow.presentation.views.ConsultarFormatoA;
 import co.unicauca.workflow.presentation.views.SubirFormatoA;
 import com.formdev.flatlaf.FlatLightLaf;
+import co.unicauca.workflow.domain.entities.Persona;
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMTMaterialLighterIJTheme;
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
@@ -28,9 +31,9 @@ public class GUIMenuEstudiante extends javax.swing.JFrame {
      * Creates new form GUIEstudiante
      */
 
-    private static User usuarioLogueado;
-   public GUIMenuEstudiante(User logueado) {
-     this.usuarioLogueado=logueado;
+    private static Persona personaLogueado;
+   public GUIMenuEstudiante(Persona logueado) {
+     this.personaLogueado=logueado;
 
         initComponents();
        
@@ -53,7 +56,7 @@ public class GUIMenuEstudiante extends javax.swing.JFrame {
      }
      private void initContent(){
 
-     showJPanel( new Principal(usuarioLogueado));
+     showJPanel( new Principal(personaLogueado));
 
     
      }
@@ -73,6 +76,7 @@ public class GUIMenuEstudiante extends javax.swing.JFrame {
         Titulo = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         btConsultarFormatoA = new javax.swing.JButton();
+        JButtonCloseSesion = new javax.swing.JButton();
         Contenido = new javax.swing.JPanel();
         jSeparator1 = new javax.swing.JSeparator();
 
@@ -86,7 +90,7 @@ public class GUIMenuEstudiante extends javax.swing.JFrame {
 
         lblLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/co/unicauca/workflow/presentation/images/LogoPequeño.png"))); // NOI18N
         lblLogo.setText("jLabel2");
-        Menu.add(lblLogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(34, 6, 157, -1));
+        Menu.add(lblLogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 10, 157, -1));
 
         btRegresar.setBackground(new java.awt.Color(65, 55, 171));
         btRegresar.setFont(new java.awt.Font("Roboto Medium", 0, 24)); // NOI18N
@@ -95,7 +99,7 @@ public class GUIMenuEstudiante extends javax.swing.JFrame {
         btRegresar.setText("Volver");
         btRegresar.setToolTipText("");
         btRegresar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
-        btRegresar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btRegresar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btRegresar.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btRegresar.setIconTextGap(7);
         btRegresar.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -104,7 +108,6 @@ public class GUIMenuEstudiante extends javax.swing.JFrame {
             }
         });
         Menu.add(btRegresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 277, 258, 64));
-
 
         Titulo.setBackground(new java.awt.Color(204, 204, 204));
 
@@ -133,7 +136,7 @@ public class GUIMenuEstudiante extends javax.swing.JFrame {
         btConsultarFormatoA.setText("Consultar FormatoA");
         btConsultarFormatoA.setToolTipText("");
         btConsultarFormatoA.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
-        btConsultarFormatoA.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btConsultarFormatoA.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btConsultarFormatoA.setIconTextGap(7);
         btConsultarFormatoA.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -141,6 +144,16 @@ public class GUIMenuEstudiante extends javax.swing.JFrame {
             }
         });
         Menu.add(btConsultarFormatoA, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 213, 258, 64));
+
+        JButtonCloseSesion.setBackground(new java.awt.Color(65, 55, 171));
+        JButtonCloseSesion.setForeground(new java.awt.Color(255, 255, 255));
+        JButtonCloseSesion.setText("Cerrar Sesión");
+        JButtonCloseSesion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JButtonCloseSesionActionPerformed(evt);
+            }
+        });
+        Menu.add(JButtonCloseSesion, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 450, -1, -1));
 
         Contenido.setBackground(new java.awt.Color(255, 255, 255));
         Contenido.setPreferredSize(new java.awt.Dimension(641, 498));
@@ -199,14 +212,21 @@ public class GUIMenuEstudiante extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btRegresarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btRegresarMouseClicked
-     GUIMenuPrincipal ventanaPrincipal = new GUIMenuPrincipal(usuarioLogueado);
+     GUIMenuPrincipal ventanaPrincipal = new GUIMenuPrincipal(personaLogueado);
     ventanaPrincipal.setVisible(true);
     this.dispose(); 
     }//GEN-LAST:event_btRegresarMouseClicked
 
     private void btConsultarFormatoAMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btConsultarFormatoAMouseClicked
-         showJPanel( new ConsultarFormatoA());
+         IFormatoARepository repo = new FormatoARepository(); 
+        showJPanel(new ConsultarFormatoA(personaLogueado));
     }//GEN-LAST:event_btConsultarFormatoAMouseClicked
+
+    private void JButtonCloseSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JButtonCloseSesionActionPerformed
+        GUILogin login = new GUILogin();
+        login.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_JButtonCloseSesionActionPerformed
 
 
     /**
@@ -222,7 +242,7 @@ public class GUIMenuEstudiante extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
 
-                new GUIMenuEstudiante(usuarioLogueado).setVisible(true);
+                new GUIMenuEstudiante(personaLogueado).setVisible(true);
 
             }
         });
@@ -231,6 +251,7 @@ public class GUIMenuEstudiante extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Background;
     private javax.swing.JPanel Contenido;
+    private javax.swing.JButton JButtonCloseSesion;
     private javax.swing.JPanel Menu;
     private javax.swing.JPanel Titulo;
     private javax.swing.JButton btConsultarFormatoA;

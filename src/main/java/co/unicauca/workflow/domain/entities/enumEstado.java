@@ -11,9 +11,10 @@ package co.unicauca.workflow.domain.entities;
 public enum enumEstado {
     
     
-    ENTREGADO("Entregado"),
-    APROBADO("Aprobado"),
-    RECHAZADO("Rechazado");
+    ENTREGADO("ENTREGADO"),
+    APROBADO("APROBADO"),
+    RECHAZADO("RECHAZADO"),
+    RECHAZADO_DEFINITIVAMENTE("Rechazado definitivamente");
     
     private final String descripcion;
 

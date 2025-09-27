@@ -166,4 +166,41 @@ public List<Estudiante> list() {
             System.out.println(ex.getMessage());
         }
     }
+     public Estudiante findById(int id) {
+        String sql = "SELECT p.idUsuario, p.name, p.lastname, p.phone, p.email, p.password, " +
+                     "e.codPrograma, prog.nombrePrograma " +
+                     "FROM Estudiante e " +
+                     "INNER JOIN Persona p ON e.idUsuario = p.idUsuario " +
+                     "LEFT JOIN Programa prog ON e.codPrograma = prog.codPrograma " +
+                     "WHERE e.idUsuario = ?";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                Programa programa = null;
+                if (rs.getInt("codPrograma") > 0) {
+                    programa = new Programa(
+                        rs.getInt("codPrograma"),
+                        rs.getString("nombrePrograma"),
+                        null // puedes asociar el departamento después si quieres
+                    );
+                }
+
+                return new Estudiante(
+                    rs.getInt("idUsuario"),
+                    programa,
+                    rs.getString("name"),
+                    rs.getString("lastname"),
+                    rs.getString("phone"),
+                    rs.getString("email"),
+                    rs.getString("password")
+                );
+            }
+        } catch (Exception e) {
+            System.out.println("Error cargando Estudiante: " + e.getMessage());
+        }
+        return null;
+    }
 }
