@@ -63,7 +63,7 @@ public class DocenteRepository implements IDocenteRepository {
         try {
             String sql = "SELECT d.idUsuario, p.name, p.lastname, p.phone, p.email, p.password, "
                        + "dep.codDepartamento, dep.depNombre AS nombreDepartamento, "
-                       + "f.codFacultad, f.facNombre AS nombreFacultad "
+                       + "f.codFacultad, f.nombre AS nombreFacultad "
                        + "FROM Docente d "
                        + "JOIN Persona p ON d.idUsuario = p.idUsuario "
                        + "JOIN Departamento dep ON d.codDepartamento = dep.codDepartamento "
@@ -144,7 +144,7 @@ public class DocenteRepository implements IDocenteRepository {
  public Docente findById(int id) {
     String sql = "SELECT p.idUsuario, p.name, p.lastname, p.phone, p.email, p.password, " +
                  "d.codDepartamento, dep.depNombre, " +
-                 "f.codFacultad, f.facNombre " +
+                 "f.codFacultad, f.nombre " +
                  "FROM Docente d " +
                  "INNER JOIN Persona p ON d.idUsuario = p.idUsuario " +
                  "LEFT JOIN Departamento dep ON d.codDepartamento = dep.codDepartamento " +
