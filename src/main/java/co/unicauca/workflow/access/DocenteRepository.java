@@ -144,7 +144,7 @@ public class DocenteRepository implements IDocenteRepository {
  public Docente findById(int id) {
     String sql = "SELECT p.idUsuario, p.name, p.lastname, p.phone, p.email, p.password, " +
                  "d.codDepartamento, dep.depNombre, " +
-                 "f.codFacultad, f.facNombre " +
+                 "f.codFacultad, f.nombre " +
                  "FROM Docente d " +
                  "INNER JOIN Persona p ON d.idUsuario = p.idUsuario " +
                  "LEFT JOIN Departamento dep ON d.codDepartamento = dep.codDepartamento " +

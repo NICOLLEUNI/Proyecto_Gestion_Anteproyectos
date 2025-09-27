@@ -11,6 +11,7 @@ import co.unicauca.workflow.access.Factory;
 import co.unicauca.workflow.access.IFormatoARepository;
 import co.unicauca.workflow.domain.entities.FormatoA;
 import co.unicauca.workflow.domain.entities.Persona;
+import co.unicauca.workflow.domain.entities.enumEstado;
 import co.unicauca.workflow.domain.exceptions.ValidationException;
 import co.unicauca.workflow.domain.service.FormatoAService;
 import co.unicauca.workflow.presentation.views.GraficoBarras;
@@ -75,23 +76,27 @@ public class GUIEvaluarAnteproyecto extends javax.swing.JFrame {
                             yPrincipal + framePastel.getHeight() + 30);
     frameBarras.setVisible(true);
 }
-   private void cargarDatos() {
+private void cargarDatos() {
     List<FormatoA> lista = formatoAService.listFormatoA();
 
-    String[] columnas = {"ID",  "Titulo", "Estado"};
+    String[] columnas = {"ID", "Título", "Estado"};
     DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
 
     for (FormatoA f : lista) {
-        Object[] fila = {
-            f.getId(),
-            f.getTitle(),
-            f.getState() != null ? f.getState() : "Entregado", // Estado real si existe
-        };
-        modelo.addRow(fila);
+        // Si getState() devuelve enumEstado
+        if (f.getState() == enumEstado.ENTREGADO) {
+            Object[] fila = {
+                f.getId(),
+                f.getTitle(),
+                f.getState().getDescripcion() // Mostramos la descripción legible
+            };
+            modelo.addRow(fila);
+        }
+
     }
 
     jTable1.setModel(modelo);
-    }
+}
 
     private void initStyles(){ }
     
