@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- */
-
 package co.unicauca.workflow;
 
 
@@ -25,7 +21,6 @@ import co.unicauca.workflow.domain.entities.enumRol;
 import static co.unicauca.workflow.domain.entities.enumRol.DOCENTE;
 import co.unicauca.workflow.domain.service.PersonaService;
 import co.unicauca.workflow.presentation.GUILogin;
-import co.unicauca.workflow.presentation.GUIMenuDocente;
 import co.unicauca.workflow.presentation.GUIMenuPrincipal;
 import java.util.EnumSet;
 import co.unicauca.workflow.domain.exceptions.ValidationException;
@@ -48,6 +43,7 @@ public class Taller02PrincipiosSolid {
         PersonaService service = new PersonaService(repository);
 
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 //new GUILogin().setVisible(true);
              //este es un usuario quemado para probar el cerrar sesion;   
@@ -64,14 +60,13 @@ public class Taller02PrincipiosSolid {
             
             
                 
-              new GUIMenuPrincipal(user).setVisible(true);
+   
              
 
 
+                // Abrir la ventana de login como punto de entrada de la aplicación
+                new GUILogin().setVisible(true);
             }
         });
     }
-    
-    //Se deben instanciar cada uno de los repositorios usando el metodo creado en la factory
-    
 }

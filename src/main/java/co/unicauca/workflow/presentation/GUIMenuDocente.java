@@ -10,7 +10,7 @@ package co.unicauca.workflow.presentation;
 
 import co.unicauca.workflow.domain.entities.Persona;
 import co.unicauca.workflow.presentation.views.Principal;
-import co.unicauca.workflow.domain.entities.User;
+import co.unicauca.workflow.domain.entities.Persona;
 import co.unicauca.workflow.presentation.views.ConsultarFormatoA;
 import co.unicauca.workflow.presentation.views.SubirFormatoA;
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMTMaterialLighterIJTheme;

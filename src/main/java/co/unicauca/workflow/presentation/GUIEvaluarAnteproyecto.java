@@ -11,7 +11,6 @@ import co.unicauca.workflow.access.Factory;
 import co.unicauca.workflow.access.IFormatoARepository;
 import co.unicauca.workflow.domain.entities.FormatoA;
 import co.unicauca.workflow.domain.entities.Persona;
-import co.unicauca.workflow.domain.exceptions.ValidationException;
 import co.unicauca.workflow.presentation.views.Observaciones;
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMTMaterialLighterIJTheme;
 import java.awt.BorderLayout;

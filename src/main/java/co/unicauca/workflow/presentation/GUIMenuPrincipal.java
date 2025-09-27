@@ -32,7 +32,6 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
         initComponents();
         initStyles();
         initContent();
- 
     }
     
     public GUIMenuPrincipal()
@@ -57,6 +56,19 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
     showJPanel( new Principal(personaLogueado));
      
      }
+     
+     
+    /**
+     * Getter para obtener el usuario logueado
+     * @return La persona actualmente logueada
+     */
+    public Persona getUsuarioLogueado() {
+        return personaLogueada;
+    }
+     public void setUsuarioLogueado(Persona usuarioLogueado) {
+        this.personaLogueada = usuarioLogueado;
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

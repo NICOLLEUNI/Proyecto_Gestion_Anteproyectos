@@ -19,7 +19,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 /**
  *
- * @author CRISTHIAN TORRES
+ * @author 
  */
 public class DepartamentoRepository implements IDepartamentoRepository{
     
@@ -71,7 +71,7 @@ public class DepartamentoRepository implements IDepartamentoRepository{
         List<Departamento> departamentos = new ArrayList<>();
 
         String sql = "SELECT d.codDepartamento, d.depNombre, " +
-                     "f.codFacultad, f.facNombre AS facNombre " +
+                     "f.codFacultad, f.nombre AS nombre " +
                      "FROM Departamento d " +
                      "JOIN Facultad f ON d.codFacultad = f.codFacultad";
 
@@ -81,7 +81,7 @@ public class DepartamentoRepository implements IDepartamentoRepository{
             while (rs.next()) {
                 // Crear Facultad
                 Facultad fac = new Facultad(
-                    rs.getString("facNombre")
+                    rs.getString("nombre")
                 );
 
                 // Crear Departamento

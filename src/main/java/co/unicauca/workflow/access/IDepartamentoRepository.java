@@ -9,7 +9,9 @@ import java.util.List;
 /**
  *
  * @author CRISTHIAN TORRES
+ * 
  */
+
 public interface IDepartamentoRepository {
     
     boolean save(Departamento newDepartarmento);
