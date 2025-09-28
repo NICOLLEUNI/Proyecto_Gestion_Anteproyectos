@@ -9,55 +9,68 @@ package co.unicauca.workflow.presentation;
 //puede implememtar el pane para doc respuestas  
 
 import co.unicauca.workflow.domain.entities.Persona;
+import co.unicauca.workflow.access.DocenteRepository;
+import co.unicauca.workflow.access.Factory;
+import co.unicauca.workflow.access.IDocenteRepository;
+import co.unicauca.workflow.domain.entities.Departamento;
+import co.unicauca.workflow.domain.entities.Docente;
 import co.unicauca.workflow.presentation.views.Principal;
 import co.unicauca.workflow.domain.entities.Persona;
 import co.unicauca.workflow.presentation.views.ConsultarFormatoA;
+import co.unicauca.workflow.presentation.views.DatosFormatoA;
 import co.unicauca.workflow.presentation.views.SubirFormatoA;
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMTMaterialLighterIJTheme;
 import java.awt.BorderLayout;
+import java.util.List;
 import javax.swing.JPanel;
+
+import co.unicauca.workflow.presentation.views.DatosFormatoA;
+
+import co.unicauca.workflow.presentation.views.DatosFormatoA;
 
 /**
  *
  * @author User
  */
 public class GUIMenuDocente extends javax.swing.JFrame {
+    
+    
+
 
     /**
      * Creates new form GUIDocente
      */
 
+
     private static Persona personaLogueado;
+    
     public GUIMenuDocente (Persona logueado) {
      this.personaLogueado=logueado;
-
         initComponents();
-      
-    initContent();
- 
+        this.setLocationRelativeTo(null);
+        initContent();
     }
     
-    
 
-     private void initStyles(){
+    private void initStyles(){
      
-     }
-     private void showJPanel(JPanel pl){
-     pl.setSize(641,498);
-     pl.setLocation(0, 0);
-     
-     Contenido.removeAll();
-     Contenido.add(pl,BorderLayout.CENTER);
-     Contenido.revalidate();
-     Contenido.repaint(); 
-         
-     }
-     private void initContent(){
-
-     showJPanel( new Principal(personaLogueado));
-
+    }
     
+    private void showJPanel(JPanel pl){
+        pl.setSize(641,498);
+        pl.setLocation(0, 0);
+
+        Contenido.removeAll();
+        Contenido.add(pl,BorderLayout.CENTER);
+        Contenido.revalidate();
+        Contenido.repaint(); 
+
      }
+    
+    private void initContent(){
+        showJPanel( new Principal(personaLogueado));
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -247,13 +260,14 @@ public class GUIMenuDocente extends javax.swing.JFrame {
 
 
     private void btSubirFormatoAMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btSubirFormatoAMouseClicked
-       showJPanel( new SubirFormatoA());
+       showJPanel( new DatosFormatoA());
     }//GEN-LAST:event_btSubirFormatoAMouseClicked
 
     private void btRegresarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btRegresarMouseClicked
-       GUIMenuPrincipal ventanaPrincipal = new GUIMenuPrincipal(personaLogueado);
-    ventanaPrincipal.setVisible(true);
-    this.dispose(); 
+
+        GUIMenuPrincipal ventanaPrincipal = new GUIMenuPrincipal(personaLogueado);
+        ventanaPrincipal.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btRegresarMouseClicked
 
     private void jButtonCloseSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCloseSesionActionPerformed
@@ -266,21 +280,17 @@ public class GUIMenuDocente extends javax.swing.JFrame {
      * @param args the command line arguments
      */
 
-      public static void main(String args[]) {
+    public static void main(String args[]) {
         /* Set the Nimbus look and feel */
        FlatMTMaterialLighterIJTheme.setup();
-       
-      
-
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-
                 new GUIMenuDocente(personaLogueado).setVisible(true);
-
             }
         });
     }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Bakground;
     private javax.swing.JPanel Contenido;

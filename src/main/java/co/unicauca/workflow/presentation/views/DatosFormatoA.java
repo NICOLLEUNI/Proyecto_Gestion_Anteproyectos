@@ -1,0 +1,401 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
+ */
+package co.unicauca.workflow.presentation.views;
+
+import co.unicauca.workflow.domain.entities.Docente;
+import co.unicauca.workflow.domain.entities.enumModalidad;
+import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMTMaterialLighterIJTheme;
+import co.unicauca.workflow.access.Factory;
+import co.unicauca.workflow.access.FormatoARepository;
+import co.unicauca.workflow.access.IDocenteRepository;
+import co.unicauca.workflow.domain.entities.Estudiante;
+import co.unicauca.workflow.domain.entities.FormatoA;
+import co.unicauca.workflow.domain.service.FormatoAService;
+import co.unicauca.workflow.domain.entities.enumEstado;
+import co.unicauca.workflow.domain.exceptions.ValidationException;
+import java.util.List;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+
+
+
+/**
+ *
+ * @author Usuario
+ */
+public class DatosFormatoA extends javax.swing.JPanel {
+    
+
+    /**
+     * Creates new form DatosFormatoA
+     */
+    public DatosFormatoA() {
+        initComponents();
+        
+        boxModalidad.setModel(new javax.swing.DefaultComboBoxModel<>(enumModalidad.values()));
+
+        initStyles();
+        cargarDocentesEnCombos();
+        cargarEstudiantesEnCombos(); // ✅ cargar estudiantes
+        configurarModalidadListener();
+        // Aquí agregas el listener al botón continuar
+        btContinuar.addActionListener(e -> guardarFormatoA());
+    }
+    
+    private void cargarDocentesEnCombos() {
+        try {
+
+            //preguntarle a Nicolle sobre el uso del repo
+            IDocenteRepository repo = Factory.getInstance().getDocenteRepository("default");
+            List<Docente> docentes = repo.list();
+
+            // Limpiar los combos
+            boxDirector.removeAllItems();
+            boxCodirector.removeAllItems();
+
+            if (docentes != null) {
+                for (Docente d : docentes) {
+                    boxDirector.addItem(d);
+                    boxCodirector.addItem(d);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private void cargarEstudiantesEnCombos() {
+        try {
+            // Obtener lista de estudiantes del repositorio
+            List<Estudiante> estudiantes = Factory.getInstance()
+                                                  .getEstudianteRepository("default")
+                                                  .list();
+
+            // Limpiar combos
+            boxEstudiante1.removeAllItems();
+            boxEstudiante2.removeAllItems();
+
+            if (estudiantes != null) {
+                for (Estudiante e : estudiantes) {
+                    boxEstudiante1.addItem(e);
+                    boxEstudiante2.addItem(e);
+                }
+            }
+
+            // Inicialmente, estudiante2 deshabilitado
+            boxEstudiante2.setEnabled(false);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private void configurarModalidadListener() {
+        boxModalidad.addActionListener(e -> {
+            enumModalidad modalidad = (enumModalidad) boxModalidad.getSelectedItem();
+            if (modalidad == enumModalidad.INVESTIGACION) {
+                boxEstudiante2.setEnabled(true);
+            } else {
+                boxEstudiante2.setEnabled(false);
+                boxEstudiante2.setSelectedIndex(-1); // deselecciona si cambia a otra modalidad
+            }
+        });
+    }
+
+    
+    
+    private void guardarFormatoA() {
+        try {
+            // 1. Construir el objeto FormatoA con los datos de la interfaz
+            FormatoA formato = new FormatoA();
+            formato.setTitle(txtTitulo.getText());
+            formato.setMode((enumModalidad) boxModalidad.getSelectedItem());
+            formato.setDate(LocalDate.now());
+            formato.setGeneralObjetive(txtObjGenerales.getText());
+            formato.setSpecificObjetives(txtObjEspecificos.getText());
+            formato.setArchivoPDF("pendiente.pdf"); // puedes actualizar luego
+            formato.setCounter(0);
+
+            // Project Manager (Docente seleccionado)
+            Docente manager = (Docente) boxDirector.getSelectedItem();
+            formato.setProjectManager(manager);
+
+            // Co-Manager (si hay)
+            Docente coManager = (Docente) boxCodirector.getSelectedItem();
+            formato.setProjectCoManager(coManager);
+
+            // Estudiantes seleccionados
+            List<Estudiante> estudiantes = new ArrayList<>();
+            estudiantes.add((Estudiante) boxEstudiante1.getSelectedItem());
+            if (boxEstudiante2.getSelectedItem() != null) {
+                estudiantes.add((Estudiante) boxEstudiante2.getSelectedItem());
+            }
+            formato.setEstudiantes(estudiantes);
+
+            // 2. Guardar con el repositorio/servicio
+            FormatoARepository repo = new FormatoARepository();
+            boolean guardado = repo.save(formato);
+
+            if (guardado) {
+                JOptionPane.showMessageDialog(this, "Formato A guardado correctamente");
+                // 👉 aquí puedes cambiar de panel a subir PDF
+            } else {
+                JOptionPane.showMessageDialog(this, "Error al guardar el Formato A");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+        }
+    }
+    
+
+    
+    /* para obtener la lista de estudiantes seleccionados al guardar
+    List<Estudiante> listaEstudiantes = new ArrayList<>();
+    listaEstudiantes.add((Estudiante) boxEstudiante1.getSelectedItem());
+
+    if (boxEstudiante2.isEnabled() && boxEstudiante2.getSelectedItem() != null) {
+        listaEstudiantes.add((Estudiante) boxEstudiante2.getSelectedItem());
+    }
+    */
+
+
+
+    
+    
+    private void initStyles(){
+          FlatMTMaterialLighterIJTheme.setup();
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jPanel1 = new javax.swing.JPanel();
+        lblTitulo = new javax.swing.JLabel();
+        txtTitulo = new javax.swing.JTextField();
+        jSeparatorTitulo = new javax.swing.JSeparator();
+        lbModalidad = new javax.swing.JLabel();
+        boxModalidad = new javax.swing.JComboBox<>();
+        lblDirector = new javax.swing.JLabel();
+        boxDirector = new javax.swing.JComboBox<>();
+        lblCodirector = new javax.swing.JLabel();
+        boxCodirector = new javax.swing.JComboBox<>();
+        lblEstudiante1 = new javax.swing.JLabel();
+        boxEstudiante1 = new javax.swing.JComboBox<>();
+        lblEstudiante2 = new javax.swing.JLabel();
+        boxEstudiante2 = new javax.swing.JComboBox<>();
+        lbObjGen = new javax.swing.JLabel();
+        txtObjEspecificos = new javax.swing.JTextField();
+        lblObjetivosEspecificos = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        txtObjGenerales = new javax.swing.JTextArea();
+        jSeparator1 = new javax.swing.JSeparator();
+        btContinuar = new javax.swing.JButton();
+
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setBorder(null);
+        jPanel1.setPreferredSize(new java.awt.Dimension(646, 530));
+
+        lblTitulo.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        lblTitulo.setForeground(new java.awt.Color(0, 0, 0));
+        lblTitulo.setText("Titulo");
+        lblTitulo.setToolTipText("");
+
+        txtTitulo.setBackground(new java.awt.Color(255, 255, 255));
+        txtTitulo.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
+        txtTitulo.setForeground(new java.awt.Color(153, 153, 153));
+        txtTitulo.setText("Ingrese el Titulo del Proyecto");
+        txtTitulo.setBorder(null);
+
+        lbModalidad.setFont(new java.awt.Font("Roboto Light", 1, 14)); // NOI18N
+        lbModalidad.setForeground(new java.awt.Color(0, 0, 0));
+        lbModalidad.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbModalidad.setText("Modalidad");
+
+        lblDirector.setFont(new java.awt.Font("Roboto Light", 1, 14)); // NOI18N
+        lblDirector.setForeground(new java.awt.Color(0, 0, 0));
+        lblDirector.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblDirector.setText("Director de proyecto");
+
+        lblCodirector.setFont(new java.awt.Font("Roboto Light", 1, 14)); // NOI18N
+        lblCodirector.setForeground(new java.awt.Color(0, 0, 0));
+        lblCodirector.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblCodirector.setText("Codirector de proyecto");
+
+        lblEstudiante1.setFont(new java.awt.Font("Roboto Light", 1, 14)); // NOI18N
+        lblEstudiante1.setForeground(new java.awt.Color(0, 0, 0));
+        lblEstudiante1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblEstudiante1.setText("Estudiante #1");
+
+        lblEstudiante2.setFont(new java.awt.Font("Roboto Light", 1, 14)); // NOI18N
+        lblEstudiante2.setForeground(new java.awt.Color(0, 0, 0));
+        lblEstudiante2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblEstudiante2.setText("Estudiante #2");
+
+        lbObjGen.setFont(new java.awt.Font("Roboto Light", 1, 14)); // NOI18N
+        lbObjGen.setForeground(new java.awt.Color(0, 0, 0));
+        lbObjGen.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbObjGen.setText("Objetivo General");
+
+        txtObjEspecificos.setBackground(new java.awt.Color(255, 255, 255));
+        txtObjEspecificos.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
+        txtObjEspecificos.setForeground(new java.awt.Color(0, 0, 0));
+        txtObjEspecificos.setText("Ingresar texto");
+
+        lblObjetivosEspecificos.setFont(new java.awt.Font("Roboto Light", 1, 14)); // NOI18N
+        lblObjetivosEspecificos.setForeground(new java.awt.Color(0, 0, 0));
+        lblObjetivosEspecificos.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblObjetivosEspecificos.setText("Objetivos especificos");
+
+        txtObjGenerales.setBackground(new java.awt.Color(255, 255, 255));
+        txtObjGenerales.setColumns(20);
+        txtObjGenerales.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
+        txtObjGenerales.setForeground(new java.awt.Color(0, 0, 0));
+        txtObjGenerales.setRows(5);
+        txtObjGenerales.setText("Ingresar texto");
+        txtObjGenerales.setSelectedTextColor(new java.awt.Color(0, 0, 0));
+        jScrollPane1.setViewportView(txtObjGenerales);
+
+        jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
+
+        btContinuar.setBackground(new java.awt.Color(51, 51, 255));
+        btContinuar.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        btContinuar.setForeground(new java.awt.Color(0, 0, 0));
+        btContinuar.setText("Continuar");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(44, 44, 44)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lbModalidad)
+                    .addComponent(boxModalidad, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jSeparatorTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(boxEstudiante1, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(boxEstudiante2, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblEstudiante2)
+                    .addComponent(lblEstudiante1)
+                    .addComponent(boxDirector, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblCodirector)
+                    .addComponent(boxCodirector, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblDirector))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtObjEspecificos)
+                    .addComponent(lbObjGen, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblObjetivosEspecificos)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 307, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(btContinuar, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)))
+                .addGap(29, 29, 29))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap(50, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 420, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lbObjGen)
+                            .addComponent(lblTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(txtObjEspecificos, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(9, 9, 9)
+                                .addComponent(lblObjetivosEspecificos))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(txtTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jSeparatorTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(lbModalidad)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(boxModalidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(26, 26, 26)
+                                .addComponent(lblDirector, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(boxDirector, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(lblCodirector)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(boxCodirector, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(lblEstudiante1)
+                                .addGap(7, 7, 7)
+                                .addComponent(boxEstudiante1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(lblEstudiante2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(boxEstudiante2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btContinuar, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(38, 38, 38))))
+        );
+
+        lblTitulo.getAccessibleContext().setAccessibleName(" Titulo");
+        lblEstudiante1.getAccessibleContext().setAccessibleName("");
+        lblEstudiante2.getAccessibleContext().setAccessibleName("");
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+    }// </editor-fold>//GEN-END:initComponents
+
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<Docente> boxCodirector;
+    private javax.swing.JComboBox<Docente> boxDirector;
+    private javax.swing.JComboBox<Estudiante> boxEstudiante1;
+    private javax.swing.JComboBox<Estudiante> boxEstudiante2;
+    private javax.swing.JComboBox<enumModalidad> boxModalidad;
+    private javax.swing.JButton btContinuar;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSeparator jSeparatorTitulo;
+    private javax.swing.JLabel lbModalidad;
+    private javax.swing.JLabel lbObjGen;
+    private javax.swing.JLabel lblCodirector;
+    private javax.swing.JLabel lblDirector;
+    private javax.swing.JLabel lblEstudiante1;
+    private javax.swing.JLabel lblEstudiante2;
+    private javax.swing.JLabel lblObjetivosEspecificos;
+    private javax.swing.JLabel lblTitulo;
+    private javax.swing.JTextField txtObjEspecificos;
+    private javax.swing.JTextArea txtObjGenerales;
+    private javax.swing.JTextField txtTitulo;
+    // End of variables declaration//GEN-END:variables
+}

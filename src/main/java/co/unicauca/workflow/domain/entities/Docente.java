@@ -50,6 +50,12 @@ public class Docente extends Persona{
     public void setDepartamento(Departamento Departamento) {
         this.Departamento = Departamento;
     }
+    
+    @Override
+    public String toString() {
+        return getEmail(); // usa el getter heredado de Persona
+    } 
+
    
    
 }

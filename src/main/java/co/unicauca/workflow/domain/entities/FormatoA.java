@@ -27,7 +27,7 @@ public class FormatoA {
     private List<Estudiante> estudiantes; 
     private List<FormatoAVersion> versiones = new ArrayList<>(); //lista de las versiones del formatoA 
     private int counter;                // Veces rechazado (máx. 3)
-    private enumEstado state = enumEstado.ENTREGADO; // entregado (default), rechazado, aprobado
+    private enumEstado state = enumEstado.ENTREGADO; // entregado (default), rechazado, aprobado, rechazado definitivamente 
     private String observations;        // Observaciones del coordinador
 
     public FormatoA(int id, String title, enumModalidad mode, Docente projectManager, Docente projectCoManager, LocalDate date, String generalObjetive, String specificObjetives, String archivoPDF, String cartaLaboral, List<Estudiante> estudiantes, int counter, String observations) {

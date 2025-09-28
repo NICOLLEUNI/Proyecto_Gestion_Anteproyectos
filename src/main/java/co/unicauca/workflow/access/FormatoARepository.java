@@ -89,7 +89,7 @@ public class FormatoARepository implements IFormatoARepository {
                 
                 //aquí conectamos el formatoA con sus versiones 
                 f.setVersiones(repoVersiones.listByFormatoA(f.getId()));
-                formatos.add(mapFormatoA(rs));
+                formatos.add(f);
             }
 
         } catch (SQLException ex) {
@@ -214,6 +214,7 @@ public class FormatoARepository implements IFormatoARepository {
         } catch (SQLException ex) {
             Logger.getLogger(FormatoARepository.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
     }
 
     public void connect() {
