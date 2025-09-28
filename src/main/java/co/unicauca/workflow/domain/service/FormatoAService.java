@@ -1,5 +1,7 @@
 package co.unicauca.workflow.domain.service;
 
+import co.unicauca.workflow.access.Factory;
+import co.unicauca.workflow.access.FormatoAVersionRepository;
 import co.unicauca.workflow.access.IFormatoARepository;
 import co.unicauca.workflow.access.IFormatoAVersionRepository;
 import co.unicauca.workflow.domain.entities.FormatoA;
@@ -14,7 +16,7 @@ import java.util.List;
 public class FormatoAService extends Subject{
     
     private IFormatoARepository repo;
-    private IFormatoAVersionRepository formatoARVersion;
+    private IFormatoAVersionRepository versionRepo = Factory.getInstance().getFormatoAVersionRepository("default");
 
     public FormatoAService(IFormatoARepository repo) {
         this.repo = repo;
@@ -25,36 +27,36 @@ public class FormatoAService extends Subject{
     //crearlos si es necesario
 
     //Metodo de la dinamica del docente 
-    public boolean subirFormatoA(FormatoA formatoA){
-        
-        try{
-            
-            boolean saved = repo.save(formatoA);
-            if(!saved) return false;
-            
-            
-            FormatoAVersion version1 = new FormatoAVersion(
-                0, // id autoincrement
-                1, // primera versión
-                LocalDate.now(),
-                formatoA.getTitle(),
-                formatoA.getMode(),
-                formatoA.getGeneralObjetive(),
-                formatoA.getSpecificObjetives(),
-                formatoA.getArchivoPDF(),
-                formatoA.getCartaLaboral(),
-                enumEstado.ENTREGADO, // siempre empieza como entregado
-                null, // aún sin observaciones
-                formatoA
-            );
+public boolean subirFormatoA(FormatoA formatoA){
+    try{
+        boolean saved = repo.save(formatoA);
+        if(!saved) return false;
 
-            formatoARVersion.save(version1);
-            return true;
-            
-        }catch(Exception e){
-            return false;
-        }
-    }
+        // 🔹 instanciar aquí el repo
+        
+
+        FormatoAVersion version1 = new FormatoAVersion(
+            0,
+            1,
+            LocalDate.now(),
+            formatoA.getTitle(),
+            formatoA.getMode(),
+            formatoA.getGeneralObjetive(),
+            formatoA.getSpecificObjetives(),
+            formatoA.getArchivoPDF(),
+            formatoA.getCartaLaboral(),
+            enumEstado.ENTREGADO,
+            "sin observaciones",
+            formatoA
+        );
+
+        versionRepo.save(version1); // ya no es null
+        return true;
+
+    }catch(Exception e){
+        e.printStackTrace();
+        return false;
+    }}
     
 
     
@@ -86,6 +88,8 @@ public class FormatoAService extends Subject{
     }
     
 }
+
+
 
     
     
