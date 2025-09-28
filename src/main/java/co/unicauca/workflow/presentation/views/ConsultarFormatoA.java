@@ -4,9 +4,13 @@
  */
 package co.unicauca.workflow.presentation.views;
 
+import co.unicauca.workflow.access.Factory;
 import co.unicauca.workflow.access.FormatoARepository;
 import co.unicauca.workflow.access.IFormatoARepository;
+import co.unicauca.workflow.domain.entities.Estudiante;
 import co.unicauca.workflow.domain.entities.FormatoA;
+import co.unicauca.workflow.domain.entities.Persona;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
@@ -19,25 +23,43 @@ public class ConsultarFormatoA extends javax.swing.JPanel {
     /**
      * Creates new form ConsultarFormatoA
      */
-    public ConsultarFormatoA() {
+    private Persona personaLogueada;
+    public ConsultarFormatoA(Persona personaLogueada) {
         initComponents();
+        this.personaLogueada = personaLogueada; // guarda el usuario activo
         initStyles();
-         cargarDatos();
+        cargarDatos();;
     }
 private void cargarDatos() {
-     IFormatoARepository repo = new FormatoARepository();
-    List<FormatoA> lista = repo.list();
+      // Obtenemos el repositorio usando la Factory
+    IFormatoARepository repo = Factory.getFormatoARepository("default");
 
+    // Traemos todos los formatos
+    List<FormatoA> todos = repo.list();
+
+    // Filtramos los formatos donde el usuario logueado sea estudiante
+    List<FormatoA> lista = new ArrayList<>();
+    for (FormatoA f : todos) {
+        for (Estudiante est : f.getEstudiantes()) {
+            if (est.getIdUsuario() == personaLogueada.getIdUsuario()) {
+                lista.add(f);
+                break; // Ya lo encontramos, no necesitamos revisar más estudiantes
+            }
+        }
+    }
+
+    // Columnas de la tabla
     String[] columnas = {"Título", "Director", "Entrega", "Estado", "Observaciones"};
     DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
 
+    // Llenamos la tabla
     for (FormatoA f : lista) {
         Object[] fila = {
             f.getTitle(),
-            f.getProjectManager(),
-            f.getDate() != null ? f.getDate().toString() : "", // Fecha segura
-            f.getState() != null ? f.getState() : "Pendiente", // Estado real si existe
-            f.getObservations() != null ? f.getObservations() : "" // Observaciones reales
+            f.getProjectManager() != null ? f.getProjectManager().getName() : "",
+            f.getDate() != null ? f.getDate().toString() : "",
+            f.getState() != null ? f.getState() : "Pendiente",
+            f.getObservations() != null ? f.getObservations() : ""
         };
         modelo.addRow(fila);
     }

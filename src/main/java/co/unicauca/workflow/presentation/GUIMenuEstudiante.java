@@ -216,7 +216,7 @@ public class GUIMenuEstudiante extends javax.swing.JFrame {
     }//GEN-LAST:event_btRegresarMouseClicked
 
     private void btConsultarFormatoAMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btConsultarFormatoAMouseClicked
-         showJPanel( new ConsultarFormatoA());
+         showJPanel( new ConsultarFormatoA(personaLogueado));
     }//GEN-LAST:event_btConsultarFormatoAMouseClicked
 
     private void JButtonCloseSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JButtonCloseSesionActionPerformed
