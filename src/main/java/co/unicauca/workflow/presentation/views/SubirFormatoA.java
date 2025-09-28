@@ -44,10 +44,10 @@ public class SubirFormatoA extends javax.swing.JPanel {
         initComponents();
         initStyles();
     }
-private void initStyles(){
-      FlatMTMaterialLighterIJTheme.setup();
-      
-     }
+    private void initStyles(){
+          FlatMTMaterialLighterIJTheme.setup();
+
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -393,7 +393,7 @@ private void initStyles(){
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(Contenido, javax.swing.GroupLayout.DEFAULT_SIZE, 649, Short.MAX_VALUE)
+            .addComponent(Contenido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -438,40 +438,40 @@ private void initStyles(){
 
     //logica para subir el pdf
     private void btPDFMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btPDFMousePressed
-      JFileChooser fileChooser = new JFileChooser();
-    fileChooser.setDialogTitle("Seleccionar archivo PDF");
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Seleccionar archivo PDF");
 
-    // Filtro para solo mostrar PDFs
-    FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivos PDF", "pdf");
-    fileChooser.setFileFilter(filtro);
+        // Filtro para solo mostrar PDFs
+        FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivos PDF", "pdf");
+        fileChooser.setFileFilter(filtro);
 
-    int resultado = fileChooser.showOpenDialog(this);
+        int resultado = fileChooser.showOpenDialog(this);
 
-    if (resultado == JFileChooser.APPROVE_OPTION) {
-        File archivoSeleccionado = fileChooser.getSelectedFile();
-        
-        try {
-            // Ruta de destino dentro del proyecto
-            String carpetaDestino = System.getProperty("user.dir") + File.separator + "archivosPDF";
-            File directorio = new File(carpetaDestino);
-            if (!directorio.exists()) {
-                directorio.mkdir(); // crea la carpeta si no existe
+        if (resultado == JFileChooser.APPROVE_OPTION) {
+            File archivoSeleccionado = fileChooser.getSelectedFile();
+
+            try {
+                // Ruta de destino dentro del proyecto
+                String carpetaDestino = System.getProperty("user.dir") + File.separator + "archivosPDF";
+                File directorio = new File(carpetaDestino);
+                if (!directorio.exists()) {
+                    directorio.mkdir(); // crea la carpeta si no existe
+                }
+
+                // Copiar el archivo al destino
+                File archivoDestino = new File(carpetaDestino, archivoSeleccionado.getName());
+                Files.copy(archivoSeleccionado.toPath(), archivoDestino.toPath(), StandardCopyOption.REPLACE_EXISTING);
+
+                // Guardar la ruta en un atributo (para luego insertarla en la BD)
+                String rutaGuardada = archivoDestino.getAbsolutePath();
+                txtRutaPDF.setText(rutaGuardada); // puedes mostrarlo en un JTextField
+
+                JOptionPane.showMessageDialog(this, "Archivo guardado en: " + rutaGuardada);
+
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(this, "Error al guardar el archivo: " + ex.getMessage());
             }
-
-            // Copiar el archivo al destino
-            File archivoDestino = new File(carpetaDestino, archivoSeleccionado.getName());
-            Files.copy(archivoSeleccionado.toPath(), archivoDestino.toPath(), StandardCopyOption.REPLACE_EXISTING);
-
-            // Guardar la ruta en un atributo (para luego insertarla en la BD)
-            String rutaGuardada = archivoDestino.getAbsolutePath();
-            txtRutaPDF.setText(rutaGuardada); // puedes mostrarlo en un JTextField
-
-            JOptionPane.showMessageDialog(this, "Archivo guardado en: " + rutaGuardada);
-            
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(this, "Error al guardar el archivo: " + ex.getMessage());
         }
-    }
     }//GEN-LAST:event_btPDFMousePressed
 
     private String limpiarTexto(JTextField txt, String placeholder) {
