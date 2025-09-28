@@ -47,6 +47,7 @@ public class GUIMenuDocente extends javax.swing.JFrame {
     
     public GUIMenuDocente (Persona logueado) {
      this.personaLogueado=logueado;
+      initStyles();
         initComponents();
         this.setLocationRelativeTo(null);
         initContent();
@@ -54,7 +55,7 @@ public class GUIMenuDocente extends javax.swing.JFrame {
     
 
     private void initStyles(){
-     
+      FlatMTMaterialLighterIJTheme.setup();
     }
     
     private void showJPanel(JPanel pl){
