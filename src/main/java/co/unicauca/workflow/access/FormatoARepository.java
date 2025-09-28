@@ -85,11 +85,9 @@ public class FormatoARepository implements IFormatoARepository {
 
             while (rs.next()) {
                 
-                FormatoA f = mapFormatoA(rs);
-                
-                //aquí conectamos el formatoA con sus versiones 
+                 FormatoA f = mapFormatoA(rs);
                 f.setVersiones(repoVersiones.listByFormatoA(f.getId()));
-                formatos.add(mapFormatoA(rs));
+                formatos.add(f);
             }
 
         } catch (SQLException ex) {

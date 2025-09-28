@@ -42,6 +42,7 @@ public class Persona {
         this.phone = phone;
         this.email = email;
         this.password = password;
+        this.roles = EnumSet.noneOf(enumRol.class);
     }
     // Agregar este constructor a tu clase Persona
 public Persona(String name, String lastname, String phone, String email, String password, EnumSet<enumRol> roles) throws ValidationException {
