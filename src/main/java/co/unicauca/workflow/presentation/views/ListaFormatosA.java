@@ -1,0 +1,184 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
+ */
+package co.unicauca.workflow.presentation.views;
+
+import co.unicauca.workflow.access.Factory;
+import co.unicauca.workflow.access.IFormatoARepository;
+import co.unicauca.workflow.domain.entities.Docente;
+import co.unicauca.workflow.domain.entities.FormatoA;
+import co.unicauca.workflow.domain.entities.FormatoAVersion;
+import co.unicauca.workflow.domain.entities.Persona;
+import co.unicauca.workflow.domain.entities.enumEstado;
+import java.awt.BorderLayout;
+import java.util.List;
+import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
+/**
+ *
+ * @author Usuario
+ */
+public class ListaFormatosA extends javax.swing.JPanel {
+
+    private Persona personaLogueada;
+    private List<FormatoA> formatosDocente; // lista en memoria para mapear filas con objetos
+
+    public ListaFormatosA(Persona personaLogueada) {
+        initComponents();
+        this.personaLogueada = personaLogueada;
+        initStyles();
+        cargarDatos();
+        initListeners();
+    } 
+    
+    /**
+     * Carga solo los FormatoA subidos por el docente logueado.
+     */
+    private void cargarDatos() {
+        IFormatoARepository repo = Factory.getFormatoARepository("default");
+
+          // Traemos todos los formatos desde la BD
+          List<FormatoA> todos = repo.list();
+          this.formatosDocente = new ArrayList<>();
+
+          // Filtramos solo los que pertenecen al docente logueado
+          for (FormatoA f : todos) {
+              if (f.getProjectManager() != null &&
+                  f.getProjectManager().getIdUsuario() == personaLogueada.getIdUsuario()) {
+                  formatosDocente.add(f);
+              }
+          }
+
+          // Definimos columnas
+          String[] columnas = {"Título", "Modalidad", "Estado actual", "Observaciones", "Versión"};
+          DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
+
+          // Rellenamos filas
+          for (FormatoA f : formatosDocente) {
+              // Validamos que tenga al menos una versión
+              FormatoAVersion ultima = null;
+              if (f.getVersiones() != null && !f.getVersiones().isEmpty()) {
+                  ultima = f.getVersiones().get(f.getVersiones().size() - 1);
+              }
+
+              Object[] fila = {
+                  f.getTitle() != null ? f.getTitle() : "",
+                  f.getMode() != null ? f.getMode().name() : "N/A",
+                  ultima != null ? ultima.getState().name() :
+                      (f.getState() != null ? f.getState().name() : "ENTREGADO"),
+                  ultima != null ? ultima.getObservations() :
+                      (f.getObservations() != null ? f.getObservations() : ""),
+                  ultima != null ? ultima.getNumeroVersion() : 1
+              };
+              modelo.addRow(fila);
+          }
+
+          jTable1.setModel(modelo);
+    }
+    
+    /**
+     * Inicializa listeners para acciones en la tabla.
+     */
+    private void initListeners() {
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                if (evt.getClickCount() == 2) {
+                    int fila = jTable1.getSelectedRow();
+                    if (fila >= 0) {
+                        FormatoA seleccionado = formatosDocente.get(fila);
+
+                        // Aquí abrimos la vista de detalle
+                        DetallesFormatoA detalle = new DetallesFormatoA(seleccionado, (Docente) personaLogueada);
+
+                        // Cambiamos la vista dentro de este panel
+                        Contenido.removeAll();
+                        Contenido.setLayout(new BorderLayout());
+                        Contenido.add(detalle, BorderLayout.CENTER);
+                        Contenido.revalidate();
+                        Contenido.repaint();
+                    }
+                }
+            }
+        });
+    }
+    
+    private void initStyles() {
+        jTable1.setRowHeight(30);
+        jTable1.setShowGrid(false);
+        jTable1.setIntercellSpacing(new java.awt.Dimension(0, 0));
+        jTable1.getTableHeader().setReorderingAllowed(false);
+        jTable1.getTableHeader().setResizingAllowed(false);
+        jTable1.getTableHeader().setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 14));
+        jTable1.setFont(new java.awt.Font("Segoe UI", java.awt.Font.PLAIN, 13));
+        jTable1.setSelectionBackground(new java.awt.Color(33, 150, 243));
+        jTable1.setSelectionForeground(java.awt.Color.WHITE);
+        jScrollPane1.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        Contenido = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+
+        Contenido.setBackground(new java.awt.Color(255, 255, 255));
+        Contenido.setPreferredSize(new java.awt.Dimension(646, 530));
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "Titulo ", "Modalidad", "Estado actual", "Comentarios", "Version"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable1);
+
+        javax.swing.GroupLayout ContenidoLayout = new javax.swing.GroupLayout(Contenido);
+        Contenido.setLayout(ContenidoLayout);
+        ContenidoLayout.setHorizontalGroup(
+            ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ContenidoLayout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 606, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(18, Short.MAX_VALUE))
+        );
+        ContenidoLayout.setVerticalGroup(
+            ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ContenidoLayout.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(281, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(Contenido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(Contenido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+    }// </editor-fold>//GEN-END:initComponents
+
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel Contenido;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
+    // End of variables declaration//GEN-END:variables
+}

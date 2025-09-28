@@ -27,6 +27,7 @@ import javax.swing.JPanel;
 import co.unicauca.workflow.presentation.views.DatosFormatoA;
 
 import co.unicauca.workflow.presentation.views.DatosFormatoA;
+import co.unicauca.workflow.presentation.views.ListaFormatosA;
 
 /**
  *
@@ -132,6 +133,11 @@ public class GUIMenuDocente extends javax.swing.JFrame {
         btRespuestas.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btRespuestas.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btRespuestas.setIconTextGap(7);
+        btRespuestas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btRespuestasMouseClicked(evt);
+            }
+        });
 
         btSubirFormatoA.setBackground(new java.awt.Color(65, 55, 171));
         btSubirFormatoA.setFont(new java.awt.Font("Roboto Medium", 0, 24)); // NOI18N
@@ -275,6 +281,18 @@ public class GUIMenuDocente extends javax.swing.JFrame {
         login.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_jButtonCloseSesionActionPerformed
+
+    private void btRespuestasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btRespuestasMouseClicked
+        // Crear la vista correcta: ListaFormatosA
+        ListaFormatosA vistaDocente = new ListaFormatosA(personaLogueado);
+
+        // Reemplazar el contenido del panel central
+        Contenido.removeAll();
+        Contenido.setLayout(new BorderLayout());
+        Contenido.add(vistaDocente, BorderLayout.CENTER);
+        Contenido.revalidate();
+        Contenido.repaint();
+    }//GEN-LAST:event_btRespuestasMouseClicked
 
     /**
      * @param args the command line arguments
