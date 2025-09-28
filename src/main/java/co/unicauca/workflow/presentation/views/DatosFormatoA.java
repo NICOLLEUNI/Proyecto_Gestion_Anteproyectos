@@ -15,10 +15,12 @@ import co.unicauca.workflow.domain.entities.FormatoA;
 import co.unicauca.workflow.domain.service.FormatoAService;
 import co.unicauca.workflow.domain.entities.enumEstado;
 import co.unicauca.workflow.domain.exceptions.ValidationException;
+import java.awt.BorderLayout;
 import java.util.List;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 
 
@@ -42,7 +44,6 @@ public class DatosFormatoA extends javax.swing.JPanel {
         cargarEstudiantesEnCombos(); // ✅ cargar estudiantes
         configurarModalidadListener();
         // Aquí agregas el listener al botón continuar
-        btContinuar.addActionListener(e -> guardarFormatoA());
     }
     
     private void cargarDocentesEnCombos() {
@@ -104,68 +105,6 @@ public class DatosFormatoA extends javax.swing.JPanel {
             }
         });
     }
-
-    
-    
-    private void guardarFormatoA() {
-        try {
-            // 1. Construir el objeto FormatoA con los datos de la interfaz
-            FormatoA formato = new FormatoA();
-            formato.setTitle(txtTitulo.getText());
-            formato.setMode((enumModalidad) boxModalidad.getSelectedItem());
-            formato.setDate(LocalDate.now());
-            formato.setGeneralObjetive(txtObjGenerales.getText());
-            formato.setSpecificObjetives(txtObjEspecificos.getText());
-            formato.setArchivoPDF("pendiente.pdf"); // puedes actualizar luego
-            formato.setCounter(0);
-
-            // Project Manager (Docente seleccionado)
-            Docente manager = (Docente) boxDirector.getSelectedItem();
-            formato.setProjectManager(manager);
-
-            // Co-Manager (si hay)
-            Docente coManager = (Docente) boxCodirector.getSelectedItem();
-            formato.setProjectCoManager(coManager);
-
-            // Estudiantes seleccionados
-            List<Estudiante> estudiantes = new ArrayList<>();
-            estudiantes.add((Estudiante) boxEstudiante1.getSelectedItem());
-            if (boxEstudiante2.getSelectedItem() != null) {
-                estudiantes.add((Estudiante) boxEstudiante2.getSelectedItem());
-            }
-            formato.setEstudiantes(estudiantes);
-
-            // 2. Guardar con el repositorio/servicio
-            FormatoARepository repo = new FormatoARepository();
-            boolean guardado = repo.save(formato);
-
-            if (guardado) {
-                JOptionPane.showMessageDialog(this, "Formato A guardado correctamente");
-                // 👉 aquí puedes cambiar de panel a subir PDF
-            } else {
-                JOptionPane.showMessageDialog(this, "Error al guardar el Formato A");
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
-        }
-    }
-    
-
-    
-    /* para obtener la lista de estudiantes seleccionados al guardar
-    List<Estudiante> listaEstudiantes = new ArrayList<>();
-    listaEstudiantes.add((Estudiante) boxEstudiante1.getSelectedItem());
-
-    if (boxEstudiante2.isEnabled() && boxEstudiante2.getSelectedItem() != null) {
-        listaEstudiantes.add((Estudiante) boxEstudiante2.getSelectedItem());
-    }
-    */
-
-
-
-    
     
     private void initStyles(){
           FlatMTMaterialLighterIJTheme.setup();
@@ -180,7 +119,7 @@ public class DatosFormatoA extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
+        Contenido = new javax.swing.JPanel();
         lblTitulo = new javax.swing.JLabel();
         txtTitulo = new javax.swing.JTextField();
         jSeparatorTitulo = new javax.swing.JSeparator();
@@ -202,9 +141,9 @@ public class DatosFormatoA extends javax.swing.JPanel {
         jSeparator1 = new javax.swing.JSeparator();
         btContinuar = new javax.swing.JButton();
 
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel1.setBorder(null);
-        jPanel1.setPreferredSize(new java.awt.Dimension(646, 530));
+        Contenido.setBackground(new java.awt.Color(255, 255, 255));
+        Contenido.setBorder(null);
+        Contenido.setPreferredSize(new java.awt.Dimension(646, 530));
 
         lblTitulo.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
         lblTitulo.setForeground(new java.awt.Color(0, 0, 0));
@@ -272,14 +211,19 @@ public class DatosFormatoA extends javax.swing.JPanel {
         btContinuar.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
         btContinuar.setForeground(new java.awt.Color(0, 0, 0));
         btContinuar.setText("Continuar");
+        btContinuar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btContinuarMouseClicked(evt);
+            }
+        });
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout ContenidoLayout = new javax.swing.GroupLayout(Contenido);
+        Contenido.setLayout(ContenidoLayout);
+        ContenidoLayout.setHorizontalGroup(
+            ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ContenidoLayout.createSequentialGroup()
                 .addGap(44, 44, 44)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lbModalidad)
                     .addComponent(boxModalidad, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -296,35 +240,35 @@ public class DatosFormatoA extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(txtObjEspecificos)
                     .addComponent(lbObjGen, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblObjetivosEspecificos)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 307, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ContenidoLayout.createSequentialGroup()
                         .addComponent(btContinuar, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)))
                 .addGap(29, 29, 29))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        ContenidoLayout.setVerticalGroup(
+            ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ContenidoLayout.createSequentialGroup()
                 .addContainerGap(50, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(ContenidoLayout.createSequentialGroup()
                         .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 420, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ContenidoLayout.createSequentialGroup()
+                        .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lbObjGen)
                             .addComponent(lblTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(ContenidoLayout.createSequentialGroup()
                                 .addComponent(txtObjEspecificos, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(9, 9, 9)
                                 .addComponent(lblObjetivosEspecificos))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGroup(ContenidoLayout.createSequentialGroup()
                                 .addComponent(txtTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jSeparatorTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -332,8 +276,8 @@ public class DatosFormatoA extends javax.swing.JPanel {
                                 .addComponent(lbModalidad)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(boxModalidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(ContenidoLayout.createSequentialGroup()
                                 .addGap(26, 26, 26)
                                 .addComponent(lblDirector, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -350,7 +294,7 @@ public class DatosFormatoA extends javax.swing.JPanel {
                                 .addComponent(lblEstudiante2)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(boxEstudiante2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGroup(ContenidoLayout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
@@ -366,23 +310,75 @@ public class DatosFormatoA extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(Contenido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(Contenido, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btContinuarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btContinuarMouseClicked
+        try {
+             // 1. Construir el objeto FormatoA con los datos ingresados
+             FormatoA formato = new FormatoA();
+             formato.setTitle(txtTitulo.getText());
+             formato.setMode((enumModalidad) boxModalidad.getSelectedItem());
+             formato.setDate(LocalDate.now()); // fecha actual
+             formato.setGeneralObjetive(txtObjGenerales.getText());
+             formato.setSpecificObjetives(txtObjEspecificos.getText());
+
+             // Valores pendientes o "falsos" que se completarán después
+             formato.setArchivoPDF("pendiente.pdf"); 
+             formato.setCounter(0);
+
+             // Docentes
+             Docente manager = (Docente) boxDirector.getSelectedItem();
+             formato.setProjectManager(manager);
+
+             Docente coManager = (Docente) boxCodirector.getSelectedItem();
+             formato.setProjectCoManager(coManager);
+
+             // Estudiantes
+             List<Estudiante> estudiantes = new ArrayList<>();
+             if (boxEstudiante1.getSelectedItem() != null) {
+                 estudiantes.add((Estudiante) boxEstudiante1.getSelectedItem());
+             }
+             if (boxEstudiante2.isEnabled() && boxEstudiante2.getSelectedItem() != null) {
+                 estudiantes.add((Estudiante) boxEstudiante2.getSelectedItem());
+             }
+             formato.setEstudiantes(estudiantes);
+
+             // 2. Mostrar el siguiente panel (AdjuntarDocumentos) con el FormatoA
+             AdjuntarDocumentos panelDocs = new AdjuntarDocumentos(formato);
+             showJPanel(panelDocs);
+
+         } catch (Exception e) {
+             e.printStackTrace();
+             JOptionPane.showMessageDialog(this, "Error al continuar: " + e.getMessage());
+         }
+    }//GEN-LAST:event_btContinuarMouseClicked
+ 
+    
+    private void showJPanel(JPanel pl){
+        pl.setSize(641,498);
+        pl.setLocation(0, 0);
+
+        Contenido.removeAll();
+        Contenido.add(pl, BorderLayout.CENTER);
+        Contenido.revalidate();
+        Contenido.repaint();
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel Contenido;
     private javax.swing.JComboBox<Docente> boxCodirector;
     private javax.swing.JComboBox<Docente> boxDirector;
     private javax.swing.JComboBox<Estudiante> boxEstudiante1;
     private javax.swing.JComboBox<Estudiante> boxEstudiante2;
     private javax.swing.JComboBox<enumModalidad> boxModalidad;
     private javax.swing.JButton btContinuar;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparatorTitulo;
