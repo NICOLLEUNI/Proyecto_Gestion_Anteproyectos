@@ -19,45 +19,42 @@ import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMTMaterialLigh
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
 
+import co.unicauca.workflow.presentation.views.ListaFormatosAestudiantes;
+
 /**
  *
  * @author User
  */
 public class GUIMenuEstudiante extends javax.swing.JFrame {
 
-    /**
-     * Creates new form GUIEstudiante
-     */
+    
 
     private static Persona personaLogueado;
-   public GUIMenuEstudiante(Persona logueado) {
-     this.personaLogueado=logueado;
 
+    public GUIMenuEstudiante(Persona logueado) {
+        this.personaLogueado = logueado;
+        FlatMTMaterialLighterIJTheme.setup(); // aplicar tema
         initComponents();
-       
-     initContent();
- 
+        initContent(); // cargar panel principal
+        setLocationRelativeTo(null); // centrar ventana
     }
 
-     private void initStyles(){
-     
-     }
-     private void showJPanel(JPanel pl){
-     pl.setSize(641,498);
-     pl.setLocation(0, 0);
-     
-     Contenido.removeAll();
-     Contenido.add(pl,BorderLayout.CENTER);
-     Contenido.revalidate();
-     Contenido.repaint(); 
-         
-     }
-     private void initContent(){
+    // Método genérico para mostrar un JPanel en el panel central
+    private void showJPanel(JPanel pl) {
+        pl.setSize(641, 498);
+        pl.setLocation(0, 0);
 
-     showJPanel( new Principal(personaLogueado));
+        Contenido.removeAll();
+        Contenido.setLayout(new BorderLayout());
+        Contenido.add(pl, BorderLayout.CENTER);
+        Contenido.revalidate();
+        Contenido.repaint();
+    }
 
-    
-     }
+    // Inicializa el contenido central con la vista principal
+    private void initContent() {
+        showJPanel(new Principal(personaLogueado));
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -141,6 +138,11 @@ public class GUIMenuEstudiante extends javax.swing.JFrame {
                 btConsultarFormatoAMouseClicked(evt);
             }
         });
+        btConsultarFormatoA.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btConsultarFormatoAActionPerformed(evt);
+            }
+        });
         Menu.add(btConsultarFormatoA, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 213, 258, 64));
 
         JButtonCloseSesion.setBackground(new java.awt.Color(65, 55, 171));
@@ -216,7 +218,8 @@ public class GUIMenuEstudiante extends javax.swing.JFrame {
     }//GEN-LAST:event_btRegresarMouseClicked
 
     private void btConsultarFormatoAMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btConsultarFormatoAMouseClicked
-         showJPanel( new ConsultarFormatoA(personaLogueado));
+         ListaFormatosAestudiantes vistaEstudiante = new ListaFormatosAestudiantes(personaLogueado);
+        showJPanel(vistaEstudiante);
     }//GEN-LAST:event_btConsultarFormatoAMouseClicked
 
     private void JButtonCloseSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JButtonCloseSesionActionPerformed
@@ -224,6 +227,13 @@ public class GUIMenuEstudiante extends javax.swing.JFrame {
         login.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_JButtonCloseSesionActionPerformed
+
+    private void btConsultarFormatoAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btConsultarFormatoAActionPerformed
+        
+      ListaFormatosAestudiantes vistaEstudiante = new ListaFormatosAestudiantes(personaLogueado);
+        showJPanel(vistaEstudiante);
+
+    }//GEN-LAST:event_btConsultarFormatoAActionPerformed
 
 
     /**
