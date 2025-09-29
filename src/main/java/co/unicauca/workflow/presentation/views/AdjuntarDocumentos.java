@@ -34,8 +34,8 @@ import javax.swing.UIManager;
  */
 public class AdjuntarDocumentos extends javax.swing.JPanel {
     
-    IFormatoARepository repoFomratoA = Factory.getInstance().getFormatoARepository("default");
-    FormatoAService serviceFormato = new FormatoAService(repoFomratoA);
+    IFormatoARepository repoFormatoA = Factory.getInstance().getFormatoARepository("default");
+    FormatoAService serviceFormato = new FormatoAService(repoFormatoA);
     
     
     private FormatoA formatoA;

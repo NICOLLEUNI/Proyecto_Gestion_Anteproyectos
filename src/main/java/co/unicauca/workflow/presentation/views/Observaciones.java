@@ -6,6 +6,7 @@ package co.unicauca.workflow.presentation.views;
 
 //al dar click en ruta pdf debe exportar el formato A en la ruta 
 
+import co.unicauca.workflow.access.Factory;
 import co.unicauca.workflow.domain.entities.FormatoA;
 import co.unicauca.workflow.domain.entities.enumEstado;
 import co.unicauca.workflow.domain.service.FormatoAService;
@@ -17,6 +18,7 @@ import java.io.IOException;
 import javax.swing.JOptionPane;
 
 import co.unicauca.workflow.access.FormatoAVersionRepository;
+import co.unicauca.workflow.access.IFormatoAVersionRepository;
 import co.unicauca.workflow.domain.entities.FormatoAVersion;
 import co.unicauca.workflow.domain.entities.enumEstado;
 
@@ -26,11 +28,13 @@ import co.unicauca.workflow.domain.entities.enumEstado;
  * @author User
  */
 public class Observaciones extends javax.swing.JPanel {
+    
+    IFormatoAVersionRepository versionRepo = Factory.getInstance().getFormatoAVersionRepository("default");
 
     private FormatoA formatoActual;
     private final FormatoAService formatoAService;
 
-    // 🔹 Constructor recibe la misma instancia del service
+    // Constructor recibe la misma instancia del service
     public Observaciones(FormatoAService formatoAService) {
         this.formatoAService = formatoAService;
         FlatMTMaterialLighterIJTheme.setup();
@@ -57,7 +61,7 @@ public class Observaciones extends javax.swing.JPanel {
    
    private void abrirPDF() {
     try {
-        String ruta = lblPDF.getText();  // 🔹 en tu lblPDF estará la ruta (ej: "C:/Users/User/Desktop/archivo.pdf")
+        String ruta = lblPDF.getText();  
         File file = new File(ruta);
 
         if (file.exists()) {
@@ -443,10 +447,10 @@ try {
             return;
         }
 
-        // 🔹 Obtener el formato actual
+        //Obtener el formato actual
         int idFormato = formatoActual.getId();
         
-        // 🔹 PASO 1: Actualizar el FormatoA principal
+        //PASO 1: Actualizar el FormatoA principal
         // Solo incrementar contador si es RECHAZADO
         int nuevoContador = formatoActual.getCounter();
         if (estado.equals("RECHAZADO")) {
@@ -462,15 +466,14 @@ try {
         boolean actualizado = formatoAService.updateEstadoObservacionesYContador(
            idFormato, estado, observaciones, nuevoContador);
 
-        // 🔹 PASO 2: Actualizar la última versión con los mismos datos
+        //PASO 2: Actualizar la última versión con los mismos datos
         if (actualizado) {
-            try {
+            try { 
                 // Obtener el repositorio de versiones
-                co.unicauca.workflow.access.FormatoAVersionRepository versionRepo = 
-                    new co.unicauca.workflow.access.FormatoAVersionRepository();
+               
                 
                 // Obtener todas las versiones de este formato
-                java.util.List<co.unicauca.workflow.domain.entities.FormatoAVersion> versiones = 
+                java.util.List<FormatoAVersion> versiones = 
                     versionRepo.listByFormatoA(idFormato);
                 
                 if (versiones != null && !versiones.isEmpty()) {

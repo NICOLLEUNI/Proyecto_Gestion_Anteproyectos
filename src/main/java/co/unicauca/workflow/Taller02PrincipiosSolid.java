@@ -43,6 +43,8 @@ import java.util.logging.Logger;
 public class Taller02PrincipiosSolid {
 
     public static void main(String[] args) {
+        
+        
 
         
         IPersonaRepository repository = Factory.getInstance().getPersonaRepository("default");

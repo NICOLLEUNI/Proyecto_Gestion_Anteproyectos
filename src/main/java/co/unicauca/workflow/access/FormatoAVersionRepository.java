@@ -94,7 +94,7 @@ public class FormatoAVersionRepository implements IFormatoAVersionRepository {
         }
         return null;
     }
-    
+    @Override
     public boolean update(FormatoAVersion version) {
         try {
             String sql = "UPDATE FormatoAVersion SET state = ?, observations = ? WHERE idCopia = ?";
@@ -111,6 +111,7 @@ public class FormatoAVersionRepository implements IFormatoAVersionRepository {
     }
 
     // 🔹 Nuevo método para cargar las versiones de un FormatoA específico
+    @Override
     public List<FormatoAVersion> listByFormatoA(int formatoAId) {
         List<FormatoAVersion> versiones = new ArrayList<>();
         try {
