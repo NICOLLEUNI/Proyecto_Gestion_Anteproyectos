@@ -39,6 +39,9 @@ public class GUIEvaluarAnteproyecto extends javax.swing.JFrame {
     private static Persona personaLogueado;
     private IFormatoARepository repoFormatoA = Factory.getInstance().getFormatoARepository("default");
     
+    private JFrame frameBarras;
+    private JFrame framePastel;
+    
     //private List<FormatoA> listaFormateada = new ArrayList<>();
     
    public GUIEvaluarAnteproyecto(Persona logueado) throws ValidationException {
@@ -62,14 +65,14 @@ public class GUIEvaluarAnteproyecto extends javax.swing.JFrame {
     int anchoPrincipal = this.getWidth();
 
     // Frame Pastel
-    JFrame framePastel = new JFrame("Gráfico Pastel");
+     framePastel = new JFrame("Gráfico Pastel");
     framePastel.getContentPane().add(graficoPastel);
     framePastel.pack();
     framePastel.setLocation(xPrincipal + anchoPrincipal + 10, yPrincipal); // a la derecha
     framePastel.setVisible(true);
 
     // Frame Barras (debajo o al lado)
-    JFrame frameBarras = new JFrame("Gráfico Barras");
+     frameBarras = new JFrame("Gráfico Barras");
     frameBarras.getContentPane().add(graficoBarras);
     frameBarras.pack();
     frameBarras.setLocation(xPrincipal + anchoPrincipal + 10, 
@@ -96,6 +99,17 @@ private void cargarDatos() {
     }
 
     jTable1.setModel(modelo);
+}
+
+    private void cerrarGraficas() {
+    if (framePastel != null) {
+        framePastel.dispose();
+        framePastel = null;
+    }
+    if (frameBarras != null) {
+        frameBarras.dispose();
+        frameBarras = null;
+    }
 }
 
     private void initStyles(){ }
@@ -176,13 +190,14 @@ private void cargarDatos() {
         btVolver.setFont(new java.awt.Font("Wide Latin", 1, 24)); // NOI18N
         btVolver.setForeground(new java.awt.Color(255, 255, 255));
         btVolver.setText("<");
+        btVolver.setFocusable(false);
         btVolver.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btVolver.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btVolverMouseClicked(evt);
             }
         });
-        Menu.add(btVolver, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 40, -1));
+        Menu.add(btVolver, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 50, -1));
 
         jLabel1.setFont(new java.awt.Font("Roboto Medium", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 0, 0));
@@ -242,6 +257,7 @@ private void cargarDatos() {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btVolverMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btVolverMouseClicked
+        cerrarGraficas();
         GUIMenuCoord ventanaCoord = new GUIMenuCoord(personaLogueado); // Opcional: mostrar un mensaje al usuario
         ventanaCoord.setVisible(true);
         this.dispose();
