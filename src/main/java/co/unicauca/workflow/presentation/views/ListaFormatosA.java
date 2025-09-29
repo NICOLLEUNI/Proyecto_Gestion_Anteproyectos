@@ -12,6 +12,7 @@ import co.unicauca.workflow.domain.entities.FormatoA;
 import co.unicauca.workflow.domain.entities.FormatoAVersion;
 import co.unicauca.workflow.domain.entities.Persona;
 import co.unicauca.workflow.domain.entities.enumEstado;
+import co.unicauca.workflow.domain.service.FormatoAService;
 import java.awt.BorderLayout;
 import java.util.List;
 import java.util.ArrayList;
@@ -28,7 +29,9 @@ public class ListaFormatosA extends javax.swing.JPanel {
 
     private Persona personaLogueada;
     private List<FormatoA> formatosDocente; // lista en memoria para mapear filas con objetos
-
+     IFormatoARepository repoFomratoA = Factory.getInstance().getFormatoARepository("default");
+        FormatoAService serviceFormato = new FormatoAService(repoFomratoA);
+        
     public ListaFormatosA(Persona personaLogueada) {
         initComponents();
         this.personaLogueada = personaLogueada;
@@ -132,42 +135,70 @@ public class ListaFormatosA extends javax.swing.JPanel {
      * Abre el panel DetallesFormatoA asegurando que tengamos un objeto Docente válido.
      * Si personaLogueada no es Docente, intentamos obtenerlo del repositorio.
      */
-    private void abrirDetalleConSeguridad(FormatoA seleccionado) {
-        try {
-            Docente docente = null;
+  private void abrirDetalleConSeguridad(FormatoA seleccionado) {
+    try {
+        // 🔹 Primero revisamos el contador del formato
+        if (seleccionado.getCounter() >= 3) { // o el número que quieras
+            int opcion = JOptionPane.showConfirmDialog(
+                this,
+                "Este formato ya se ha reenviado 3 veces.\n" +
+                "¿Desea eliminarlo junto con sus estudiantes?",
+                "Aviso",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE
+            );
 
-            if (personaLogueada instanceof Docente) {
-                docente = (Docente) personaLogueada;
+            if (opcion == JOptionPane.YES_OPTION) {
+                // 🔹 Aquí llamamos al Service para eliminar el formato y sus estudiantes
+               
+                boolean eliminado = serviceFormato.eliminarFormatoAConVersiones(seleccionado.getId());
+                if (eliminado) {
+                    JOptionPane.showMessageDialog(this, "Formato eliminado correctamente.");
+                    cargarDatos(); // 🔹 refrescamos la tabla
+                } else {
+                    JOptionPane.showMessageDialog(this, "No se pudo eliminar el formato.");
+                }
+                return; // 🔹 salir sin abrir detalle
             } else {
-                // Intentamos recuperar el docente por id (caso en que personaLogueada es Persona base)
-                IDocenteRepository repoDoc = Factory.getInstance().getDocenteRepository("default");
-                docente = repoDoc.findById(personaLogueada.getIdUsuario());
-            }
-
-            if (docente == null) {
-                JOptionPane.showMessageDialog(this,
-                        "No se pudo determinar el docente logueado. Asegúrese de estar con un usuario con rol DOCENTE.",
-                        "Error", JOptionPane.ERROR_MESSAGE);
+                // El usuario dijo que no, entonces no abrimos el detalle
                 return;
             }
-
-            // Abrimos la vista de detalle
-            DetallesFormatoA detalle = new DetallesFormatoA(seleccionado, docente,personaLogueada);
-
-            // Cambiamos la vista dentro de este panel
-            Contenido.removeAll();
-            Contenido.setLayout(new BorderLayout());
-            Contenido.add(detalle, BorderLayout.CENTER);
-            Contenido.revalidate();
-            Contenido.repaint();
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Error abriendo detalle: " + ex.getMessage(),
-                    "Error", JOptionPane.ERROR_MESSAGE);
         }
-    }
 
+        // 🔹 Si el contador <3, seguimos flujo normal
+        Docente docente = null;
+
+        if (personaLogueada instanceof Docente) {
+            docente = (Docente) personaLogueada;
+        } else {
+            // Intentamos recuperar el docente por id
+            IDocenteRepository repoDoc = Factory.getInstance().getDocenteRepository("default");
+            docente = repoDoc.findById(personaLogueada.getIdUsuario());
+        }
+
+        if (docente == null) {
+            JOptionPane.showMessageDialog(this,
+                    "No se pudo determinar el docente logueado. Asegúrese de estar con un usuario con rol DOCENTE.",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Abrimos la vista de detalle
+        DetallesFormatoA detalle = new DetallesFormatoA(seleccionado, docente, personaLogueada);
+
+        // Cambiamos la vista dentro de este panel
+        Contenido.removeAll();
+        Contenido.setLayout(new BorderLayout());
+        Contenido.add(detalle, BorderLayout.CENTER);
+        Contenido.revalidate();
+        Contenido.repaint();
+
+    } catch (Exception ex) {
+        ex.printStackTrace();
+        JOptionPane.showMessageDialog(this, "Error abriendo detalle: " + ex.getMessage(),
+                "Error", JOptionPane.ERROR_MESSAGE);
+    }
+}
     
     private void initStyles() {
         jTable1.setRowHeight(30);

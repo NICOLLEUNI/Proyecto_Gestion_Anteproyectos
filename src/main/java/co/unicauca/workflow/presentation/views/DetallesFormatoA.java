@@ -6,7 +6,7 @@ package co.unicauca.workflow.presentation.views;
 
 import co.unicauca.workflow.access.Factory;
 import co.unicauca.workflow.access.IFormatoARepository;
-import co.unicauca.workflow.access.FormatoAVersionRepository;
+import co.unicauca.workflow.access.IFormatoAVersionRepository;
 import co.unicauca.workflow.domain.entities.Docente;
 import co.unicauca.workflow.domain.entities.FormatoA;
 import co.unicauca.workflow.domain.entities.FormatoAVersion;
@@ -32,6 +32,7 @@ public class DetallesFormatoA extends javax.swing.JPanel {
     private FormatoA formato;
     private Docente docente;
     private Persona persona;
+      IFormatoAVersionRepository repoVersion = Factory.getInstance().getFormatoAVersionRepository("default");
     // Constructor "temporal"
     public DetallesFormatoA(FormatoA formato, Docente docente,Persona persona) {
         initComponents();
@@ -534,8 +535,8 @@ public class DetallesFormatoA extends javax.swing.JPanel {
             formato.setSpecificObjetives(jTextArea1.getText());
 
             // 2. Determinar número de la nueva versión
-            FormatoAVersionRepository repoVer = new FormatoAVersionRepository();
-            List<FormatoAVersion> versiones = repoVer.listByFormatoA(formato.getId());
+            
+            List<FormatoAVersion> versiones = repoVersion.listByFormatoA(formato.getId());
 
             int ultimaNum = 0;
             for (FormatoAVersion v : versiones) {
@@ -560,7 +561,7 @@ public class DetallesFormatoA extends javax.swing.JPanel {
             );
 
             // 4. Guardar la versión en la tabla de versiones
-            boolean verGuardada = repoVer.save(nuevaVersion);
+            boolean verGuardada = repoVersion.save(nuevaVersion);
             if (!verGuardada) {
                 JOptionPane.showMessageDialog(this, "No se pudo guardar la nueva versión.");
                 return;

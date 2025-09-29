@@ -19,5 +19,5 @@ public interface IFormatoARepository {
     public FormatoA findById(int id);
     public boolean updateEstadoObservacionesYContador(int id, String estado, String observaciones, int contador) ;
     boolean update (FormatoA formatoA);
-
+    public boolean delete(int formatoAId);
 }
