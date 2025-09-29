@@ -94,6 +94,21 @@ public class FormatoAVersionRepository implements IFormatoAVersionRepository {
         }
         return null;
     }
+    
+    public boolean update(FormatoAVersion version) {
+        try {
+            String sql = "UPDATE FormatoAVersion SET state = ?, observations = ? WHERE idCopia = ?";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, version.getState().name());
+            pstmt.setString(2, version.getObservations());
+            pstmt.setInt(3, version.getIdCopia());
+
+            return pstmt.executeUpdate() > 0;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return false;
+        }
+    }
 
     // 🔹 Nuevo método para cargar las versiones de un FormatoA específico
     @Override
