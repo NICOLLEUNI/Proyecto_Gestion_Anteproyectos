@@ -16,6 +16,10 @@ import java.io.File;
 import java.io.IOException;
 import javax.swing.JOptionPane;
 
+import co.unicauca.workflow.access.FormatoAVersionRepository;
+import co.unicauca.workflow.domain.entities.FormatoAVersion;
+import co.unicauca.workflow.domain.entities.enumEstado;
+
 /**
  * 
  *
@@ -416,7 +420,7 @@ public class Observaciones extends javax.swing.JPanel {
     }//GEN-LAST:event_CBXRechazadoMouseClicked
 
     private void btEvaluarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btEvaluarMouseClicked
-       try {
+try {
         // Obtener el estado
         String estado = null;
         if (CBXAprobado.isSelected()) {
@@ -439,30 +443,72 @@ public class Observaciones extends javax.swing.JPanel {
             return;
         }
 
-        // 🔹 Supongamos que tienes guardado el ID del formato actual
-        int idFormato = formatoActual.getId();  // guarda este formato cuando haces setFormatoA
+        // 🔹 Obtener el formato actual
+        int idFormato = formatoActual.getId();
+        
+        // 🔹 PASO 1: Actualizar el FormatoA principal
+        // Solo incrementar contador si es RECHAZADO
+        int nuevoContador = formatoActual.getCounter();
+        if (estado.equals("RECHAZADO")) {
+            nuevoContador = formatoActual.getCounter() + 1;
+            formatoActual.setCounter(nuevoContador);
+        }
 
-        
-        
-       // Incrementar contador antes de actualizar
-         int nuevoContador = formatoActual.getCounter() + 1;
-         formatoActual.setCounter(nuevoContador);
- 
-       // Llamar al repositorio para actualizar todo
+        // Actualizar estado y observaciones del FormatoA principal
+        formatoActual.setState(enumEstado.valueOf(estado));
+        formatoActual.setObservations(observaciones);
+
+        // Llamar al servicio para actualizar el FormatoA principal
         boolean actualizado = formatoAService.updateEstadoObservacionesYContador(
            idFormato, estado, observaciones, nuevoContador);
-        // Llamar al repositorio para actualizar
-        
 
+        // 🔹 PASO 2: Actualizar la última versión con los mismos datos
         if (actualizado) {
+            try {
+                // Obtener el repositorio de versiones
+                co.unicauca.workflow.access.FormatoAVersionRepository versionRepo = 
+                    new co.unicauca.workflow.access.FormatoAVersionRepository();
+                
+                // Obtener todas las versiones de este formato
+                java.util.List<co.unicauca.workflow.domain.entities.FormatoAVersion> versiones = 
+                    versionRepo.listByFormatoA(idFormato);
+                
+                if (versiones != null && !versiones.isEmpty()) {
+                    // Obtener la última versión (la más reciente)
+                    co.unicauca.workflow.domain.entities.FormatoAVersion ultimaVersion = 
+                        versiones.get(versiones.size() - 1);
+                    
+                    // Actualizar la última versión con el estado y observaciones de la evaluación
+                    ultimaVersion.setState(co.unicauca.workflow.domain.entities.enumEstado.valueOf(estado));
+                    ultimaVersion.setObservations(observaciones);
+                    
+                    // Guardar los cambios en la versión
+                    boolean versionActualizada = versionRepo.update(ultimaVersion);
+                    
+                    if (versionActualizada) {
+                        System.out.println("DEBUG - Última versión actualizada correctamente");
+                    } else {
+                        System.out.println("DEBUG - Error al actualizar la última versión");
+                    }
+                } else {
+                    System.out.println("DEBUG - No se encontraron versiones para actualizar");
+                }
+                
+            } catch (Exception e) {
+                System.out.println("DEBUG - Error al actualizar versión: " + e.getMessage());
+                e.printStackTrace();
+                // No mostrar error al usuario para no confundirlo, solo log
+            }
+            
             JOptionPane.showMessageDialog(this, "Formato evaluado correctamente.");
-               this.setVisible(false);
+            this.setVisible(false);
         } else {
             JOptionPane.showMessageDialog(this, "No se pudo actualizar el formato.");
         }
 
     } catch (Exception ex) {
         JOptionPane.showMessageDialog(this, "Error al evaluar: " + ex.getMessage());
+        ex.printStackTrace();
     }
     }//GEN-LAST:event_btEvaluarMouseClicked
     
