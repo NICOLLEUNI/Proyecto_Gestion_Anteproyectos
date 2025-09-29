@@ -5,9 +5,12 @@
 package co.unicauca.workflow.presentation.views;
 
 import co.unicauca.workflow.access.Factory;
+import co.unicauca.workflow.access.FormatoAVersionRepository;
 import co.unicauca.workflow.access.IFormatoARepository;
+import co.unicauca.workflow.access.IFormatoAVersionRepository;
 import co.unicauca.workflow.domain.entities.Estudiante;
 import co.unicauca.workflow.domain.entities.FormatoA;
+import co.unicauca.workflow.domain.entities.FormatoAVersion;
 import co.unicauca.workflow.domain.entities.Persona;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,35 +33,38 @@ public class ConsultarFormatoA extends javax.swing.JPanel {
         cargarDatos();;
     }
 private void cargarDatos() {
-      // Obtenemos el repositorio usando la Factory
-    IFormatoARepository repo = Factory.getFormatoARepository("default");
+     IFormatoARepository repoA = Factory.getFormatoARepository("default");
+    FormatoAVersionRepository repoV = new FormatoAVersionRepository();
 
-    // Traemos todos los formatos
-    List<FormatoA> todos = repo.list();
-
-    // Filtramos los formatos donde el usuario logueado sea estudiante
-    List<FormatoA> lista = new ArrayList<>();
+    // 1️⃣ Traer todos los FormatoA donde el usuario logueado sea estudiante
+    List<FormatoA> todos = repoA.list();
+    List<FormatoA> listaFiltrada = new ArrayList<>();
     for (FormatoA f : todos) {
         for (Estudiante est : f.getEstudiantes()) {
             if (est.getIdUsuario() == personaLogueada.getIdUsuario()) {
-                lista.add(f);
-                break; // Ya lo encontramos, no necesitamos revisar más estudiantes
+                listaFiltrada.add(f);
+                break;
             }
         }
     }
 
-    // Columnas de la tabla
-    String[] columnas = {"Título", "Director", "Entrega", "Estado", "Observaciones"};
+    // 2️⃣ Traer todas las versiones de esos formatos
+    List<FormatoAVersion> versiones = new ArrayList<>();
+    for (FormatoA f : listaFiltrada) {
+        versiones.addAll(repoV.listByFormatoA(f.getId()));
+    }
+
+    // 3️⃣ Preparar la tabla
+    String[] columnas = {"Título", "Versión", "Fecha", "Estado", "Observaciones"};
     DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
 
-    // Llenamos la tabla
-    for (FormatoA f : lista) {
+    for (FormatoAVersion v : versiones) {
         Object[] fila = {
-            f.getTitle(),
-            f.getProjectManager() != null ? f.getProjectManager().getName() : "",
-            f.getDate() != null ? f.getDate().toString() : "",
-            f.getState() != null ? f.getState() : "Pendiente",
-            f.getObservations() != null ? f.getObservations() : ""
+            v.getTitle(),
+            v.getNumeroVersion(),
+            v.getFecha() != null ? v.getFecha().toString() : "",
+            v.getState() != null ? v.getState() : "Pendiente",
+            v.getObservations() != null ? v.getObservations() : ""
         };
         modelo.addRow(fila);
     }

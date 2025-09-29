@@ -304,5 +304,45 @@ public class FormatoARepository implements IFormatoARepository {
         return false;
     }
 }
+    @Override
+   public boolean delete(int formatoAId) {
+    String sqlDeleteEstudiantes = "DELETE FROM FormatoA_Estudiante WHERE formatoA_id = ?";
+    String sqlDeleteFormatoA = "DELETE FROM FormatoA WHERE id = ?";
+
+    try {
+        conn.setAutoCommit(false); // 🔹 iniciar transacción
+
+        // 1️⃣ Borrar relaciones con estudiantes
+        try (PreparedStatement psEst = conn.prepareStatement(sqlDeleteEstudiantes)) {
+            psEst.setInt(1, formatoAId);
+            psEst.executeUpdate(); // No importa cuántas filas, solo limpiar
+        }
+
+        // 2️⃣ Borrar FormatoA principal
+        int filasFormatoA;
+        try (PreparedStatement psFormatoA = conn.prepareStatement(sqlDeleteFormatoA)) {
+            psFormatoA.setInt(1, formatoAId);
+            filasFormatoA = psFormatoA.executeUpdate();
+        }
+
+        conn.commit(); // 🔹 confirmar si todo bien
+        return filasFormatoA > 0;
+
+    } catch (SQLException e) {
+        try {
+            conn.rollback(); // 🔹 revertir si algo falla
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        e.printStackTrace();
+        return false;
+    } finally {
+        try {
+            conn.setAutoCommit(true);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
 
 }

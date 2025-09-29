@@ -32,8 +32,7 @@ public class FormatoAService extends Subject{
             boolean saved = repo.save(formatoA);
             if(!saved) return false;
 
-            // 🔹 INICIALIZAR el repo de versiones
-            FormatoAVersionRepository versionRepo = new FormatoAVersionRepository();
+           
 
             FormatoAVersion version1 = new FormatoAVersion(
                 0,
@@ -78,7 +77,26 @@ public class FormatoAService extends Subject{
             System.out.println("No hay observers registrados");
         }
     }
-    return actualizado;
+    public boolean eliminarFormatoAConVersiones(int formatoAId) {
+    
+
+    try {
+        // 1️⃣ Borrar versiones primero
+        versionRepo.deleteByFormatoAId(formatoAId);
+
+        // 2️⃣ Borrar FormatoA + Estudiantes
+        boolean formatoEliminado = repo.delete(formatoAId);
+
+        // 3️⃣ Confirmar todo
+        if (formatoEliminado) {
+         
+            return true;
+        }
+        return false;
+    } catch (Exception e) {
+        e.printStackTrace();
+        return false;
+    }
 }
     
 }

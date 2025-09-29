@@ -7,6 +7,7 @@ package co.unicauca.workflow.presentation.views;
 import co.unicauca.workflow.access.Factory;
 import co.unicauca.workflow.access.IFormatoARepository;
 import co.unicauca.workflow.domain.entities.FormatoA;
+import co.unicauca.workflow.domain.entities.Persona;
 import co.unicauca.workflow.domain.entities.enumModalidad;
 import co.unicauca.workflow.domain.service.FormatoAService;
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMTMaterialLighterIJTheme;
@@ -34,16 +35,17 @@ import javax.swing.UIManager;
  */
 public class AdjuntarDocumentos extends javax.swing.JPanel {
     
-    IFormatoARepository repoFormatoA = Factory.getInstance().getFormatoARepository("default");
-    FormatoAService serviceFormato = new FormatoAService(repoFormatoA);
-    
+    IFormatoARepository repoFomratoA = Factory.getInstance().getFormatoARepository("default");
+    FormatoAService serviceFormato = new FormatoAService(repoFomratoA);
+    private Persona persona;
     
     private FormatoA formatoA;
     /**
      * Creates new form AdjuntarDocumentos
      */
-    public AdjuntarDocumentos(FormatoA formatoA) {
+    public AdjuntarDocumentos(FormatoA formatoA,Persona persona) {
         this.formatoA = formatoA;
+        this.persona=persona;
         initComponents();
 
         initStyles();
@@ -279,6 +281,7 @@ public class AdjuntarDocumentos extends javax.swing.JPanel {
 
         if (ok) {
             JOptionPane.showMessageDialog(this, "Formato A actualizado con éxito.");
+              showJPanel(new Principal(persona));
         } else {
             JOptionPane.showMessageDialog(this, "Error al guardar el Formato A.");
         }
@@ -367,7 +370,7 @@ public class AdjuntarDocumentos extends javax.swing.JPanel {
     }//GEN-LAST:event_btCartaMouseClicked
 
     private void btnVolverMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnVolverMouseClicked
-        showJPanel(new DatosFormatoA());
+        showJPanel(new DatosFormatoA(persona));
     }//GEN-LAST:event_btnVolverMouseClicked
 private void showJPanel(JPanel pl){
         pl.setSize(641,498);

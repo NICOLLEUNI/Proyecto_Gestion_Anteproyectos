@@ -9,6 +9,9 @@ package co.unicauca.workflow.presentation;
 //Implementar la logica del panel para que muestre el formato A regiatrado 
 //con el correo del estudiante 
 
+import co.unicauca.workflow.access.Factory;
+import co.unicauca.workflow.access.FormatoARepository;
+import co.unicauca.workflow.access.IFormatoAVersionRepository;
 import co.unicauca.workflow.presentation.views.Principal;
 import co.unicauca.workflow.presentation.views.ConsultarFormatoA;
 import co.unicauca.workflow.domain.entities.Persona;
@@ -26,6 +29,7 @@ public class GUIMenuEstudiante extends javax.swing.JFrame {
      * Creates new form GUIEstudiante
      */
 
+     IFormatoAVersionRepository repo = Factory.getFormatoAVersionRepository("default");
     private static Persona personaLogueado;
    public GUIMenuEstudiante(Persona logueado) {
      this.personaLogueado=logueado;
@@ -213,7 +217,8 @@ public class GUIMenuEstudiante extends javax.swing.JFrame {
     }//GEN-LAST:event_btRegresarMouseClicked
 
     private void btConsultarFormatoAMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btConsultarFormatoAMouseClicked
-         showJPanel( new ConsultarFormatoA(personaLogueado));
+         FormatoARepository repo = new FormatoARepository(); 
+        showJPanel(new ConsultarFormatoA(personaLogueado));
     }//GEN-LAST:event_btConsultarFormatoAMouseClicked
 
     private void JButtonCloseSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JButtonCloseSesionActionPerformed

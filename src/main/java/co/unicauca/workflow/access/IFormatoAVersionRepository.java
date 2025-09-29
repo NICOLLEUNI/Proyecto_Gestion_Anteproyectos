@@ -24,4 +24,6 @@ public interface IFormatoAVersionRepository {
     
     public boolean update(FormatoAVersion version);
     
+    public boolean deleteByFormatoAId(int formatoAId) ;
+    
 }
