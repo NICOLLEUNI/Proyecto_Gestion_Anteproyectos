@@ -79,7 +79,7 @@ public class GUIMenuDocente extends javax.swing.JFrame {
         btRespuestas = new javax.swing.JButton();
         btSubirFormatoA = new javax.swing.JButton();
         btRegresar = new javax.swing.JButton();
-        jButtonCloseSesion = new javax.swing.JButton();
+        btnCloseSesion = new javax.swing.JButton();
         Contenido = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -161,12 +161,12 @@ public class GUIMenuDocente extends javax.swing.JFrame {
             }
         });
 
-        jButtonCloseSesion.setBackground(new java.awt.Color(65, 55, 171));
-        jButtonCloseSesion.setForeground(new java.awt.Color(255, 255, 255));
-        jButtonCloseSesion.setText("Cerrar Sesión");
-        jButtonCloseSesion.addActionListener(new java.awt.event.ActionListener() {
+        btnCloseSesion.setBackground(new java.awt.Color(65, 55, 171));
+        btnCloseSesion.setForeground(new java.awt.Color(255, 255, 255));
+        btnCloseSesion.setText("Cerrar Sesión");
+        btnCloseSesion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonCloseSesionActionPerformed(evt);
+                btnCloseSesionActionPerformed(evt);
             }
         });
 
@@ -186,7 +186,7 @@ public class GUIMenuDocente extends javax.swing.JFrame {
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(MenuLayout.createSequentialGroup()
                 .addGap(81, 81, 81)
-                .addComponent(jButtonCloseSesion)
+                .addComponent(btnCloseSesion)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         MenuLayout.setVerticalGroup(
@@ -203,7 +203,7 @@ public class GUIMenuDocente extends javax.swing.JFrame {
                 .addGap(0, 0, 0)
                 .addComponent(btRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButtonCloseSesion)
+                .addComponent(btnCloseSesion)
                 .addGap(33, 33, 33))
         );
 
@@ -266,11 +266,11 @@ public class GUIMenuDocente extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btRegresarMouseClicked
 
-    private void jButtonCloseSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCloseSesionActionPerformed
+    private void btnCloseSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseSesionActionPerformed
         GUILogin login = new GUILogin();
         login.setVisible(true);
         this.setVisible(false);
-    }//GEN-LAST:event_jButtonCloseSesionActionPerformed
+    }//GEN-LAST:event_btnCloseSesionActionPerformed
 
     private void btRespuestasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btRespuestasMouseClicked
         // Crear la vista correcta: ListaFormatosA
@@ -308,7 +308,7 @@ public class GUIMenuDocente extends javax.swing.JFrame {
     private javax.swing.JButton btRegresar;
     private javax.swing.JButton btRespuestas;
     private javax.swing.JButton btSubirFormatoA;
-    private javax.swing.JButton jButtonCloseSesion;
+    private javax.swing.JButton btnCloseSesion;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }
