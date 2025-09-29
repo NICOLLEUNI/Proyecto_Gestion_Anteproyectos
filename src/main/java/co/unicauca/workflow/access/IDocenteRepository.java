@@ -15,4 +15,6 @@ public interface IDocenteRepository {
     boolean save(Docente newDocente);
     List<Docente> list();
     
+    Docente findById(int id);
+    
 }
