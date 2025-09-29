@@ -7,16 +7,8 @@ package co.unicauca.workflow.presentation.views;
 import co.unicauca.workflow.access.Factory;
 import co.unicauca.workflow.access.IFormatoARepository;
 import co.unicauca.workflow.domain.entities.FormatoA;
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
-import javax.swing.filechooser.FileNameExtensionFilter;
-import java.io.File;
-import java.io.IOException;
-import co.unicauca.workflow.domain.entities.FormatoA;
 import co.unicauca.workflow.domain.entities.enumModalidad;
 import co.unicauca.workflow.domain.service.FormatoAService;
-import co.unicauca.workflow.domain.service.UserService;
-import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMTMaterialLighterIJTheme;
 import java.awt.Color;
 import java.io.File;
@@ -29,6 +21,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.time.ZoneId;
+import javax.swing.UIManager;
 
 
 /**
@@ -47,8 +40,11 @@ public class AdjuntarDocumentos extends javax.swing.JPanel {
      */
     public AdjuntarDocumentos(FormatoA formatoA) {
         this.formatoA = formatoA;
-        initComponents(); 
+        initComponents();
         initStyles();
+
+        dateChooser.setMinSelectableDate(java.sql.Date.valueOf(LocalDate.now()));
+       
         
         // Habilitar carta laboral solo si es práctica laboral
         if (formatoA.getMode() != enumModalidad.PRACTICA_PROFESIONAL) {
@@ -58,26 +54,40 @@ public class AdjuntarDocumentos extends javax.swing.JPanel {
         
     }
     
-    private void initStyles(){
-        
-        // Look and Feel moderno
-       FlatMTMaterialLighterIJTheme.setup();
+   private void initStyles() {
 
-       txtRutaPDF.setForeground(new Color(30, 144, 255)); // azul moderno
-       txtRutaCarta.setForeground(new Color(30, 144, 255));
+    // Look and Feel moderno
+    FlatMTMaterialLighterIJTheme.setup();
 
-       // Botones redondeados
-       btPDF.putClientProperty("JButton.buttonType", "roundRect");
-       btCarta.putClientProperty("JButton.buttonType", "roundRect");
-       btnGuardar.putClientProperty("JButton.buttonType", "roundRect");
+    txtRutaPDF.setForeground(new Color(30, 144, 255)); // azul moderno
+    txtRutaCarta.setForeground(new Color(30, 144, 255));
 
-       // Estilo para el calendario
-       dateChooser.getCalendarButton().putClientProperty("JButton.buttonType", "roundRect");
-       ((JTextField) dateChooser.getDateEditor().getUiComponent())
-               .setBackground(Color.WHITE);
-       ((JTextField) dateChooser.getDateEditor().getUiComponent())
-               .setBorder(javax.swing.BorderFactory.createLineBorder(new Color(30, 144, 255)));
-    }
+    // Botones redondeados
+    btPDF.putClientProperty("JButton.buttonType", "roundRect");
+    btCarta.putClientProperty("JButton.buttonType", "roundRect");
+    btnGuardar.putClientProperty("JButton.buttonType", "roundRect");
+
+    // Estilo para el calendario: botón
+    dateChooser.getCalendarButton().putClientProperty("JButton.buttonType", "roundRect");
+
+    // Campo de texto del calendario
+      // Campo de texto del calendario
+    ((JTextField) dateChooser.getDateEditor().getUiComponent())
+            .setBackground(Color.WHITE);
+    ((JTextField) dateChooser.getDateEditor().getUiComponent())
+            .setBorder(javax.swing.BorderFactory.createLineBorder(new Color(30, 144, 255)));
+
+    // 🔹 Colores del popup del calendario (JXMonthView)
+    UIManager.put("JXMonthView.background", Color.WHITE);               // Fondo
+    UIManager.put("JXMonthView.foreground", Color.BLACK);               // Texto normal
+    UIManager.put("JXMonthView.selectionBackground", new Color(200, 230, 255)); // Azul muy suave
+    UIManager.put("JXMonthView.selectionForeground", Color.BLACK);      // Texto selección
+    UIManager.put("JXMonthView.daysOfTheWeekForeground", Color.DARK_GRAY);
+    UIManager.put("JXMonthView.unselectableDayForeground", Color.GRAY);
+
+    // 🔹 Actualizar la UI para que tome inmediatamente los cambios
+    javax.swing.SwingUtilities.updateComponentTreeUI(this);
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -153,8 +163,9 @@ public class AdjuntarDocumentos extends javax.swing.JPanel {
         lblClendario.setText("Fecha de publicacion");
         jPanel1.add(lblClendario, new org.netbeans.lib.awtextra.AbsoluteConstraints(97, 406, -1, -1));
 
-        dateChooser.setBackground(new java.awt.Color(102, 0, 255));
-        dateChooser.setForeground(new java.awt.Color(153, 153, 255));
+        dateChooser.setBackground(new java.awt.Color(153, 153, 153));
+        dateChooser.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        dateChooser.setForeground(new java.awt.Color(204, 204, 204));
         jPanel1.add(dateChooser, new org.netbeans.lib.awtextra.AbsoluteConstraints(97, 431, 150, -1));
 
         jLabel1.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
@@ -239,6 +250,12 @@ public class AdjuntarDocumentos extends javax.swing.JPanel {
     }//GEN-LAST:event_btPDFMousePressed
 
     private void btCartaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btCartaMouseClicked
+       
+            if (formatoA.getMode() != enumModalidad.PRACTICA_PROFESIONAL) {
+        JOptionPane.showMessageDialog(this,
+            "Solo la modalidad 'Práctica Profesional' permite adjuntar carta laboral.");
+        return;
+    }
         JFileChooser fileChooser = new JFileChooser();
            fileChooser.setDialogTitle("Seleccionar carta laboral (PDF)");
 
