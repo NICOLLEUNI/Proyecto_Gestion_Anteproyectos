@@ -18,6 +18,12 @@ public interface IFormatoAVersionRepository {
     List<FormatoAVersion > list();
     
     public FormatoAVersion findById(int id);
+    
+    // 🔹 Nuevo método para cargar las versiones de un FormatoA específico
+    public List<FormatoAVersion> listByFormatoA(int formatoAId);
+    
+    public boolean update(FormatoAVersion version);
+    
     public boolean deleteByFormatoAId(int formatoAId) ;
-     public List<FormatoAVersion> listByFormatoA(int formatoAId);
+    
 }

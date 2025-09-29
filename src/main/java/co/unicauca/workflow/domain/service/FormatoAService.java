@@ -58,14 +58,6 @@ public class FormatoAService extends Subject{
         }
     }
     
-    public void consultarFormatoAEstudiante(){
-        //ve una unica respuesta de su formato A
-    }
-    
-    public void consultarFormatoADocente(){
-        //el docente ve todas las respuestas de sus formatos A subidos
-    }
-    
     public List<FormatoA> listFormatoA() {
         return repo.list();
     }
@@ -74,7 +66,7 @@ public class FormatoAService extends Subject{
         return repo.findById(id);
     }
     
-public boolean updateEstadoObservacionesYContador(int idFormato, String estado, String observaciones, int counter) {
+    public boolean updateEstadoObservacionesYContador(int idFormato, String estado, String observaciones, int counter) {
     boolean actualizado = repo.updateEstadoObservacionesYContador(idFormato, estado, observaciones, counter);
     if (actualizado) {
         // Solo notificamos si hay observers registrados
