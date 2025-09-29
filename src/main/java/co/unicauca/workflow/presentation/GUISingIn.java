@@ -17,8 +17,7 @@ package co.unicauca.workflow.presentation;
 
 // IMPORTS NECESARIOS - AGREGAR AL INICIO DE TU ARCHIVO
 
-// IMPORTS NECESARIOS - AGREGAR AL INICIO DE TU ARCHIVO
-// IMPORTS NECESARIOS - AGREGAR AL INICIO DE TU ARCHIVO
+
 import co.unicauca.workflow.domain.service.PersonaService;
 import co.unicauca.workflow.domain.entities.enumRol;
 import co.unicauca.workflow.domain.entities.Persona;
@@ -189,6 +188,14 @@ ComBoxPrograma1.removeAllItems();
         ComBoxPrograma1.addItem("Automática industrial");
         ComBoxPrograma1.addItem("Tecnología en Telemática");
         
+         
+    // ComboBox Departamentos (para docentes/coordinadores)
+    ComBoxDepartamento.addItem("Seleccione un departamento");
+    ComBoxDepartamento.addItem("Sistemas");
+    ComBoxDepartamento.addItem("Electrónica");                 // ← NUEVO
+    ComBoxDepartamento.addItem("Instrumentación y Control");    // ← NUEVO
+    ComBoxDepartamento.addItem("Telemática");                  // ← NUEVO
+        
         // Intentar cargar desde BD como respaldo (opcional)
         try {
             List<Programa> programas = programaRepository.list();
@@ -212,49 +219,7 @@ ComBoxPrograma1.removeAllItems();
             System.err.println("Error cargando programas desde BD: " + e.getMessage());
             // Los hardcoded ya están cargados, continuar
         }
-    }
-    
-    /**
-     * Cargar departamentos desde la base de datos
-     
-    private void cargarDepartamentos() {
-        ComBoxDepartamento.removeAllItems();
-        ComBoxDepartamento.addItem("Seleccione un departamento"); // Opción por defecto
-        
-        // Agregar departamento hardcoded según tus especificaciones
-        ComBoxDepartamento.addItem("Sistemas");
-        
-        // Intentar cargar desde BD como respaldo (opcional)
-        try {
-            List<Departamento> departamentos = departamentoRepository.list();
-            if (!departamentos.isEmpty()) {
-                // Si hay departamentos en BD, agregar los que no están hardcoded
-                for (Departamento dept : departamentos) {
-                    String nombreDept = dept.getNombre();
-                    boolean yaExiste = false;
-                    for (int i = 0; i < ComBoxDepartamento.getItemCount(); i++) {
-                        if (ComBoxDepartamento.getItemAt(i).equals(nombreDept)) {
-                            yaExiste = true;
-                            break;
-                        }
-                    }
-                    if (!yaExiste) {
-                        ComBoxDepartamento.addItem(nombreDept);
-                    }
-                }
-            }
-        } catch (Exception e) {
-            System.err.println("Error cargando departamentos desde BD: " + e.getMessage());
-            // Los hardcoded ya están cargados, continuar
-        }
-    }
-     */
-
-       
-    
-
-    
-    
+     }
     
     
 
@@ -441,7 +406,12 @@ ComBoxPrograma1.removeAllItems();
 
         ComBoxDepartamento.setBackground(new java.awt.Color(255, 255, 255));
         ComBoxDepartamento.setFont(new java.awt.Font("Roboto Medium", 0, 12)); // NOI18N
-        ComBoxDepartamento.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Departamento ", "Sistemas" }));
+        ComBoxDepartamento.setToolTipText("");
+        ComBoxDepartamento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ComBoxDepartamentoActionPerformed(evt);
+            }
+        });
         pnlBack.add(ComBoxDepartamento, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 300, 230, 30));
         pnlBack.add(jSeparator8, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 430, 230, 20));
 
@@ -903,6 +873,10 @@ try {
     private void CBEstudiante1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CBEstudiante1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_CBEstudiante1ActionPerformed
+
+    private void ComBoxDepartamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ComBoxDepartamentoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ComBoxDepartamentoActionPerformed
    
 public void irALogin(){
           GUILogin ventanaLogin = new GUILogin();

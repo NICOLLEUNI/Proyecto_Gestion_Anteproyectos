@@ -152,7 +152,7 @@ public class PersonaService {
     /**
      * Obtiene la facultad FIET única del sistema
      */
-    private Facultad obtenerFacultadFIET() {
+    protected Facultad obtenerFacultadFIET() {
         try {
             System.out.println("Buscando facultad FIET...");
             
@@ -298,7 +298,7 @@ public class PersonaService {
     /**
      * Obtiene o crea departamento
      */
-    private Departamento obtenerDepartamento(String nombreDepartamento, Facultad fiet) {
+    protected Departamento obtenerDepartamento(String nombreDepartamento, Facultad fiet) {
         try {
             // Buscar existente
             List<Departamento> departamentos = departamentoRepository.list();
@@ -327,7 +327,7 @@ public class PersonaService {
     /**
      * Obtiene o crea programa
      */
-    private Programa obtenerPrograma(String nombrePrograma, Departamento departamento) {
+    protected Programa obtenerPrograma(String nombrePrograma, Departamento departamento) {
         try {
             // Buscar existente
             List<Programa> programas = programaRepository.list();
