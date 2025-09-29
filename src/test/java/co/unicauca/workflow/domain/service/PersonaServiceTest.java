@@ -185,7 +185,10 @@ private static class InMemoryDocenteRepo implements IDocenteRepository {
     public List<Docente> list() {
         return new ArrayList<>(store);
     }
-
+    @Override 
+   public  Docente findById(int id){
+    return null;
+    }
    
     public void connect() {
         // No hace nada en memoria
@@ -207,6 +210,7 @@ private static class InMemoryCoordinadorRepo implements ICoordinadorRepository {
     private final List<Coordinador> store = new ArrayList<>();
 
 
+    @Override
     public boolean save(Coordinador coordinador)  {  // ← AGREGAR throws
         if (coordinador == null) return false;
         store.add(coordinador);

@@ -16,7 +16,7 @@ import java.util.List;
 public class FormatoAService extends Subject{
     
     private IFormatoARepository repo;
-    private IFormatoAVersionRepository versionRepo = Factory.getInstance().getFormatoAVersionRepository("default");
+    IFormatoAVersionRepository versionRepo = Factory.getInstance().getFormatoAVersionRepository("default");
 
     public FormatoAService(IFormatoARepository repo) {
         this.repo = repo;
@@ -74,15 +74,18 @@ public class FormatoAService extends Subject{
         return repo.findById(id);
     }
     
-    public boolean updateEstadoObservacionesYContador(int idFormato, String estado, String observaciones,int counter) {
-        // Actualiza en el repositorio
-        boolean actualizado = repo. updateEstadoObservacionesYContador(idFormato, estado, observaciones, counter);
-
-        if (actualizado) {
-            // Solo notificamos si realmente se actualizó
-           this.notifyAllObserves();
+public boolean updateEstadoObservacionesYContador(int idFormato, String estado, String observaciones, int counter) {
+    boolean actualizado = repo.updateEstadoObservacionesYContador(idFormato, estado, observaciones, counter);
+    if (actualizado) {
+        // Solo notificamos si hay observers registrados
+        try {
+            this.notifyAllObserves();
+        } catch (NullPointerException e) {
+            // No hay observers, continuar normalmente
+            System.out.println("No hay observers registrados");
         }
-        return actualizado;
+    }
+    return actualizado;
     }
     public boolean eliminarFormatoAConVersiones(int formatoAId) {
     

@@ -30,6 +30,8 @@ import java.util.EnumSet;
 import co.unicauca.workflow.domain.exceptions.ValidationException;
 import co.unicauca.workflow.domain.service.FormatoAService;
 import co.unicauca.workflow.presentation.GUIMenuCoord;
+import co.unicauca.workflow.presentation.views.GraficoBarras;
+import co.unicauca.workflow.presentation.views.GraficoPastel;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,9 +58,11 @@ public class Taller02PrincipiosSolid {
         //luego, le pasamos el repo creado a la clase donde lo vamos a usar
         EstudianteService serviceEstudiante = new EstudianteService(repoEstudiante);
         */
+            GraficoBarras guiObserver1 = new GraficoBarras(serviceFormato);
+       serviceFormato.addObserver(guiObserver1);
 
-
-        
+         GraficoPastel guiObserver2 = new GraficoPastel(serviceFormato);
+       serviceFormato.addObserver(guiObserver1);
        
        
         java.awt.EventQueue.invokeLater(new Runnable() {
