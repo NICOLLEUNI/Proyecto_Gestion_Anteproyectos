@@ -1,42 +1,17 @@
 package co.unicauca.workflow;
 
 
-import co.unicauca.workflow.access.DocenteRepository;
 import co.unicauca.workflow.access.Factory;
-import co.unicauca.workflow.access.ICoordinadorRepository;
-import co.unicauca.workflow.access.IDocenteRepository;
-import co.unicauca.workflow.access.IEstudianteRepository;
 import co.unicauca.workflow.access.IFormatoARepository;
-import co.unicauca.workflow.access.IFormatoAVersionRepository;
 import co.unicauca.workflow.access.IPersonaRepository;
-import co.unicauca.workflow.domain.entities.Departamento;
-import co.unicauca.workflow.domain.entities.Docente;
-import co.unicauca.workflow.domain.entities.Estudiante;
-import co.unicauca.workflow.domain.entities.Facultad;
-import co.unicauca.workflow.domain.entities.FormatoA;
-import co.unicauca.workflow.domain.entities.FormatoAVersion;
 import co.unicauca.workflow.domain.entities.Persona;
-import co.unicauca.workflow.domain.entities.Programa;
-import co.unicauca.workflow.domain.entities.User;
-import co.unicauca.workflow.domain.entities.enumEstado;
-import co.unicauca.workflow.domain.entities.enumModalidad;
-import co.unicauca.workflow.domain.entities.enumProgram;
 import co.unicauca.workflow.domain.entities.enumRol;
-import static co.unicauca.workflow.domain.entities.enumRol.DOCENTE;
 import co.unicauca.workflow.domain.service.PersonaService;
 import co.unicauca.workflow.presentation.GUILogin;
-import co.unicauca.workflow.presentation.GUIMenuPrincipal;
 import java.util.EnumSet;
-import co.unicauca.workflow.domain.exceptions.ValidationException;
 import co.unicauca.workflow.domain.service.FormatoAService;
-import co.unicauca.workflow.presentation.GUIMenuCoord;
 import co.unicauca.workflow.presentation.views.GraficoBarras;
 import co.unicauca.workflow.presentation.views.GraficoPastel;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *

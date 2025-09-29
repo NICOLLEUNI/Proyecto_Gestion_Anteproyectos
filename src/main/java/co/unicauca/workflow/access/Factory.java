@@ -33,15 +33,7 @@ public class Factory {
      * @param type cadena que indica qué tipo de clase hija debe instanciar
      * @return una clase hija de la abstracción IUserRepository
      */
-    public IUserRepository getRepository(String type) {
-        IUserRepository result = null;
-        switch (type) {
-            case "default":
-                result = new UserRepository();
-                break;
-        }
-        return result;
-    }
+
     
     public static IPersonaRepository getPersonaRepository(String type) {
         IPersonaRepository result = null;
