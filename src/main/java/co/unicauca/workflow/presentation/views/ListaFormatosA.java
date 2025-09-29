@@ -37,93 +37,72 @@ public class ListaFormatosA extends javax.swing.JPanel {
         initListeners();
     } 
     
+    
     /**
      * Carga solo los FormatoA subidos por el docente logueado.
      */
-/**
- * Carga solo los FormatoA subidos por el docente logueado.
- */
-private void cargarDatos() {
-    IFormatoARepository repo = Factory.getFormatoARepository("default");
+    private void cargarDatos() {
+        IFormatoARepository repo = Factory.getFormatoARepository("default");
 
-    // Traemos todos los formatos desde la BD
-    List<FormatoA> todos = repo.list();
-    this.formatosDocente = new ArrayList<>();
+        // Traemos todos los formatos desde la BD
+        List<FormatoA> todos = repo.list();
+        this.formatosDocente = new ArrayList<>();
 
-    // Filtramos solo los que pertenecen al docente logueado
-    for (FormatoA f : todos) {
-        if (f.getProjectManager() != null &&
-            f.getProjectManager().getIdUsuario() == personaLogueada.getIdUsuario()) {
-            formatosDocente.add(f);
-        }
-    }
-
-    // Definimos columnas
-    String[] columnas = {"Título", "Modalidad", "Estado actual", "Observaciones", "Versión", "Contador"};
-    DefaultTableModel modelo = new DefaultTableModel(columnas, 0) {
-        @Override
-        public boolean isCellEditable(int row, int column) {
-            return false; // Hacemos la tabla de solo lectura
-        }
-    };
-
-    // Rellenamos filas
-    for (FormatoA f : formatosDocente) {
-        // DEBUG: Imprimir información para diagnóstico
-        System.out.println("DEBUG - Formato: " + f.getTitle() + 
-                          ", Estado principal: " + f.getState() + 
-                          ", Counter: " + f.getCounter() +
-                          ", Versiones: " + (f.getVersiones() != null ? f.getVersiones().size() : 0));
-
-        // Determinar el estado a mostrar
-        enumEstado estadoAMostrar;
-        String observaciones = "";
-        int numeroVersion = 1;
-
-        // PRIORIDAD: Si el formato principal tiene estado diferente a ENTREGADO, usamos ese
-        if (f.getState() != null && f.getState() != enumEstado.ENTREGADO) {
-            estadoAMostrar = f.getState();
-            observaciones = f.getObservations() != null ? f.getObservations() : "";
-        } else {
-            // Si no, usamos la última versión
-            FormatoAVersion ultima = null;
-            if (f.getVersiones() != null && !f.getVersiones().isEmpty()) {
-                ultima = f.getVersiones().get(f.getVersiones().size() - 1);
-            }
-            
-            if (ultima != null) {
-                estadoAMostrar = ultima.getState();
-                observaciones = ultima.getObservations() != null ? ultima.getObservations() : "";
-                numeroVersion = ultima.getNumeroVersion();
-            } else {
-                estadoAMostrar = f.getState() != null ? f.getState() : enumEstado.ENTREGADO;
-                observaciones = f.getObservations() != null ? f.getObservations() : "";
+        // Filtramos solo los que pertenecen al docente logueado
+        for (FormatoA f : todos) {
+            if (f.getProjectManager() != null &&
+                f.getProjectManager().getIdUsuario() == personaLogueada.getIdUsuario()) {
+                formatosDocente.add(f);
             }
         }
 
-        Object[] fila = {
-            f.getTitle() != null ? f.getTitle() : "",
-            f.getMode() != null ? f.getMode().name() : "N/A",
-            estadoAMostrar != null ? estadoAMostrar.name() : "N/A",
-            observaciones,
-            numeroVersion,
-            f.getCounter() // Agregamos el contador para debug
+        // Definimos columnas
+        String[] columnas = {"Título", "Modalidad", "Estado actual", "Observaciones", "Versión", "Contador"};
+        DefaultTableModel modelo = new DefaultTableModel(columnas, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // Hacemos la tabla de solo lectura
+            }
         };
-        modelo.addRow(fila);
-    }
 
-    jTable1.setModel(modelo);
-    
-    // Ajustar el ancho de las columnas
-    if (modelo.getRowCount() > 0) {
-        jTable1.getColumnModel().getColumn(0).setPreferredWidth(150); // Título
-        jTable1.getColumnModel().getColumn(1).setPreferredWidth(100); // Modalidad
-        jTable1.getColumnModel().getColumn(2).setPreferredWidth(100); // Estado
-        jTable1.getColumnModel().getColumn(3).setPreferredWidth(200); // Observaciones
-        jTable1.getColumnModel().getColumn(4).setPreferredWidth(60);  // Versión
-        jTable1.getColumnModel().getColumn(5).setPreferredWidth(60);  // Contador
+        // Rellenamos filas - SOLO DATOS DEL FORMATOA PRINCIPAL
+        for (FormatoA f : formatosDocente) {
+            // DEBUG
+            System.out.println("DEBUG - Formato: " + f.getTitle() + 
+                              ", Estado: " + f.getState() + 
+                              ", Observaciones: " + f.getObservations() +
+                              ", Counter: " + f.getCounter());
+
+            // Calcular número de versión para mostrar (última versión + 1)
+            int numeroVersion = 1; // Por defecto
+            if (f.getVersiones() != null && !f.getVersiones().isEmpty()) {
+                FormatoAVersion ultima = f.getVersiones().get(f.getVersiones().size() - 1);
+                numeroVersion = ultima.getNumeroVersion();
+            }
+
+            Object[] fila = {
+                f.getTitle() != null ? f.getTitle() : "",           // ✅ Del FormatoA principal
+                f.getMode() != null ? f.getMode().name() : "N/A",   // ✅ Del FormatoA principal
+                f.getState() != null ? f.getState().name() : "N/A", // ✅ Estado actual del principal
+                f.getObservations() != null ? f.getObservations() : "", // ✅ Observaciones del coordinador
+                numeroVersion,                                      // ✅ Número de la última versión
+                f.getCounter()                                      // ✅ Contador de reenvíos
+            };
+            modelo.addRow(fila);
+        }
+
+        jTable1.setModel(modelo);
+
+        // Ajustar el ancho de las columnas
+        if (modelo.getRowCount() > 0) {
+            jTable1.getColumnModel().getColumn(0).setPreferredWidth(150);
+            jTable1.getColumnModel().getColumn(1).setPreferredWidth(100);
+            jTable1.getColumnModel().getColumn(2).setPreferredWidth(100);
+            jTable1.getColumnModel().getColumn(3).setPreferredWidth(200);
+            jTable1.getColumnModel().getColumn(4).setPreferredWidth(60);
+            jTable1.getColumnModel().getColumn(5).setPreferredWidth(60);
+        }
     }
-}
     /**
      * Inicializa listeners para acciones en la tabla.
      * Ahora se abre DetallesFormatoA cuando se selecciona una fila (clic simple).

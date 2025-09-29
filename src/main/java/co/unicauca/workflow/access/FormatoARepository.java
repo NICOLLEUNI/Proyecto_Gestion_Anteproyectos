@@ -18,70 +18,75 @@ public class FormatoARepository implements IFormatoARepository {
         initDatabase();
     }
 
-@Override
-public boolean save(FormatoA newFormatoA) {
-    String sql = "INSERT INTO FormatoA (title, mode, projectManager, projectCoManager, date, generalObjetive, specificObjetives, archivoPDF, cartaLaboral, counter, state, observations) "
-            + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    @Override
+    public boolean save(FormatoA newFormatoA) {
+        String sql = "INSERT INTO FormatoA (title, mode, projectManager, projectCoManager, date, generalObjetive, specificObjetives, archivoPDF, cartaLaboral, counter, state, observations) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-    try {
-        conn.setAutoCommit(false); // 🔹 iniciar transacción
+        try {
+            conn.setAutoCommit(false); // 🔹 iniciar transacción
 
-        try (PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            pstmt.setString(1, newFormatoA.getTitle());
-            pstmt.setString(2, newFormatoA.getMode().name());
-            pstmt.setObject(3, newFormatoA.getProjectManager().getIdUsuario());
-            pstmt.setObject(4, newFormatoA.getProjectCoManager() != null ? newFormatoA.getProjectCoManager().getIdUsuario() : null);
-            pstmt.setString(5, newFormatoA.getDate() != null ? newFormatoA.getDate().toString() : null);
-            pstmt.setString(6, newFormatoA.getGeneralObjetive());
-            pstmt.setString(7, newFormatoA.getSpecificObjetives());
-            pstmt.setString(8, newFormatoA.getArchivoPDF());
-            pstmt.setString(9, newFormatoA.getCartaLaboral());
-            pstmt.setInt(10, newFormatoA.getCounter());
-            pstmt.setString(11, newFormatoA.getState() != null ? newFormatoA.getState().name() : enumEstado.ENTREGADO.name());
-            pstmt.setString(12, newFormatoA.getObservations());
+            try (PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+                pstmt.setString(1, newFormatoA.getTitle());
+                pstmt.setString(2, newFormatoA.getMode().name());
+                pstmt.setObject(3, newFormatoA.getProjectManager().getIdUsuario());
+                pstmt.setObject(4, newFormatoA.getProjectCoManager() != null ? newFormatoA.getProjectCoManager().getIdUsuario() : null);
+                pstmt.setString(5, newFormatoA.getDate() != null ? newFormatoA.getDate().toString() : null);
+                pstmt.setString(6, newFormatoA.getGeneralObjetive());
+                pstmt.setString(7, newFormatoA.getSpecificObjetives());
+                pstmt.setString(8, newFormatoA.getArchivoPDF());
+                pstmt.setString(9, newFormatoA.getCartaLaboral());
+                pstmt.setInt(10, newFormatoA.getCounter());
+                pstmt.setString(11, newFormatoA.getState() != null ? newFormatoA.getState().name() : enumEstado.ENTREGADO.name());
+                pstmt.setString(12, newFormatoA.getObservations());
 
-            int rows = pstmt.executeUpdate();
+                int rows = pstmt.executeUpdate();
 
-            if (rows > 0) {
-                try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
-                    if (generatedKeys.next()) {
-                        int formatoId = generatedKeys.getInt(1);
+                if (rows > 0) {
+                    try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
+                        if (generatedKeys.next()) {
+                            int formatoId = generatedKeys.getInt(1);
 
-                        if (newFormatoA.getEstudiantes() != null) {
-                            String sqlEst = "INSERT INTO FormatoA_Estudiante (formatoA_id, estudiante_id) VALUES (?, ?)";
-                            for (Estudiante est : newFormatoA.getEstudiantes()) {
-                                try (PreparedStatement pstmtEst = conn.prepareStatement(sqlEst)) {
-                                    pstmtEst.setInt(1, formatoId);
-                                    pstmtEst.setInt(2, est.getIdUsuario());
-                                    pstmtEst.executeUpdate();
+                            // 🔥🔥🔥 ESTA ES LA LÍNEA QUE FALTA 🔥🔥🔥
+                            newFormatoA.setId(formatoId); // Asignar el ID al objeto
+
+                            System.out.println("DEBUG - FormatoA ID asignado: " + formatoId);
+
+                            if (newFormatoA.getEstudiantes() != null) {
+                                String sqlEst = "INSERT INTO FormatoA_Estudiante (formatoA_id, estudiante_id) VALUES (?, ?)";
+                                for (Estudiante est : newFormatoA.getEstudiantes()) {
+                                    try (PreparedStatement pstmtEst = conn.prepareStatement(sqlEst)) {
+                                        pstmtEst.setInt(1, formatoId);
+                                        pstmtEst.setInt(2, est.getIdUsuario());
+                                        pstmtEst.executeUpdate();
+                                    }
                                 }
                             }
                         }
                     }
                 }
             }
+
+            conn.commit(); // 🔹 confirmar transacción
+            return true;
+
+        } catch (SQLException ex) {
+            try {
+                conn.rollback(); // 🔹 revertir si falla
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            Logger.getLogger(FormatoARepository.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                conn.setAutoCommit(true); // 🔹 restaurar
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
 
-        conn.commit(); // 🔹 confirmar transacción
-        return true;
-
-    } catch (SQLException ex) {
-        try {
-            conn.rollback(); // 🔹 revertir si falla
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        Logger.getLogger(FormatoARepository.class.getName()).log(Level.SEVERE, null, ex);
-    } finally {
-        try {
-            conn.setAutoCommit(true); // 🔹 restaurar
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        return false;
     }
-
-    return false;
-}
 
     @Override
     public List<FormatoA> list() {
