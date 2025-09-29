@@ -519,10 +519,6 @@ private boolean validarCampos() {
         return false;
     }
 
-    if (boxEstudiante2.isEnabled() && boxEstudiante2.getSelectedIndex() == -1) {
-        JOptionPane.showMessageDialog(this, "Seleccione el Estudiante #2");
-        return false;
-    }
 
     return true; // ✅ Todo bien
 }

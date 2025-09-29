@@ -27,37 +27,37 @@ public class FormatoAService extends Subject{
     //crearlos si es necesario
 
     //Metodo de la dinamica del docente 
-public boolean subirFormatoA(FormatoA formatoA){
-    try{
-        boolean saved = repo.save(formatoA);
-        if(!saved) return false;
+    public boolean subirFormatoA(FormatoA formatoA){
+        try{
+            boolean saved = repo.save(formatoA);
+            if(!saved) return false;
 
-        // 🔹 instanciar aquí el repo
-        
+            // 🔹 INICIALIZAR el repo de versiones
+            FormatoAVersionRepository versionRepo = new FormatoAVersionRepository();
 
-        FormatoAVersion version1 = new FormatoAVersion(
-            0,
-            1,
-            LocalDate.now(),
-            formatoA.getTitle(),
-            formatoA.getMode(),
-            formatoA.getGeneralObjetive(),
-            formatoA.getSpecificObjetives(),
-            formatoA.getArchivoPDF(),
-            formatoA.getCartaLaboral(),
-            enumEstado.ENTREGADO,
-            "sin observaciones",
-            formatoA
-        );
+            FormatoAVersion version1 = new FormatoAVersion(
+                0,
+                1,
+                LocalDate.now(),
+                formatoA.getTitle(),
+                formatoA.getMode(),
+                formatoA.getGeneralObjetive(),
+                formatoA.getSpecificObjetives(),
+                formatoA.getArchivoPDF(),
+                formatoA.getCartaLaboral(),
+                enumEstado.ENTREGADO,
+                null,  // ✅ Las observaciones iniciales deben ser null
+                formatoA
+            );
 
-        versionRepo.save(version1); // ya no es null
-        return true;
+            boolean versionSaved = versionRepo.save(version1);
+            return versionSaved;
 
-    }catch(Exception e){
-        e.printStackTrace();
-        return false;
+        }catch(Exception e){
+            e.printStackTrace();
+            return false;
+        }
     }
-}
     
     public void consultarFormatoAEstudiante(){
         //ve una unica respuesta de su formato A
@@ -75,9 +75,9 @@ public boolean subirFormatoA(FormatoA formatoA){
         return repo.findById(id);
     }
     
-    public boolean updateEstadoYObservaciones(int idFormato, String estado, String observaciones) {
+    public boolean updateEstadoObservacionesYContador(int idFormato, String estado, String observaciones,int counter) {
         // Actualiza en el repositorio
-        boolean actualizado = repo.updateEstadoYObservaciones(idFormato, estado, observaciones);
+        boolean actualizado = repo. updateEstadoObservacionesYContador(idFormato, estado, observaciones, counter);
 
         if (actualizado) {
             // Solo notificamos si realmente se actualizó
