@@ -130,6 +130,39 @@ public boolean save(FormatoA newFormatoA) {
         }
         return null;
     }
+    
+    @Override
+    public boolean update(FormatoA formato) {
+    String sql = "UPDATE FormatoA SET title = ?, mode = ?, projectManager = ?, projectCoManager = ?, date = ?, "
+               + "generalObjetive = ?, specificObjetives = ?, archivoPDF = ?, cartaLaboral = ?, counter = ?, "
+               + "state = ?, observations = ? WHERE id = ?";
+
+    try (Connection c = ConexionSQLite.getConnection();
+         PreparedStatement ps = c.prepareStatement(sql)) {
+
+        ps.setString(1, formato.getTitle());
+        ps.setString(2, formato.getMode() != null ? formato.getMode().name() : null);
+        ps.setObject(3, formato.getProjectManager() != null ? formato.getProjectManager().getIdUsuario() : null);
+        ps.setObject(4, formato.getProjectCoManager() != null ? formato.getProjectCoManager().getIdUsuario() : null);
+        ps.setString(5, formato.getDate() != null ? formato.getDate().toString() : null);
+        ps.setString(6, formato.getGeneralObjetive());
+        ps.setString(7, formato.getSpecificObjetives());
+        ps.setString(8, formato.getArchivoPDF());
+        ps.setString(9, formato.getCartaLaboral());
+        ps.setInt(10, formato.getCounter());
+        ps.setString(11, formato.getState() != null ? formato.getState().name() : null);
+        ps.setString(12, formato.getObservations());
+        ps.setInt(13, formato.getId());
+
+        int rows = ps.executeUpdate();
+        return rows > 0;
+    } catch (SQLException ex) {
+        Logger.getLogger(FormatoARepository.class.getName()).log(Level.SEVERE, null, ex);
+        return false;
+    }
+    }
+
+
 
 
     private FormatoA mapFormatoA(ResultSet rs) throws SQLException {

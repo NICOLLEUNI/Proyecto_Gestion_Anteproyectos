@@ -56,9 +56,8 @@ public boolean subirFormatoA(FormatoA formatoA){
     }catch(Exception e){
         e.printStackTrace();
         return false;
-    }}
-    
-
+    }
+}
     
     public void consultarFormatoAEstudiante(){
         //ve una unica respuesta de su formato A
