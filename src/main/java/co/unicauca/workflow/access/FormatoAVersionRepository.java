@@ -94,8 +94,24 @@ public class FormatoAVersionRepository implements IFormatoAVersionRepository {
         }
         return null;
     }
+    @Override
+    public boolean update(FormatoAVersion version) {
+        try {
+            String sql = "UPDATE FormatoAVersion SET state = ?, observations = ? WHERE idCopia = ?";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, version.getState().name());
+            pstmt.setString(2, version.getObservations());
+            pstmt.setInt(3, version.getIdCopia());
+
+            return pstmt.executeUpdate() > 0;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return false;
+        }
+    }
 
     // 🔹 Nuevo método para cargar las versiones de un FormatoA específico
+    @Override
     public List<FormatoAVersion> listByFormatoA(int formatoAId) {
         List<FormatoAVersion> versiones = new ArrayList<>();
         try {
@@ -158,7 +174,18 @@ public class FormatoAVersionRepository implements IFormatoAVersionRepository {
             Logger.getLogger(FormatoAVersionRepository.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    @Override
+    public boolean deleteByFormatoAId(int formatoAId) {
+    String sql = "DELETE FROM FormatoAVersion WHERE formatoA_id = ?";
+    try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setInt(1, formatoAId);
+        ps.executeUpdate();
+        return true;
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return false;
+    }
+}
     public void connect() {
         String url = "jdbc:sqlite:" + System.getProperty("user.dir") + "/BD.db";
         try {

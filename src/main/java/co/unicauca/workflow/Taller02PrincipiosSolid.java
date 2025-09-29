@@ -4,38 +4,24 @@
 package co.unicauca.workflow;
 
 
-
-import co.unicauca.workflow.access.FormatoARepository;
-import co.unicauca.workflow.access.DocenteRepository;
 import co.unicauca.workflow.access.Factory;
-import co.unicauca.workflow.access.ICoordinadorRepository;
-import co.unicauca.workflow.access.IDocenteRepository;
-import co.unicauca.workflow.access.IEstudianteRepository;
 import co.unicauca.workflow.access.IFormatoARepository;
-import co.unicauca.workflow.access.IFormatoAVersionRepository;
 import co.unicauca.workflow.access.IPersonaRepository;
-import co.unicauca.workflow.access.Factory;
-import co.unicauca.workflow.domain.entities.Docente;
-import co.unicauca.workflow.domain.entities.Estudiante;
-import co.unicauca.workflow.domain.entities.FormatoA;
 import co.unicauca.workflow.domain.entities.Persona;
 import co.unicauca.workflow.domain.entities.enumRol;
-
-import co.unicauca.workflow.domain.exceptions.ValidationException;
-import co.unicauca.workflow.domain.service.FormatoAService;
-import co.unicauca.workflow.presentation.GUIMenuCoord;
-import co.unicauca.workflow.presentation.GUIMenuPrincipal;
-import java.time.LocalDate;
-import java.util.ArrayList;
+import co.unicauca.workflow.domain.service.PersonaService;
+import co.unicauca.workflow.presentation.GUILogin;
 import java.util.EnumSet;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import co.unicauca.workflow.domain.service.FormatoAService;
+import co.unicauca.workflow.presentation.views.GraficoBarras;
+import co.unicauca.workflow.presentation.views.GraficoPastel;
 
 
 public class Taller02PrincipiosSolid {
 
     public static void main(String[] args) {
+        
+        
 
         
         IPersonaRepository repository = Factory.getInstance().getPersonaRepository("default");
@@ -49,9 +35,11 @@ public class Taller02PrincipiosSolid {
         //luego, le pasamos el repo creado a la clase donde lo vamos a usar
         EstudianteService serviceEstudiante = new EstudianteService(repoEstudiante);
         */
+            GraficoBarras guiObserver1 = new GraficoBarras(serviceFormato);
+       serviceFormato.addObserver(guiObserver1);
 
-
-        
+         GraficoPastel guiObserver2 = new GraficoPastel(serviceFormato);
+       serviceFormato.addObserver(guiObserver1);
        
        
         java.awt.EventQueue.invokeLater(new Runnable() {

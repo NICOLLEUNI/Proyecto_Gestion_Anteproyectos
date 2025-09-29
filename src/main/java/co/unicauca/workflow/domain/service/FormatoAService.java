@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 public class FormatoAService extends Subject{
     
     private IFormatoARepository repo;
-    private IFormatoAVersionRepository versionRepo = Factory.getInstance().getFormatoAVersionRepository("default");
+    IFormatoAVersionRepository versionRepo = Factory.getInstance().getFormatoAVersionRepository("default");
 
     public FormatoAService(IFormatoARepository repo) {
         this.repo = repo;
@@ -28,55 +28,35 @@ public class FormatoAService extends Subject{
     //crearlos si es necesario
 
     //Metodo de la dinamica del docente 
-public boolean subirFormatoA(FormatoA formatoA){
-    try{
-        boolean saved = repo.save(formatoA);
-        if(!saved) return false;
+    public boolean subirFormatoA(FormatoA formatoA){
+        try{
+            boolean saved = repo.save(formatoA);
+            if(!saved) return false;
 
-        // 🔹 instanciar aquí el repo
-        
+           
 
-        FormatoAVersion version1 = new FormatoAVersion(
-            0,
-            1,
-            LocalDate.now(),
-            formatoA.getTitle(),
-            formatoA.getMode(),
-            formatoA.getGeneralObjetive(),
-            formatoA.getSpecificObjetives(),
-            formatoA.getArchivoPDF(),
-            formatoA.getCartaLaboral(),
-            enumEstado.ENTREGADO,
-            "sin observaciones",
-            formatoA
-        );
+            FormatoAVersion version1 = new FormatoAVersion(
+                0,
+                1,
+                LocalDate.now(),
+                formatoA.getTitle(),
+                formatoA.getMode(),
+                formatoA.getGeneralObjetive(),
+                formatoA.getSpecificObjetives(),
+                formatoA.getArchivoPDF(),
+                formatoA.getCartaLaboral(),
+                enumEstado.ENTREGADO,
+                null,  // ✅ Las observaciones iniciales deben ser null
+                formatoA
+            );
 
-        versionRepo.save(version1); // ya no es null
-        return true;
+            boolean versionSaved = versionRepo.save(version1);
+            return versionSaved;
 
-    }catch(Exception e){
-        e.printStackTrace();
-        return false;
-    }
-}
-    
-    public void consultarFormatoAEstudiante(){
-        //ve una unica respuesta de su formato A
-    }
-
-    /**
-     * Consultar los formatos asociados a un docente (rol de Persona).
-     *
-     * @param docente persona logueada con rol DOCENTE
-     * @return lista de formatos en los que participa ese docente
-     */
-    public List<FormatoA> consultarFormatoADocente(Persona docente) {
-        List<FormatoA> todos = repository.list();
-        return todos.stream()
-                .filter(f ->
-                        (f.getProjectManager() != null && f.getProjectManager().getIdUsuario() == docente.getIdUsuario()) ||
-                        (f.getProjectCoManager() != null && f.getProjectCoManager().getIdUsuario() == docente.getIdUsuario()))
-                .collect(Collectors.toList());
+        }catch(Exception e){
+            e.printStackTrace();
+            return false;
+        }
     }
     
     public List<FormatoA> listFormatoA() {
@@ -87,16 +67,40 @@ public boolean subirFormatoA(FormatoA formatoA){
         return repo.findById(id);
     }
     
-    public boolean updateEstadoYObservaciones(int idFormato, String estado, String observaciones) {
-        // Actualiza en el repositorio
-        boolean actualizado = repo.updateEstadoYObservaciones(idFormato, estado, observaciones);
-
-        if (actualizado) {
-            // Solo notificamos si realmente se actualizó
-           this.notifyAllObserves();
+    public boolean updateEstadoObservacionesYContador(int idFormato, String estado, String observaciones, int counter) {
+    boolean actualizado = repo.updateEstadoObservacionesYContador(idFormato, estado, observaciones, counter);
+    if (actualizado) {
+        // Solo notificamos si hay observers registrados
+        try {
+            this.notifyAllObserves();
+        } catch (NullPointerException e) {
+            // No hay observers, continuar normalmente
+            System.out.println("No hay observers registrados");
         }
-        return actualizado;
     }
+    return actualizado;
+    }
+    public boolean eliminarFormatoAConVersiones(int formatoAId) {
+    
+
+    try {
+        // 1️⃣ Borrar versiones primero
+        versionRepo.deleteByFormatoAId(formatoAId);
+
+        // 2️⃣ Borrar FormatoA + Estudiantes
+        boolean formatoEliminado = repo.delete(formatoAId);
+
+        // 3️⃣ Confirmar todo
+        if (formatoEliminado) {
+         
+            return true;
+        }
+        return false;
+    } catch (Exception e) {
+        e.printStackTrace();
+        return false;
+    }
+}
     
 }
 

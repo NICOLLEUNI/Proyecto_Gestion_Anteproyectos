@@ -15,8 +15,10 @@ package co.unicauca.workflow.presentation;
 
 //DEBES IMPLEMENTAR TODA ESTA LOGICA CON LA CLASE PERSONA
 
-import co.unicauca.workflow.domain.entities.User;
-import co.unicauca.workflow.domain.entities.enumProgram;
+// IMPORTS NECESARIOS - AGREGAR AL INICIO DE TU ARCHIVO
+
+
+import co.unicauca.workflow.domain.service.PersonaService;
 import co.unicauca.workflow.domain.entities.enumRol;
 import co.unicauca.workflow.domain.entities.Programa;
 import co.unicauca.workflow.domain.entities.Departamento;
@@ -55,8 +57,153 @@ private final UserService userService;
         IUserRepository repo = new UserRepository(); // conecta con SQLite
     this.userService = new UserService(repo);
     }
+       /**
+     * Configuración inicial de ComboBox y componentes
+     */
+    private void configurarComponentesIniciales() {
+        // Deshabilitar ComboBox inicialmente
+        ComBoxPrograma1.setEnabled(false);
+        ComBoxDepartamento.setEnabled(false);
+        
+        // Cargar programas en ComboBox
+        cargarProgramas();
+        cargarDepartamentos();
+    }
     
-
+    /**
+     * Configurar listeners para CheckBoxes de roles
+     */
+       private void configurarListeners() {
+        // Listener para CheckBox Estudiante
+        CBEstudiante1.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                actualizarEstadoComboBoxes();
+            }
+        });
+        
+          // Listener para CheckBox Docente
+        CBDocente1.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                actualizarEstadoComboBoxes();
+            }
+        });
+        
+        // Listener para CheckBox Coordinador
+        CBECoordinador.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                actualizarEstadoComboBoxes();
+            }
+        });
+    }
+    
+    /**
+     * Actualiza el estado de los ComboBox según los roles seleccionados
+     */
+    private void actualizarEstadoComboBoxes() {
+        boolean esEstudiante = CBEstudiante1.isSelected();
+        boolean esDocenteOCoordinador = CBDocente1.isSelected() || CBECoordinador.isSelected();
+        
+        // Habilitar ComboBox Programa solo si es estudiante
+        ComBoxPrograma1.setEnabled(esEstudiante);
+        if (!esEstudiante) {
+            ComBoxPrograma1.setSelectedIndex(0); // Reset a opción por defecto
+        }
+        
+        // Habilitar ComboBox Departamento solo si es docente o coordinador
+        ComBoxDepartamento.setEnabled(esDocenteOCoordinador);
+        if (!esDocenteOCoordinador) {
+            ComBoxDepartamento.setSelectedIndex(0); // Reset a opción por defecto
+        }
+    }
+    
+    /**
+     * Cargar programas desde la base de datos
+     */
+    private void cargarProgramas() {
+        ComBoxPrograma1.removeAllItems();
+        ComBoxPrograma1.addItem("Seleccione un programa"); // Opción por defecto
+        
+        // Agregar programas hardcoded según tus especificaciones
+        ComBoxPrograma1.addItem("Ingeniería de Sistemas");
+        ComBoxPrograma1.addItem("Ingeniería Electrónica y Telecomunicaciones");
+        ComBoxPrograma1.addItem("Automática industrial");
+        ComBoxPrograma1.addItem("Tecnología en Telemática");
+        
+        // Intentar cargar desde BD como respaldo (opcional)
+        try {
+            List<Programa> programas = programaRepository.list();
+            if (!programas.isEmpty()) {
+                // Si hay programas en BD, agregar los que no están hardcoded
+                for (Programa programa : programas) {
+                    String nombrePrograma = programa.getNombrePrograma();
+                    boolean yaExiste = false;
+                    for (int i = 0; i < ComBoxPrograma1.getItemCount(); i++) {
+                        if (ComBoxPrograma1.getItemAt(i).equals(nombrePrograma)) {
+                            yaExiste = true;
+                            break;
+                        }
+                    }
+                    if (!yaExiste) {
+                        ComBoxPrograma1.addItem(nombrePrograma);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("Error cargando programas desde BD: " + e.getMessage());
+            // Los hardcoded ya están cargados, continuar
+        }
+    }
+        
+    /**
+     * Cargar departamentos desde la base de datos
+     */
+     private void cargarDepartamentos() {
+ComBoxPrograma1.removeAllItems();
+        ComBoxPrograma1.addItem("Seleccione un programa"); // Opción por defecto
+        
+        // Agregar programas hardcoded según tus especificaciones
+        ComBoxPrograma1.addItem("Ingeniería de Sistemas");
+        ComBoxPrograma1.addItem("Ingeniería Electrónica y Telecomunicaciones");
+        ComBoxPrograma1.addItem("Automática industrial");
+        ComBoxPrograma1.addItem("Tecnología en Telemática");
+        
+         
+    // ComboBox Departamentos (para docentes/coordinadores)
+    ComBoxDepartamento.addItem("Seleccione un departamento");
+    ComBoxDepartamento.addItem("Sistemas");
+    ComBoxDepartamento.addItem("Electrónica");                 // ← NUEVO
+    ComBoxDepartamento.addItem("Instrumentación y Control");    // ← NUEVO
+    ComBoxDepartamento.addItem("Telemática");                  // ← NUEVO
+        
+        // Intentar cargar desde BD como respaldo (opcional)
+        try {
+            List<Programa> programas = programaRepository.list();
+            if (!programas.isEmpty()) {
+                // Si hay programas en BD, agregar los que no están hardcoded
+                for (Programa programa : programas) {
+                    String nombrePrograma = programa.getNombrePrograma();
+                    boolean yaExiste = false;
+                    for (int i = 0; i < ComBoxPrograma1.getItemCount(); i++) {
+                        if (ComBoxPrograma1.getItemAt(i).equals(nombrePrograma)) {
+                            yaExiste = true;
+                            break;
+                        }
+                    }
+                    if (!yaExiste) {
+                        ComBoxPrograma1.addItem(nombrePrograma);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("Error cargando programas desde BD: " + e.getMessage());
+            // Los hardcoded ya están cargados, continuar
+        }
+     }
+    
+    
 
 
     /**
@@ -231,16 +378,15 @@ private final UserService userService;
         CBDocente.setText("Docente");
         pnlBack.add(CBDocente, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 330, -1, -1));
 
-        CBEstudiante.setBackground(new java.awt.Color(255, 255, 255));
-        CBEstudiante.setFont(new java.awt.Font("Roboto Medium", 0, 12)); // NOI18N
-        CBEstudiante.setForeground(new java.awt.Color(0, 0, 0));
-        CBEstudiante.setText("Estudiante");
-        pnlBack.add(CBEstudiante, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 330, -1, -1));
-
-        ComBoxPrograma.setBackground(new java.awt.Color(255, 255, 255));
-        ComBoxPrograma.setFont(new java.awt.Font("Roboto Medium", 0, 12)); // NOI18N
-        ComBoxPrograma.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Programa", "Ingeniería de Sistemas", "Ingeniería Electrónica y Telecomunicaciones", "Automática industrial", "Tecnología en Telemática" }));
-        pnlBack.add(ComBoxPrograma, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 220, 230, 30));
+        ComBoxDepartamento.setBackground(new java.awt.Color(255, 255, 255));
+        ComBoxDepartamento.setFont(new java.awt.Font("Roboto Medium", 0, 12)); // NOI18N
+        ComBoxDepartamento.setToolTipText("");
+        ComBoxDepartamento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ComBoxDepartamentoActionPerformed(evt);
+            }
+        });
+        pnlBack.add(ComBoxDepartamento, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 300, 230, 30));
         pnlBack.add(jSeparator8, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 430, 230, 20));
 
         txtNombre.setBackground(new java.awt.Color(255, 255, 255));
@@ -464,11 +610,182 @@ private final UserService userService;
 
     }//GEN-LAST:event_lblBttRegistrarMouseClicked
 
-    private void BtnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnBackActionPerformed
-       GUILogin login = new GUILogin();
-       login.setVisible(true);
-       this.setVisible(false);
-    }//GEN-LAST:event_BtnBackActionPerformed
+    /**
+     * Validar campos básicos
+     */
+    private String validarCamposBasicos(String nombre, String apellidos, String email, String password) {
+        if (nombre.isEmpty() || nombre.equals("Ingrese su Nombre") ||
+            apellidos.isEmpty() || apellidos.equals("Ingrese sus Apellidos ") ||
+            email.isEmpty() || email.equals("Ingrese su Email ") ||
+            password.isEmpty() || password.equals("********")) {
+            return "Por favor completa todos los campos obligatorios.";
+        }
+        return null; // Sin errores
+    }
+    
+
+    
+  
+  
+    /**
+     * Obtener roles seleccionados
+     */
+     private EnumSet<enumRol> obtenerRolesSeleccionados() {
+        EnumSet<enumRol> roles = EnumSet.noneOf(enumRol.class);
+        
+        if (CBEstudiante1.isSelected()) {
+            roles.add(enumRol.ESTUDIANTE);
+        }
+        if (CBDocente1.isSelected()) {
+            roles.add(enumRol.DOCENTE);
+        }
+        if (CBECoordinador.isSelected()) {
+            roles.add(enumRol.COORDINADOR);
+        }
+        
+        return roles;
+    }
+    
+   
+    
+ /**
+     * Procesar celular (opcional)
+     */
+    private String procesarCelular(String celularStr) {
+        if (celularStr.isEmpty() || celularStr.equals("Ingrese su celular")) {
+            return null; // Celular opcional
+        }
+        
+        if (!celularStr.matches("\\d+")) {
+            return null; // Inválido
+        }
+        
+        return celularStr;
+    }
+
+    
+/**
+     * Obtener programa seleccionado
+     */
+    private Programa obtenerProgramaSeleccionado() {
+        String programaSeleccionado = (String) ComBoxPrograma1.getSelectedItem();
+        if (programaSeleccionado == null || programaSeleccionado.equals("Seleccione un programa")) {
+            return null;
+        }
+        
+        try {
+            // Intentar buscar en la base de datos primero
+            List<Programa> programas = programaRepository.list();
+            for (Programa programa : programas) {
+                if (programa.getNombrePrograma().equals(programaSeleccionado)) {
+                    return programa;
+                }
+            }
+            
+            // Si no se encuentra en BD, crear un programa temporal con los datos básicos
+            // Esto asume que tienes una Facultad y Departamento por defecto
+            return crearProgramaTemporal(programaSeleccionado);
+            
+        } catch (Exception e) {
+            System.err.println("Error buscando programa: " + e.getMessage());
+            // Crear programa temporal como fallback
+            return crearProgramaTemporal(programaSeleccionado);
+        }
+    }
+    
+    /**
+     * Obtener departamento seleccionado
+     */
+    private Departamento obtenerDepartamentoSeleccionado() {
+        String deptSeleccionado = (String) ComBoxDepartamento.getSelectedItem();
+        if (deptSeleccionado == null || deptSeleccionado.equals("Seleccione un departamento")) {
+            return null;
+        }
+        
+        try {
+            // Intentar buscar en la base de datos primero
+            List<Departamento> departamentos = departamentoRepository.list();
+            for (Departamento dept : departamentos) {
+                if (dept.getNombre().equals(deptSeleccionado)) {
+                    return dept;
+                }
+            }
+            
+            // Si no se encuentra en BD, crear departamento temporal
+            return crearDepartamentoTemporal(deptSeleccionado);
+            
+        } catch (Exception e) {
+            System.err.println("Error buscando departamento: " + e.getMessage());
+            // Crear departamento temporal como fallback
+            return crearDepartamentoTemporal(deptSeleccionado);
+        }
+    }
+    
+    /**
+     * Crear programa temporal cuando no existe en BD
+     */
+    private Programa crearProgramaTemporal(String nombrePrograma) {
+        try {
+            // Crear facultad FIET por defecto
+            Facultad facultad = new Facultad("Facultad de Ingeniería Electrónica y Telecomunicaciones");
+            facultad.setCodFacultad(1); // ID temporal
+            
+            // Crear departamento de Sistemas por defecto
+            Departamento departamento = new Departamento("Sistemas", facultad);
+            departamento.setCodDepartamento(1); // ID temporal
+            
+            // Crear programa
+            Programa programa = new Programa(nombrePrograma, departamento);
+            programa.setCodPrograma(1); // ID temporal
+            
+            return programa;
+            
+        } catch (ValidationException e) {
+            System.err.println("Error creando programa temporal: " + e.getMessage());
+            return null;
+        }
+    }
+    
+    /**
+     * Crear departamento temporal cuando no existe en BD
+     */
+    private Departamento crearDepartamentoTemporal(String nombreDepartamento) {
+        try {
+            // Crear facultad FIET por defecto
+            Facultad facultad = new Facultad("Facultad de Ingeniería Electrónica y Telecomunicaciones");
+            facultad.setCodFacultad(1); // ID temporal
+            
+            // Crear departamento
+            Departamento departamento = new Departamento(nombreDepartamento, facultad);
+            departamento.setCodDepartamento(1); // ID temporal
+            
+            return departamento;
+            
+        } catch (ValidationException e) {
+            System.err.println("Error creando departamento temporal: " + e.getMessage());
+            return null;
+        }
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    private void CBECoordinadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CBECoordinadorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_CBECoordinadorActionPerformed
+
+    private void CBEstudiante1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CBEstudiante1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_CBEstudiante1ActionPerformed
+
+    private void ComBoxDepartamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ComBoxDepartamentoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ComBoxDepartamentoActionPerformed
    
 public void irALogin(){
     GUILogin ventanaLogin = new GUILogin(); // crear la nueva ventana

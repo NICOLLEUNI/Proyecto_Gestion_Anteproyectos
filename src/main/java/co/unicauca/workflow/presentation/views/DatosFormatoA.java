@@ -13,6 +13,7 @@ import co.unicauca.workflow.access.IEstudianteRepository;
 import co.unicauca.workflow.access.IFormatoARepository;
 import co.unicauca.workflow.domain.entities.Estudiante;
 import co.unicauca.workflow.domain.entities.FormatoA;
+import co.unicauca.workflow.domain.entities.Persona;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Insets;
@@ -34,9 +35,10 @@ public class DatosFormatoA extends javax.swing.JPanel {
    
       private IFormatoARepository repoFormato = Factory.getInstance().getFormatoARepository("default");
        private IEstudianteRepository repoEstudiantes = Factory.getInstance().getEstudianteRepository("default");
-    
-    public DatosFormatoA() {
+       private Persona persona;
+    public DatosFormatoA(Persona persona) {
         initComponents();
+        this.persona=persona;
         
         boxModalidad.setModel(new javax.swing.DefaultComboBoxModel<>(enumModalidad.values()));
           boxModalidad.setSelectedIndex(-1);
@@ -426,7 +428,7 @@ public class DatosFormatoA extends javax.swing.JPanel {
         }
         formato.setEstudiantes(estudiantes);
 
-        AdjuntarDocumentos panelDocs = new AdjuntarDocumentos(formato);
+        AdjuntarDocumentos panelDocs = new AdjuntarDocumentos(formato,persona);
         showJPanel(panelDocs);
 
     } catch (Exception e) {
@@ -519,10 +521,6 @@ private boolean validarCampos() {
         return false;
     }
 
-    if (boxEstudiante2.isEnabled() && boxEstudiante2.getSelectedIndex() == -1) {
-        JOptionPane.showMessageDialog(this, "Seleccione el Estudiante #2");
-        return false;
-    }
 
     return true; // ✅ Todo bien
 }

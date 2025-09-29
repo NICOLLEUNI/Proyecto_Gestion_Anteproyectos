@@ -94,7 +94,7 @@
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="81" max="-2" attributes="0"/>
-                      <Component id="jButtonCloseSesion" min="-2" max="-2" attributes="0"/>
+                      <Component id="btnCloseSesion" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
@@ -113,7 +113,7 @@
                       <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
                       <Component id="btRegresar" min="-2" pref="64" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
-                      <Component id="jButtonCloseSesion" min="-2" max="-2" attributes="0"/>
+                      <Component id="btnCloseSesion" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -189,7 +189,7 @@
                   </Border>
                 </Property>
                 <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-                  <Color id="Default Cursor"/>
+                  <Color id="Cursor Por defecto"/>
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="2"/>
                 <Property name="iconTextGap" type="int" value="7"/>
@@ -222,7 +222,7 @@
                   </Border>
                 </Property>
                 <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-                  <Color id="Default Cursor"/>
+                  <Color id="Cursor Por defecto"/>
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="2"/>
                 <Property name="iconTextGap" type="int" value="7"/>
@@ -255,7 +255,7 @@
                   </Border>
                 </Property>
                 <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-                  <Color id="Default Cursor"/>
+                  <Color id="Cursor Por defecto"/>
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="2"/>
                 <Property name="iconTextGap" type="int" value="7"/>
@@ -264,7 +264,7 @@
                 <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btRegresarMouseClicked"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JButton" name="jButtonCloseSesion">
+            <Component class="javax.swing.JButton" name="btnCloseSesion">
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ab" green="37" red="41" type="rgb"/>
@@ -275,7 +275,7 @@
                 <Property name="text" type="java.lang.String" value="Cerrar Sesi&#xf3;n"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonCloseSesionActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCloseSesionActionPerformed"/>
               </Events>
             </Component>
           </SubComponents>
