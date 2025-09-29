@@ -117,7 +117,45 @@ public class Factory {
         return result;
     }
     
+
+    // *** AGREGADO: Método para ProgramaRepository ***
+    public static IProgramaRepository getProgramaRepository(String type) {
+        IProgramaRepository result = null;
+        switch (type.toLowerCase()) {
+            case "default":
+                result = new ProgramaRepository();
+                break;
+            // case "mock": result = new ProgramaRepositoryMock(); break;
+        }
+        return result;
+    }
     
+    // *** AGREGADO: Método para DepartamentoRepository ***
+    public static IDepartamentoRepository getDepartamentoRepository(String type) {
+        IDepartamentoRepository result = null;
+        switch (type.toLowerCase()) {
+            case "default":
+                result = new DepartamentoRepository();
+                break;
+            // case "mock": result = new DepartamentoRepositoryMock(); break;
+        }
+        
+        return result;
+    }
+
+    public static IFormatoAVersionRepository getFormatoAVersionRepository(String type) {
+        IFormatoAVersionRepository result = null;
+
+        switch (type.toLowerCase()) {
+            case "default":
+                result = new FormatoAVersionRepository();
+                break;
+            // Si en el futuro tienes otro tipo de repositorio, agregas otro case
+            // case "mock": result = new PersonaRepositoryMock(); break;
+        }
+        
+        return result;
+    }
     
     //Por cada repositorio creado se deben crear dos metodos: el que instancia la repositorio y 
     // el que le asigna el tipo de BDD (los metodos se deben llamar diferentes por cada repositorio)  

@@ -6,8 +6,6 @@ package co.unicauca.workflow.presentation.views;
 
 //al dar click en ruta pdf debe exportar el formato A en la ruta 
 
-import co.unicauca.workflow.access.Factory;
-import co.unicauca.workflow.access.IFormatoARepository;
 import co.unicauca.workflow.domain.entities.FormatoA;
 import co.unicauca.workflow.domain.entities.enumEstado;
 import co.unicauca.workflow.domain.service.FormatoAService;
@@ -449,7 +447,7 @@ public class Observaciones extends javax.swing.JPanel {
 
         if (actualizado) {
             JOptionPane.showMessageDialog(this, "Formato evaluado correctamente.");
-
+               this.setVisible(false);
         } else {
             JOptionPane.showMessageDialog(this, "No se pudo actualizar el formato.");
         }

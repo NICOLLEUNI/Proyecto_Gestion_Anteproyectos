@@ -4,13 +4,11 @@
  */
 package co.unicauca.workflow.presentation.views;
 
-import co.unicauca.workflow.access.FormatoARepository;
+import co.unicauca.workflow.access.Factory;
 import co.unicauca.workflow.access.IFormatoARepository;
-import co.unicauca.workflow.domain.entities.Docente;
 import co.unicauca.workflow.domain.entities.Estudiante;
 import co.unicauca.workflow.domain.entities.FormatoA;
 import co.unicauca.workflow.domain.entities.Persona;
-import co.unicauca.workflow.domain.service.FormatoAService;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
@@ -24,36 +22,46 @@ public class ConsultarFormatoA extends javax.swing.JPanel {
     /**
      * Creates new form ConsultarFormatoA
      */
-    
-    private Persona personaLogueado;
-    private IFormatoARepository repo;
-    private FormatoAService service;
-    
-    public ConsultarFormatoA(Persona personaLogueado) {
+    private Persona personaLogueada;
+    public ConsultarFormatoA(Persona personaLogueada) {
         initComponents();
-        this.personaLogueado = personaLogueado;
-        
-        this.service = new FormatoAService(repo);
+        this.personaLogueada = personaLogueada; // guarda el usuario activo
         initStyles();
-        cargarDatos();
+        cargarDatos();;
     }
 private void cargarDatos() {
-    
-    List<FormatoA> lista;
+      // Obtenemos el repositorio usando la Factory
+    IFormatoARepository repo = Factory.getFormatoARepository("default");
 
-        if (personaLogueado instanceof Estudiante) {
-            // 🔎 Traer solo los FormatoA asociados a este estudiante
-            lista = service.consultarFormatoAEstudiante(personaLogueado);
-        } else if (personaLogueado instanceof Docente) {
-            // 🔎 Traer solo los FormatoA donde este docente es director o codirector
-            lista = service.consultarFormatoADocente(personaLogueado);
-        } else {
-            // Otros roles no ven nada
-            lista = new ArrayList<>();
+    // Traemos todos los formatos
+    List<FormatoA> todos = repo.list();
+
+    // Filtramos los formatos donde el usuario logueado sea estudiante
+    List<FormatoA> lista = new ArrayList<>();
+    for (FormatoA f : todos) {
+        for (Estudiante est : f.getEstudiantes()) {
+            if (est.getIdUsuario() == personaLogueada.getIdUsuario()) {
+                lista.add(f);
+                break; // Ya lo encontramos, no necesitamos revisar más estudiantes
+            }
         }
+    }
 
-        String[] columnas = {"Título", "Director", "Entrega", "Estado", "Observaciones"};
-        DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
+    // Columnas de la tabla
+    String[] columnas = {"Título", "Director", "Entrega", "Estado", "Observaciones"};
+    DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
+
+    // Llenamos la tabla
+    for (FormatoA f : lista) {
+        Object[] fila = {
+            f.getTitle(),
+            f.getProjectManager() != null ? f.getProjectManager().getName() : "",
+            f.getDate() != null ? f.getDate().toString() : "",
+            f.getState() != null ? f.getState() : "Pendiente",
+            f.getObservations() != null ? f.getObservations() : ""
+        };
+        modelo.addRow(fila);
+    }
 
         for (FormatoA f : lista) {
             Object[] fila = {

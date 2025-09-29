@@ -12,10 +12,7 @@ package co.unicauca.workflow.presentation;
 import co.unicauca.workflow.access.FormatoARepository;
 import co.unicauca.workflow.access.IFormatoARepository;
 import co.unicauca.workflow.presentation.views.Principal;
-import co.unicauca.workflow.domain.entities.User;
 import co.unicauca.workflow.presentation.views.ConsultarFormatoA;
-import co.unicauca.workflow.presentation.views.SubirFormatoA;
-import com.formdev.flatlaf.FlatLightLaf;
 import co.unicauca.workflow.domain.entities.Persona;
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMTMaterialLighterIJTheme;
 import java.awt.BorderLayout;
@@ -218,8 +215,7 @@ public class GUIMenuEstudiante extends javax.swing.JFrame {
     }//GEN-LAST:event_btRegresarMouseClicked
 
     private void btConsultarFormatoAMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btConsultarFormatoAMouseClicked
-         IFormatoARepository repo = new FormatoARepository(); 
-        showJPanel(new ConsultarFormatoA(personaLogueado));
+         showJPanel( new ConsultarFormatoA(personaLogueado));
     }//GEN-LAST:event_btConsultarFormatoAMouseClicked
 
     private void JButtonCloseSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JButtonCloseSesionActionPerformed

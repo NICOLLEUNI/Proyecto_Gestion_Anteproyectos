@@ -5,7 +5,6 @@
 package co.unicauca.workflow.presentation;
 
 
-
 import co.unicauca.workflow.presentation.views.Principal;
 import com.formdev.flatlaf.FlatLightLaf;
 import java.awt.BorderLayout;

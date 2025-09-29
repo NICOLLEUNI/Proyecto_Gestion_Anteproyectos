@@ -9,7 +9,10 @@ import co.unicauca.workflow.access.FormatoARepository;
 import co.unicauca.workflow.access.DocenteRepository;
 import co.unicauca.workflow.access.Factory;
 import co.unicauca.workflow.access.ICoordinadorRepository;
+import co.unicauca.workflow.access.IDocenteRepository;
+import co.unicauca.workflow.access.IEstudianteRepository;
 import co.unicauca.workflow.access.IFormatoARepository;
+import co.unicauca.workflow.access.IFormatoAVersionRepository;
 import co.unicauca.workflow.access.IPersonaRepository;
 import co.unicauca.workflow.access.Factory;
 import co.unicauca.workflow.domain.entities.Docente;
@@ -33,12 +36,24 @@ import java.util.logging.Logger;
 public class Taller02PrincipiosSolid {
 
     public static void main(String[] args) {
+
         
         IPersonaRepository repository = Factory.getInstance().getPersonaRepository("default");
         PersonaService service = new PersonaService();
         IFormatoARepository repoFomratoA = Factory.getInstance().getFormatoARepository("default");
         FormatoAService serviceFormato = new FormatoAService(repoFomratoA);
+        
+        /*
+        //primero le asignamos el dipo de BDD a el repositorio
+        IEstudianteRepository repoEstudiante = Factory.getInstance().getEstudianteRepository("default");
+        //luego, le pasamos el repo creado a la clase donde lo vamos a usar
+        EstudianteService serviceEstudiante = new EstudianteService(repoEstudiante);
+        */
 
+
+        
+       
+       
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 // Interfaz de login

@@ -8,56 +8,60 @@ package co.unicauca.workflow.presentation;
 //implementar subir formato A y consultar respuestas
 //puede implememtar el pane para doc respuestas  
 
-import co.unicauca.workflow.domain.entities.Persona;
 import co.unicauca.workflow.presentation.views.Principal;
-import co.unicauca.workflow.domain.entities.User;
-import co.unicauca.workflow.presentation.views.ConsultarFormatoA;
-import co.unicauca.workflow.presentation.views.SubirFormatoA;
+import co.unicauca.workflow.domain.entities.Persona;
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMTMaterialLighterIJTheme;
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
+
+
+import co.unicauca.workflow.presentation.views.DatosFormatoA;
+import co.unicauca.workflow.presentation.views.ListaFormatosA;
 
 /**
  *
  * @author User
  */
 public class GUIMenuDocente extends javax.swing.JFrame {
+    
+    
+
 
     /**
      * Creates new form GUIDocente
      */
 
+
     private static Persona personaLogueado;
+    
     public GUIMenuDocente (Persona logueado) {
      this.personaLogueado=logueado;
-
+      initStyles();
         initComponents();
-      
-    initContent();
- 
+        this.setLocationRelativeTo(null);
+        initContent();
     }
     
+
+    private void initStyles(){
+      FlatMTMaterialLighterIJTheme.setup();
+    }
     
+    private void showJPanel(JPanel pl){
+        pl.setSize(641,498);
+        pl.setLocation(0, 0);
 
-     private void initStyles(){
-     
+        Contenido.removeAll();
+        Contenido.add(pl,BorderLayout.CENTER);
+        Contenido.revalidate();
+        Contenido.repaint(); 
+
      }
-     private void showJPanel(JPanel pl){
-     pl.setSize(641,498);
-     pl.setLocation(0, 0);
-     
-     Contenido.removeAll();
-     Contenido.add(pl,BorderLayout.CENTER);
-     Contenido.revalidate();
-     Contenido.repaint(); 
-         
-     }
-     private void initContent(){
-
-     showJPanel( new Principal(personaLogueado));
-
     
-     }
+    private void initContent(){
+        showJPanel( new Principal(personaLogueado));
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -119,6 +123,11 @@ public class GUIMenuDocente extends javax.swing.JFrame {
         btRespuestas.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btRespuestas.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btRespuestas.setIconTextGap(7);
+        btRespuestas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btRespuestasMouseClicked(evt);
+            }
+        });
 
         btSubirFormatoA.setBackground(new java.awt.Color(65, 55, 171));
         btSubirFormatoA.setFont(new java.awt.Font("Roboto Medium", 0, 24)); // NOI18N
@@ -247,13 +256,14 @@ public class GUIMenuDocente extends javax.swing.JFrame {
 
 
     private void btSubirFormatoAMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btSubirFormatoAMouseClicked
-       showJPanel( new SubirFormatoA());
+       showJPanel( new DatosFormatoA());
     }//GEN-LAST:event_btSubirFormatoAMouseClicked
 
     private void btRegresarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btRegresarMouseClicked
-       GUIMenuPrincipal ventanaPrincipal = new GUIMenuPrincipal(personaLogueado);
-    ventanaPrincipal.setVisible(true);
-    this.dispose(); 
+
+        GUIMenuPrincipal ventanaPrincipal = new GUIMenuPrincipal(personaLogueado);
+        ventanaPrincipal.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btRegresarMouseClicked
 
     private void jButtonCloseSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCloseSesionActionPerformed
@@ -262,25 +272,33 @@ public class GUIMenuDocente extends javax.swing.JFrame {
         this.setVisible(false);
     }//GEN-LAST:event_jButtonCloseSesionActionPerformed
 
+    private void btRespuestasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btRespuestasMouseClicked
+        // Crear la vista correcta: ListaFormatosA
+        ListaFormatosA vistaDocente = new ListaFormatosA(personaLogueado);
+
+        // Reemplazar el contenido del panel central
+        Contenido.removeAll();
+        Contenido.setLayout(new BorderLayout());
+        Contenido.add(vistaDocente, BorderLayout.CENTER);
+        Contenido.revalidate();
+        Contenido.repaint();
+    }//GEN-LAST:event_btRespuestasMouseClicked
+
     /**
      * @param args the command line arguments
      */
 
-      public static void main(String args[]) {
+    public static void main(String args[]) {
         /* Set the Nimbus look and feel */
        FlatMTMaterialLighterIJTheme.setup();
-       
-      
-
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-
                 new GUIMenuDocente(personaLogueado).setVisible(true);
-
             }
         });
     }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Bakground;
     private javax.swing.JPanel Contenido;
