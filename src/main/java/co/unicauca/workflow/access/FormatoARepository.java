@@ -284,13 +284,13 @@ public boolean save(FormatoA newFormatoA) {
     public Connection getConnection() {
         return conn;
     }
-    public boolean updateEstadoYObservaciones(int id, String estado, String observaciones) {
-    try {
-        String sql = "UPDATE formatoA SET state = ?, observations = ? WHERE id = ?";
-        PreparedStatement ps = conn.prepareStatement(sql);
+   public boolean updateEstadoObservacionesYContador(int id, String estado, String observaciones, int contador) {
+    String sql = "UPDATE formatoA SET state = ?, observations = ?, counter = ? WHERE id = ?";
+    try (PreparedStatement ps = conn.prepareStatement(sql)) {
         ps.setString(1, estado);
         ps.setString(2, observaciones);
-        ps.setInt(3, id);
+        ps.setInt(3, contador);
+        ps.setInt(4, id);
 
         int filas = ps.executeUpdate();
         return filas > 0;
