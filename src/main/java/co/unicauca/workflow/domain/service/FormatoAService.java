@@ -75,9 +75,9 @@ public class FormatoAService extends Subject{
         return repo.findById(id);
     }
     
-    public boolean updateEstadoYObservaciones(int idFormato, String estado, String observaciones) {
+    public boolean updateEstadoObservacionesYContador(int idFormato, String estado, String observaciones,int counter) {
         // Actualiza en el repositorio
-        boolean actualizado = repo.updateEstadoYObservaciones(idFormato, estado, observaciones);
+        boolean actualizado = repo. updateEstadoObservacionesYContador(idFormato, estado, observaciones, counter);
 
         if (actualizado) {
             // Solo notificamos si realmente se actualizó

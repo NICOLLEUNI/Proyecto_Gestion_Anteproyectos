@@ -442,8 +442,17 @@ public class Observaciones extends javax.swing.JPanel {
         // 🔹 Supongamos que tienes guardado el ID del formato actual
         int idFormato = formatoActual.getId();  // guarda este formato cuando haces setFormatoA
 
+        
+        
+       // Incrementar contador antes de actualizar
+         int nuevoContador = formatoActual.getCounter() + 1;
+         formatoActual.setCounter(nuevoContador);
+ 
+       // Llamar al repositorio para actualizar todo
+        boolean actualizado = formatoAService.updateEstadoObservacionesYContador(
+           idFormato, estado, observaciones, nuevoContador);
         // Llamar al repositorio para actualizar
-        boolean actualizado =formatoAService.updateEstadoYObservaciones(idFormato, estado, observaciones);
+        
 
         if (actualizado) {
             JOptionPane.showMessageDialog(this, "Formato evaluado correctamente.");
