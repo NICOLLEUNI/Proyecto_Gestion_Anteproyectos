@@ -18,5 +18,6 @@ public interface IFormatoAVersionRepository {
     List<FormatoAVersion > list();
     
     public FormatoAVersion findById(int id);
-    
+    public boolean deleteByFormatoAId(int formatoAId) ;
+     public List<FormatoAVersion> listByFormatoA(int formatoAId);
 }

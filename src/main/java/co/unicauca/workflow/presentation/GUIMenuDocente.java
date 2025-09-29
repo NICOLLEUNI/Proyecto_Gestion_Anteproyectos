@@ -256,7 +256,7 @@ public class GUIMenuDocente extends javax.swing.JFrame {
 
 
     private void btSubirFormatoAMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btSubirFormatoAMouseClicked
-       showJPanel( new DatosFormatoA());
+       showJPanel( new DatosFormatoA(personaLogueado));
     }//GEN-LAST:event_btSubirFormatoAMouseClicked
 
     private void btRegresarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btRegresarMouseClicked
