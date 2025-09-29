@@ -8,23 +8,12 @@ package co.unicauca.workflow.presentation;
 //implementar subir formato A y consultar respuestas
 //puede implememtar el pane para doc respuestas  
 
-import co.unicauca.workflow.domain.entities.Persona;
-import co.unicauca.workflow.access.DocenteRepository;
-import co.unicauca.workflow.access.Factory;
-import co.unicauca.workflow.access.IDocenteRepository;
-import co.unicauca.workflow.domain.entities.Departamento;
-import co.unicauca.workflow.domain.entities.Docente;
 import co.unicauca.workflow.presentation.views.Principal;
 import co.unicauca.workflow.domain.entities.Persona;
-import co.unicauca.workflow.presentation.views.ConsultarFormatoA;
-import co.unicauca.workflow.presentation.views.DatosFormatoA;
-import co.unicauca.workflow.presentation.views.SubirFormatoA;
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMTMaterialLighterIJTheme;
 import java.awt.BorderLayout;
-import java.util.List;
 import javax.swing.JPanel;
 
-import co.unicauca.workflow.presentation.views.DatosFormatoA;
 
 import co.unicauca.workflow.presentation.views.DatosFormatoA;
 import co.unicauca.workflow.presentation.views.ListaFormatosA;

@@ -173,7 +173,7 @@ private void cargarDatos() {
             }
 
             // Abrimos la vista de detalle
-            DetallesFormatoA detalle = new DetallesFormatoA(seleccionado, docente);
+            DetallesFormatoA detalle = new DetallesFormatoA(seleccionado, docente,personaLogueada);
 
             // Cambiamos la vista dentro de este panel
             Contenido.removeAll();

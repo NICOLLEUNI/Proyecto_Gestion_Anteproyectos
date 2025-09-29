@@ -19,7 +19,6 @@ import co.unicauca.workflow.presentation.views.GraficoPastel;
 import co.unicauca.workflow.presentation.views.Observaciones;
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMTMaterialLighterIJTheme;
 import java.awt.BorderLayout;
-import java.util.ArrayList;
 
 import java.util.List;
 import java.util.logging.Level;

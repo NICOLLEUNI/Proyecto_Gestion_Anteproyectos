@@ -10,10 +10,7 @@ package co.unicauca.workflow.presentation;
 //con el correo del estudiante 
 
 import co.unicauca.workflow.presentation.views.Principal;
-import co.unicauca.workflow.domain.entities.Persona;
 import co.unicauca.workflow.presentation.views.ConsultarFormatoA;
-import co.unicauca.workflow.presentation.views.SubirFormatoA;
-import com.formdev.flatlaf.FlatLightLaf;
 import co.unicauca.workflow.domain.entities.Persona;
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMTMaterialLighterIJTheme;
 import java.awt.BorderLayout;

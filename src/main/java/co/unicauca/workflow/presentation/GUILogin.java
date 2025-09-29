@@ -2,12 +2,7 @@
 package co.unicauca.workflow.presentation;
 import java.awt.Color;
 import javax.swing.JOptionPane;
-import co.unicauca.workflow.domain.service.UserService;
-import co.unicauca.workflow.access.IUserRepository;
-import co.unicauca.workflow.access.UserRepository;
 import co.unicauca.workflow.domain.entities.Persona;
-import co.unicauca.workflow.domain.entities.User;
-import co.unicauca.workflow.domain.entities.enumRol;
 import co.unicauca.workflow.domain.service.PersonaService;
 
 //Debemos usar la instancia de factory no crear un nuevo repositorio

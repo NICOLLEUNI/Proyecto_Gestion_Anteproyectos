@@ -21,7 +21,6 @@ package co.unicauca.workflow.presentation;
 // IMPORTS NECESARIOS - AGREGAR AL INICIO DE TU ARCHIVO
 import co.unicauca.workflow.domain.service.PersonaService;
 import co.unicauca.workflow.domain.entities.enumRol;
-import co.unicauca.workflow.domain.entities.Persona;
 import co.unicauca.workflow.domain.entities.Programa;
 import co.unicauca.workflow.domain.entities.Departamento;
 import co.unicauca.workflow.domain.entities.Facultad;

@@ -10,12 +10,13 @@ import co.unicauca.workflow.access.FormatoAVersionRepository;
 import co.unicauca.workflow.domain.entities.Docente;
 import co.unicauca.workflow.domain.entities.FormatoA;
 import co.unicauca.workflow.domain.entities.FormatoAVersion;
+import co.unicauca.workflow.domain.entities.Persona;
 import co.unicauca.workflow.domain.entities.enumEstado;
 import co.unicauca.workflow.domain.entities.enumModalidad;
+import java.awt.BorderLayout;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import java.awt.BorderLayout;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -30,12 +31,13 @@ public class DetallesFormatoA extends javax.swing.JPanel {
 
     private FormatoA formato;
     private Docente docente;
-
+    private Persona persona;
     // Constructor "temporal"
-    public DetallesFormatoA(FormatoA formato, Docente docente) {
+    public DetallesFormatoA(FormatoA formato, Docente docente,Persona persona) {
         initComponents();
         this.formato = formato;
         this.docente = docente;
+        this.persona=persona;
         
         cargarDatos();
         configurarSegunEstado();
@@ -123,7 +125,7 @@ private void configurarSegunEstado() {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel2 = new javax.swing.JPanel();
+        Contenido = new javax.swing.JPanel();
         lbTitulo = new javax.swing.JLabel();
         lbMostrarTitulo = new javax.swing.JLabel();
         lbModalida = new javax.swing.JLabel();
@@ -145,56 +147,47 @@ private void configurarSegunEstado() {
         lbComentarios = new javax.swing.JLabel();
         btActualizar = new javax.swing.JButton();
         lbMostrarComentarios = new javax.swing.JLabel();
+        btnVolver = new javax.swing.JButton();
 
-        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel2.setPreferredSize(new java.awt.Dimension(646, 530));
-        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        Contenido.setBackground(new java.awt.Color(255, 255, 255));
+        Contenido.setPreferredSize(new java.awt.Dimension(646, 530));
 
         lbTitulo.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
         lbTitulo.setForeground(new java.awt.Color(0, 0, 0));
         lbTitulo.setText("Titulo del proyecto");
-        jPanel2.add(lbTitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
 
         lbMostrarTitulo.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
         lbMostrarTitulo.setForeground(new java.awt.Color(0, 0, 0));
         lbMostrarTitulo.setText("label");
         lbMostrarTitulo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jPanel2.add(lbMostrarTitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, 190, -1));
 
         lbModalida.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
         lbModalida.setForeground(new java.awt.Color(0, 0, 0));
         lbModalida.setText("Modalidad");
-        jPanel2.add(lbModalida, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 20, -1, -1));
 
         lbMostrarModalidad.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
         lbMostrarModalidad.setForeground(new java.awt.Color(0, 0, 0));
         lbMostrarModalidad.setText("modalidad");
         lbMostrarModalidad.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jPanel2.add(lbMostrarModalidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 40, 180, -1));
 
         lbDirector.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
         lbDirector.setForeground(new java.awt.Color(0, 0, 0));
         lbDirector.setText("Director de proyecto");
-        jPanel2.add(lbDirector, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 20, -1, -1));
 
         lbMostrarDirector.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
         lbMostrarDirector.setForeground(new java.awt.Color(0, 0, 0));
         lbMostrarDirector.setText("director");
         lbMostrarDirector.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jPanel2.add(lbMostrarDirector, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 40, 200, -1));
 
         lbObjGeneral.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
         lbObjGeneral.setForeground(new java.awt.Color(0, 0, 0));
         lbObjGeneral.setText("Objetivo general");
-        jPanel2.add(lbObjGeneral, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 190, -1, -1));
 
         txObjGeneral.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel2.add(txObjGeneral, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 210, 600, 30));
 
         lbObjEspecificos.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
         lbObjEspecificos.setForeground(new java.awt.Color(0, 0, 0));
         lbObjEspecificos.setText("Objetivos especificos");
-        jPanel2.add(lbObjEspecificos, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 250, 180, -1));
 
         txaObjEspecificos.setBackground(new java.awt.Color(255, 255, 255));
         txaObjEspecificos.setForeground(new java.awt.Color(255, 255, 255));
@@ -204,20 +197,15 @@ private void configurarSegunEstado() {
         jTextArea1.setRows(5);
         txaObjEspecificos.setViewportView(jTextArea1);
 
-        jPanel2.add(txaObjEspecificos, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 270, 260, 170));
-        jPanel2.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 618, 10));
-
         lbPDF.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
         lbPDF.setForeground(new java.awt.Color(0, 0, 0));
         lbPDF.setText("PDF - Formato A");
-        jPanel2.add(lbPDF, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 90, -1, -1));
 
         txtMostrarRutaPDF.setFont(new java.awt.Font("Roboto Light", 0, 14)); // NOI18N
         txtMostrarRutaPDF.setForeground(new java.awt.Color(51, 51, 255));
         txtMostrarRutaPDF.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         txtMostrarRutaPDF.setText("Ruta");
         txtMostrarRutaPDF.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jPanel2.add(txtMostrarRutaPDF, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, 270, 25));
 
         btPDF.setBackground(new java.awt.Color(102, 102, 255));
         btPDF.setText("Adjunte un PDF");
@@ -227,14 +215,12 @@ private void configurarSegunEstado() {
                 btPDFMousePressed(evt);
             }
         });
-        jPanel2.add(btPDF, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 110, 270, -1));
 
         lbCarta.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
         lbCarta.setForeground(new java.awt.Color(0, 0, 0));
         lbCarta.setText("Carta de aprobacion laboral");
         lbCarta.setMaximumSize(new java.awt.Dimension(112, 19));
         lbCarta.setMinimumSize(new java.awt.Dimension(112, 19));
-        jPanel2.add(lbCarta, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 90, -1, -1));
 
         btCarta.setBackground(new java.awt.Color(102, 102, 255));
         btCarta.setText("Adjunte un PDF");
@@ -244,19 +230,16 @@ private void configurarSegunEstado() {
                 btCartaMouseClicked(evt);
             }
         });
-        jPanel2.add(btCarta, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 110, 290, -1));
 
         txtMostarRutaCarta.setFont(new java.awt.Font("Roboto Light", 0, 14)); // NOI18N
         txtMostarRutaCarta.setForeground(new java.awt.Color(51, 51, 255));
         txtMostarRutaCarta.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         txtMostarRutaCarta.setText("Ruta");
         txtMostarRutaCarta.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jPanel2.add(txtMostarRutaCarta, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 140, 290, 25));
 
         lbComentarios.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
         lbComentarios.setForeground(new java.awt.Color(0, 0, 0));
         lbComentarios.setText("Comentarios devueltos");
-        jPanel2.add(lbComentarios, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 250, -1, -1));
 
         btActualizar.setBackground(new java.awt.Color(102, 102, 255));
         btActualizar.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
@@ -266,21 +249,133 @@ private void configurarSegunEstado() {
                 btActualizarMouseClicked(evt);
             }
         });
-        jPanel2.add(btActualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(473, 458, 120, 40));
 
         lbMostrarComentarios.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
         lbMostrarComentarios.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jPanel2.add(lbMostrarComentarios, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 270, 290, 170));
+
+        btnVolver.setBackground(new java.awt.Color(51, 51, 255));
+        btnVolver.setForeground(new java.awt.Color(51, 51, 255));
+        btnVolver.setText("Regresar");
+        btnVolver.setBorderPainted(false);
+        btnVolver.setContentAreaFilled(false);
+        btnVolver.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnVolver.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnVolverMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout ContenidoLayout = new javax.swing.GroupLayout(Contenido);
+        Contenido.setLayout(ContenidoLayout);
+        ContenidoLayout.setHorizontalGroup(
+            ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ContenidoLayout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(lbTitulo)
+                .addGap(69, 69, 69)
+                .addComponent(lbModalida)
+                .addGap(129, 129, 129)
+                .addComponent(lbDirector))
+            .addGroup(ContenidoLayout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(lbMostrarTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
+                .addComponent(lbMostrarModalidad, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20)
+                .addComponent(lbMostrarDirector, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(ContenidoLayout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 618, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(ContenidoLayout.createSequentialGroup()
+                .addGap(110, 110, 110)
+                .addComponent(lbPDF)
+                .addGap(116, 116, 116)
+                .addComponent(lbCarta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(ContenidoLayout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(btPDF, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(40, 40, 40)
+                .addComponent(btCarta, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(ContenidoLayout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(txtMostrarRutaPDF, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(40, 40, 40)
+                .addComponent(txtMostarRutaCarta, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(ContenidoLayout.createSequentialGroup()
+                .addGap(250, 250, 250)
+                .addComponent(lbObjGeneral))
+            .addGroup(ContenidoLayout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(txObjGeneral, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(ContenidoLayout.createSequentialGroup()
+                .addGap(60, 60, 60)
+                .addComponent(lbObjEspecificos, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(150, 150, 150)
+                .addComponent(lbComentarios))
+            .addGroup(ContenidoLayout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(txaObjEspecificos, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(40, 40, 40)
+                .addComponent(lbMostrarComentarios, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(ContenidoLayout.createSequentialGroup()
+                .addGap(40, 40, 40)
+                .addComponent(btnVolver)
+                .addGap(334, 334, 334)
+                .addComponent(btActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        ContenidoLayout.setVerticalGroup(
+            ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ContenidoLayout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lbTitulo)
+                    .addComponent(lbModalida)
+                    .addComponent(lbDirector))
+                .addGap(1, 1, 1)
+                .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lbMostrarTitulo)
+                    .addComponent(lbMostrarModalidad)
+                    .addComponent(lbMostrarDirector))
+                .addGap(19, 19, 19)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lbPDF)
+                    .addComponent(lbCarta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(1, 1, 1)
+                .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btPDF)
+                    .addComponent(btCarta))
+                .addGap(7, 7, 7)
+                .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtMostrarRutaPDF, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtMostarRutaCarta, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(25, 25, 25)
+                .addComponent(lbObjGeneral)
+                .addGap(1, 1, 1)
+                .addComponent(txObjGeneral, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
+                .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lbObjEspecificos)
+                    .addComponent(lbComentarios))
+                .addGap(1, 1, 1)
+                .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txaObjEspecificos, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbMostrarComentarios, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(30, 30, 30)
+                .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnVolver)
+                    .addComponent(btActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(Contenido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(Contenido, javax.swing.GroupLayout.PREFERRED_SIZE, 494, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -470,6 +565,18 @@ private void configurarSegunEstado() {
         JOptionPane.showMessageDialog(this, "Error al actualizar: " + ex.getMessage());
     }
     }//GEN-LAST:event_btActualizarMouseClicked
+    private void showJPanel(JPanel pl){
+        pl.setSize(641,498);
+        pl.setLocation(0, 0);
+
+        Contenido.removeAll();
+        Contenido.add(pl, BorderLayout.CENTER);
+        Contenido.revalidate();
+        Contenido.repaint();
+    }
+    private void btnVolverMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnVolverMouseClicked
+        showJPanel(new ListaFormatosA(persona));
+    }//GEN-LAST:event_btnVolverMouseClicked
     
     // MÉTODO AUXILIAR PARA VALIDAR SI ES EDITABLE
     private boolean esEditable() {
@@ -482,10 +589,11 @@ private void configurarSegunEstado() {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel Contenido;
     private javax.swing.JButton btActualizar;
     private javax.swing.JButton btCarta;
     private javax.swing.JButton btPDF;
-    private javax.swing.JPanel jPanel2;
+    private javax.swing.JButton btnVolver;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JLabel lbCarta;

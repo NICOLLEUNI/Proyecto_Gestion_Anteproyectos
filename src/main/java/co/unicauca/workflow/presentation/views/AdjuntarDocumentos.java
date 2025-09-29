@@ -10,7 +10,9 @@ import co.unicauca.workflow.domain.entities.FormatoA;
 import co.unicauca.workflow.domain.entities.enumModalidad;
 import co.unicauca.workflow.domain.service.FormatoAService;
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMTMaterialLighterIJTheme;
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -21,6 +23,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.time.ZoneId;
+import javax.swing.JButton;
+import javax.swing.JPanel;
 import javax.swing.UIManager;
 
 
@@ -41,6 +45,7 @@ public class AdjuntarDocumentos extends javax.swing.JPanel {
     public AdjuntarDocumentos(FormatoA formatoA) {
         this.formatoA = formatoA;
         initComponents();
+
         initStyles();
 
         dateChooser.setMinSelectableDate(java.sql.Date.valueOf(LocalDate.now()));
@@ -84,7 +89,7 @@ public class AdjuntarDocumentos extends javax.swing.JPanel {
     UIManager.put("JXMonthView.selectionForeground", Color.BLACK);      // Texto selección
     UIManager.put("JXMonthView.daysOfTheWeekForeground", Color.DARK_GRAY);
     UIManager.put("JXMonthView.unselectableDayForeground", Color.GRAY);
-
+    
     // 🔹 Actualizar la UI para que tome inmediatamente los cambios
     javax.swing.SwingUtilities.updateComponentTreeUI(this);
 }
@@ -98,7 +103,7 @@ public class AdjuntarDocumentos extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
+        Contenido = new javax.swing.JPanel();
         btnGuardar = new javax.swing.JButton();
         btPDF = new javax.swing.JButton();
         txtRutaPDF = new javax.swing.JLabel();
@@ -109,10 +114,10 @@ public class AdjuntarDocumentos extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
+        btnVolver = new javax.swing.JButton();
 
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel1.setPreferredSize(new java.awt.Dimension(646, 530));
-        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        Contenido.setBackground(new java.awt.Color(255, 255, 255));
+        Contenido.setPreferredSize(new java.awt.Dimension(646, 530));
 
         btnGuardar.setBackground(new java.awt.Color(51, 51, 255));
         btnGuardar.setText("Guardar");
@@ -121,7 +126,6 @@ public class AdjuntarDocumentos extends javax.swing.JPanel {
                 btnGuardarMouseClicked(evt);
             }
         });
-        jPanel1.add(btnGuardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(432, 422, 112, 37));
 
         btPDF.setBackground(new java.awt.Color(102, 102, 255));
         btPDF.setText("Adjunte un PDF");
@@ -131,14 +135,12 @@ public class AdjuntarDocumentos extends javax.swing.JPanel {
                 btPDFMousePressed(evt);
             }
         });
-        jPanel1.add(btPDF, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 70, 447, -1));
 
         txtRutaPDF.setFont(new java.awt.Font("Roboto Light", 0, 14)); // NOI18N
         txtRutaPDF.setForeground(new java.awt.Color(51, 51, 255));
         txtRutaPDF.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         txtRutaPDF.setText("Ruta");
         txtRutaPDF.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jPanel1.add(txtRutaPDF, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 100, 447, 25));
 
         btCarta.setBackground(new java.awt.Color(102, 102, 255));
         btCarta.setText("Adjunte un PDF");
@@ -148,48 +150,119 @@ public class AdjuntarDocumentos extends javax.swing.JPanel {
                 btCartaMouseClicked(evt);
             }
         });
-        jPanel1.add(btCarta, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 220, 447, -1));
 
         txtRutaCarta.setFont(new java.awt.Font("Roboto Light", 0, 14)); // NOI18N
         txtRutaCarta.setForeground(new java.awt.Color(51, 51, 255));
         txtRutaCarta.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         txtRutaCarta.setText("Ruta");
         txtRutaCarta.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jPanel1.add(txtRutaCarta, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 250, 447, 25));
 
         lblClendario.setBackground(new java.awt.Color(0, 0, 0));
         lblClendario.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
         lblClendario.setForeground(new java.awt.Color(0, 0, 0));
         lblClendario.setText("Fecha de publicacion");
-        jPanel1.add(lblClendario, new org.netbeans.lib.awtextra.AbsoluteConstraints(97, 406, -1, -1));
 
         dateChooser.setBackground(new java.awt.Color(153, 153, 153));
         dateChooser.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         dateChooser.setForeground(new java.awt.Color(204, 204, 204));
-        jPanel1.add(dateChooser, new org.netbeans.lib.awtextra.AbsoluteConstraints(97, 431, 150, -1));
 
         jLabel1.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setText("Carta de aprobacion laboral");
         jLabel1.setMaximumSize(new java.awt.Dimension(112, 19));
         jLabel1.setMinimumSize(new java.awt.Dimension(112, 19));
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 190, -1, -1));
 
         jLabel2.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(0, 0, 0));
         jLabel2.setText("PDF - Formato A");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 40, -1, -1));
-        jPanel1.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(51, 162, 532, 10));
+
+        btnVolver.setBackground(new java.awt.Color(51, 51, 255));
+        btnVolver.setForeground(new java.awt.Color(51, 51, 255));
+        btnVolver.setText("Regresar");
+        btnVolver.setBorderPainted(false);
+        btnVolver.setContentAreaFilled(false);
+        btnVolver.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnVolver.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnVolverMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout ContenidoLayout = new javax.swing.GroupLayout(Contenido);
+        Contenido.setLayout(ContenidoLayout);
+        ContenidoLayout.setHorizontalGroup(
+            ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ContenidoLayout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addComponent(btnVolver)
+                .addGap(154, 154, 154)
+                .addComponent(jLabel2))
+            .addGroup(ContenidoLayout.createSequentialGroup()
+                .addGap(100, 100, 100)
+                .addComponent(btPDF, javax.swing.GroupLayout.PREFERRED_SIZE, 447, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(ContenidoLayout.createSequentialGroup()
+                .addGap(100, 100, 100)
+                .addComponent(txtRutaPDF, javax.swing.GroupLayout.PREFERRED_SIZE, 447, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(ContenidoLayout.createSequentialGroup()
+                .addGap(51, 51, 51)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 532, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(ContenidoLayout.createSequentialGroup()
+                .addGap(220, 220, 220)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(ContenidoLayout.createSequentialGroup()
+                .addGap(100, 100, 100)
+                .addComponent(btCarta, javax.swing.GroupLayout.PREFERRED_SIZE, 447, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(ContenidoLayout.createSequentialGroup()
+                .addGap(100, 100, 100)
+                .addComponent(txtRutaCarta, javax.swing.GroupLayout.PREFERRED_SIZE, 447, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(ContenidoLayout.createSequentialGroup()
+                .addGap(432, 432, 432)
+                .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(ContenidoLayout.createSequentialGroup()
+                .addGap(245, 245, 245)
+                .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblClendario)
+                    .addComponent(dateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
+        );
+        ContenidoLayout.setVerticalGroup(
+            ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ContenidoLayout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnVolver)
+                    .addGroup(ContenidoLayout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addComponent(jLabel2)))
+                .addGap(11, 11, 11)
+                .addComponent(btPDF)
+                .addGap(7, 7, 7)
+                .addComponent(txtRutaPDF, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(37, 37, 37)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(11, 11, 11)
+                .addComponent(btCarta)
+                .addGap(7, 7, 7)
+                .addComponent(txtRutaCarta, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(28, 28, 28)
+                .addComponent(lblClendario)
+                .addGap(6, 6, 6)
+                .addComponent(dateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(70, 70, 70)
+                .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(131, 131, 131))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(Contenido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(Contenido, javax.swing.GroupLayout.DEFAULT_SIZE, 590, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -293,15 +366,28 @@ public class AdjuntarDocumentos extends javax.swing.JPanel {
            }
     }//GEN-LAST:event_btCartaMouseClicked
 
+    private void btnVolverMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnVolverMouseClicked
+        showJPanel(new DatosFormatoA());
+    }//GEN-LAST:event_btnVolverMouseClicked
+private void showJPanel(JPanel pl){
+        pl.setSize(641,498);
+        pl.setLocation(0, 0);
+
+        Contenido.removeAll();
+        Contenido.add(pl, BorderLayout.CENTER);
+        Contenido.revalidate();
+        Contenido.repaint();
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel Contenido;
     private javax.swing.JButton btCarta;
     private javax.swing.JButton btPDF;
     private javax.swing.JButton btnGuardar;
+    private javax.swing.JButton btnVolver;
     private com.toedter.calendar.JDateChooser dateChooser;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel lblClendario;
     private javax.swing.JLabel txtRutaCarta;
