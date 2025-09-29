@@ -96,6 +96,7 @@ public class FormatoAVersionRepository implements IFormatoAVersionRepository {
     }
 
     // 🔹 Nuevo método para cargar las versiones de un FormatoA específico
+    @Override
     public List<FormatoAVersion> listByFormatoA(int formatoAId) {
         List<FormatoAVersion> versiones = new ArrayList<>();
         try {
@@ -158,7 +159,18 @@ public class FormatoAVersionRepository implements IFormatoAVersionRepository {
             Logger.getLogger(FormatoAVersionRepository.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    @Override
+    public boolean deleteByFormatoAId(int formatoAId) {
+    String sql = "DELETE FROM FormatoAVersion WHERE formatoA_id = ?";
+    try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setInt(1, formatoAId);
+        ps.executeUpdate();
+        return true;
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return false;
+    }
+}
     public void connect() {
         String url = "jdbc:sqlite:" + System.getProperty("user.dir") + "/BD.db";
         try {
