@@ -25,14 +25,14 @@ import co.unicauca.workflow.presentation.views.ListaFormatosAestudiantes;
  *
  * @author User
  */
-public class GUIMenuEstudiante extends javax.swing.JFrame {
+public class GUIMenuProyecto extends javax.swing.JFrame {
 
     
 
      IFormatoAVersionRepository repo = Factory.getFormatoAVersionRepository("default");
     private static Persona personaLogueado;
 
-    public GUIMenuEstudiante(Persona logueado) {
+    public GUIMenuProyecto(Persona logueado) {
         this.personaLogueado = logueado;
         FlatMTMaterialLighterIJTheme.setup(); // aplicar tema
         initComponents();
@@ -250,7 +250,7 @@ public class GUIMenuEstudiante extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
 
-                new GUIMenuEstudiante(personaLogueado).setVisible(true);
+                new GUIMenuProyecto(personaLogueado).setVisible(true);
 
             }
         });
