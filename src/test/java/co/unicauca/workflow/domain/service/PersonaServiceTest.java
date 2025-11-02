@@ -162,7 +162,6 @@ private static class InMemoryEstudianteRepo implements IEstudianteRepository {
     }
 
  
-
     public void clear() { 
         store.clear(); 
     }
@@ -173,6 +172,10 @@ private static class InMemoryEstudianteRepo implements IEstudianteRepository {
  */
 private static class InMemoryDocenteRepo implements IDocenteRepository {
     private final List<Docente> store = new ArrayList<>();
+    @Override 
+   public  Docente findById(int id){
+    return null;
+    }
 
     @Override
     public boolean save(Docente docente)  {  // ← AGREGAR throws

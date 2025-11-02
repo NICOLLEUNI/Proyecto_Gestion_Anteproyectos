@@ -104,6 +104,7 @@ public class Factory {
         return result;
     }
     
+
     // *** AGREGADO: Método para ProgramaRepository ***
     public static IProgramaRepository getProgramaRepository(String type) {
         IProgramaRepository result = null;
@@ -125,6 +126,21 @@ public class Factory {
                 break;
             // case "mock": result = new DepartamentoRepositoryMock(); break;
         }
+        
+        return result;
+    }
+
+    public static IFormatoAVersionRepository getFormatoAVersionRepository(String type) {
+        IFormatoAVersionRepository result = null;
+
+        switch (type.toLowerCase()) {
+            case "default":
+                result = new FormatoAVersionRepository();
+                break;
+            // Si en el futuro tienes otro tipo de repositorio, agregas otro case
+            // case "mock": result = new PersonaRepositoryMock(); break;
+        }
+        
         return result;
     }
     

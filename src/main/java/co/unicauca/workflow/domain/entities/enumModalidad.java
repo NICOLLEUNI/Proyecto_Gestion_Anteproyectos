@@ -8,10 +8,11 @@ package co.unicauca.workflow.domain.entities;
  *
  * @author Usuario
  */
+
 public enum enumModalidad {
     
-    INVESTIGACION("Investigacion"),
-    PRACTICA_PROFESIONAL("Practica profesional"),
+    INVESTIGACION("Investigación"),
+    PRACTICA_PROFESIONAL("Práctica profesional"),
     PLAN_COTERMINAL("Plan coterminal");
     
     private final String descripcion;
@@ -23,6 +24,9 @@ public enum enumModalidad {
     public String getDescripcion() {
         return descripcion;
     }
-    
-    
+
+    @Override
+    public String toString() {
+        return descripcion;
+    }
 }

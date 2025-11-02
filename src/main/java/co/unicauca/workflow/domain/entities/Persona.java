@@ -54,39 +54,6 @@ public Persona(String name, String lastname, String phone, String email, String 
     validarCampos();
 }
     
-     /**
-     * Método que valida los campos de la entidad
-     * @throws ValidationException si encuentra errores
-     */ 
-    /**private void validarCampos() throws ValidationException {
-        List<String> errores = new ArrayList<>();
-
-        // Validaciones básicas
-        
-        if (name == null || name.trim().isEmpty()) {
-            errores.add("El nombre es obligatorio.");
-        }
-        if (lastname == null || lastname.trim().isEmpty()) {
-            errores.add("El apellido es obligatorio.");
-        }
-        if (phone == null || phone.trim().isEmpty()) {
-            errores.add("El teléfono es obligatorio.");
-        }
-        if (email == null || email.trim().isEmpty()) {
-            errores.add("El correo electrónico es obligatorio.");
-        }
-        if (password == null || password.trim().isEmpty()) {
-            errores.add("La contraseña es obligatoria.");
-        } 
-        if (roles == null || roles.isEmpty()) {
-            errores.add("Debe asignarse al menos un rol al usuario.");
-        }
-
-        // Si hay errores, lanzamos la excepción
-        if (!errores.isEmpty()) {
-            throw new ValidationException(errores);
-        }
-    }*/
 
 
 private void validarCampos() throws ValidationException {

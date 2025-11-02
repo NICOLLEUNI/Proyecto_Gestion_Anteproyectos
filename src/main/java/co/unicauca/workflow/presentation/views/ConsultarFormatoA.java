@@ -4,9 +4,15 @@
  */
 package co.unicauca.workflow.presentation.views;
 
-import co.unicauca.workflow.access.FormatoARepository;
+import co.unicauca.workflow.access.Factory;
+import co.unicauca.workflow.access.FormatoAVersionRepository;
 import co.unicauca.workflow.access.IFormatoARepository;
+import co.unicauca.workflow.access.IFormatoAVersionRepository;
+import co.unicauca.workflow.domain.entities.Estudiante;
 import co.unicauca.workflow.domain.entities.FormatoA;
+import co.unicauca.workflow.domain.entities.FormatoAVersion;
+import co.unicauca.workflow.domain.entities.Persona;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
@@ -19,25 +25,46 @@ public class ConsultarFormatoA extends javax.swing.JPanel {
     /**
      * Creates new form ConsultarFormatoA
      */
-    public ConsultarFormatoA() {
+    private Persona personaLogueada;
+    public ConsultarFormatoA(Persona personaLogueada) {
         initComponents();
+        this.personaLogueada = personaLogueada; // guarda el usuario activo
         initStyles();
-         cargarDatos();
+        cargarDatos();;
     }
 private void cargarDatos() {
-     IFormatoARepository repo = new FormatoARepository();
-    List<FormatoA> lista = repo.list();
+     IFormatoARepository repoA = Factory.getFormatoARepository("default");
+    FormatoAVersionRepository repoV = new FormatoAVersionRepository();
 
-    String[] columnas = {"Título", "Director", "Entrega", "Estado", "Observaciones"};
+    // 1️⃣ Traer todos los FormatoA donde el usuario logueado sea estudiante
+    List<FormatoA> todos = repoA.list();
+    List<FormatoA> listaFiltrada = new ArrayList<>();
+    for (FormatoA f : todos) {
+        for (Estudiante est : f.getEstudiantes()) {
+            if (est.getIdUsuario() == personaLogueada.getIdUsuario()) {
+                listaFiltrada.add(f);
+                break;
+            }
+        }
+    }
+
+    // 2️⃣ Traer todas las versiones de esos formatos
+    List<FormatoAVersion> versiones = new ArrayList<>();
+    for (FormatoA f : listaFiltrada) {
+        versiones.addAll(repoV.listByFormatoA(f.getId()));
+    }
+
+    // 3️⃣ Preparar la tabla
+    String[] columnas = {"Título", "Versión", "Fecha", "Estado", "Observaciones"};
     DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
 
-    for (FormatoA f : lista) {
+    for (FormatoAVersion v : versiones) {
         Object[] fila = {
-            f.getTitle(),
-            f.getProjectManager(),
-            f.getDate() != null ? f.getDate().toString() : "", // Fecha segura
-            f.getState() != null ? f.getState() : "Pendiente", // Estado real si existe
-            f.getObservations() != null ? f.getObservations() : "" // Observaciones reales
+            v.getTitle(),
+            v.getNumeroVersion(),
+            v.getFecha() != null ? v.getFecha().toString() : "",
+            v.getState() != null ? v.getState() : "Pendiente",
+            v.getObservations() != null ? v.getObservations() : ""
         };
         modelo.addRow(fila);
     }

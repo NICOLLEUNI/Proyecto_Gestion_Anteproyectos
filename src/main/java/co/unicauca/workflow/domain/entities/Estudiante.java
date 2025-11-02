@@ -53,4 +53,10 @@ import java.util.List;
     public void setProgram(Programa program) {
         this.program = program;
     }
+    
+    @Override
+    public String toString() {
+        return this.getEmail(); // mostrar solo el email en el combo
+    }
+
 }

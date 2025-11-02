@@ -8,56 +8,60 @@ package co.unicauca.workflow.presentation;
 //implementar subir formato A y consultar respuestas
 //puede implememtar el pane para doc respuestas  
 
-import co.unicauca.workflow.domain.entities.Persona;
 import co.unicauca.workflow.presentation.views.Principal;
 import co.unicauca.workflow.domain.entities.Persona;
-import co.unicauca.workflow.presentation.views.ConsultarFormatoA;
-import co.unicauca.workflow.presentation.views.SubirFormatoA;
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMTMaterialLighterIJTheme;
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
+
+
+import co.unicauca.workflow.presentation.views.DatosFormatoA;
+import co.unicauca.workflow.presentation.views.ListaFormatosA;
 
 /**
  *
  * @author User
  */
 public class GUIMenuDocente extends javax.swing.JFrame {
+    
+    
+
 
     /**
      * Creates new form GUIDocente
      */
 
+
     private static Persona personaLogueado;
+    
     public GUIMenuDocente (Persona logueado) {
      this.personaLogueado=logueado;
-
+      initStyles();
         initComponents();
-      
-    initContent();
- 
+        this.setLocationRelativeTo(null);
+        initContent();
     }
     
+
+    private void initStyles(){
+      FlatMTMaterialLighterIJTheme.setup();
+    }
     
+    private void showJPanel(JPanel pl){
+        pl.setSize(641,498);
+        pl.setLocation(0, 0);
 
-     private void initStyles(){
-     
+        Contenido.removeAll();
+        Contenido.add(pl,BorderLayout.CENTER);
+        Contenido.revalidate();
+        Contenido.repaint(); 
+
      }
-     private void showJPanel(JPanel pl){
-     pl.setSize(641,498);
-     pl.setLocation(0, 0);
-     
-     Contenido.removeAll();
-     Contenido.add(pl,BorderLayout.CENTER);
-     Contenido.revalidate();
-     Contenido.repaint(); 
-         
-     }
-     private void initContent(){
-
-     showJPanel( new Principal(personaLogueado));
-
     
-     }
+    private void initContent(){
+        showJPanel( new Principal(personaLogueado));
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -75,7 +79,7 @@ public class GUIMenuDocente extends javax.swing.JFrame {
         btRespuestas = new javax.swing.JButton();
         btSubirFormatoA = new javax.swing.JButton();
         btRegresar = new javax.swing.JButton();
-        jButtonCloseSesion = new javax.swing.JButton();
+        btnCloseSesion = new javax.swing.JButton();
         Contenido = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -119,6 +123,11 @@ public class GUIMenuDocente extends javax.swing.JFrame {
         btRespuestas.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btRespuestas.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btRespuestas.setIconTextGap(7);
+        btRespuestas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btRespuestasMouseClicked(evt);
+            }
+        });
 
         btSubirFormatoA.setBackground(new java.awt.Color(65, 55, 171));
         btSubirFormatoA.setFont(new java.awt.Font("Roboto Medium", 0, 24)); // NOI18N
@@ -152,12 +161,12 @@ public class GUIMenuDocente extends javax.swing.JFrame {
             }
         });
 
-        jButtonCloseSesion.setBackground(new java.awt.Color(65, 55, 171));
-        jButtonCloseSesion.setForeground(new java.awt.Color(255, 255, 255));
-        jButtonCloseSesion.setText("Cerrar Sesión");
-        jButtonCloseSesion.addActionListener(new java.awt.event.ActionListener() {
+        btnCloseSesion.setBackground(new java.awt.Color(65, 55, 171));
+        btnCloseSesion.setForeground(new java.awt.Color(255, 255, 255));
+        btnCloseSesion.setText("Cerrar Sesión");
+        btnCloseSesion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonCloseSesionActionPerformed(evt);
+                btnCloseSesionActionPerformed(evt);
             }
         });
 
@@ -177,7 +186,7 @@ public class GUIMenuDocente extends javax.swing.JFrame {
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(MenuLayout.createSequentialGroup()
                 .addGap(81, 81, 81)
-                .addComponent(jButtonCloseSesion)
+                .addComponent(btnCloseSesion)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         MenuLayout.setVerticalGroup(
@@ -194,7 +203,7 @@ public class GUIMenuDocente extends javax.swing.JFrame {
                 .addGap(0, 0, 0)
                 .addComponent(btRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButtonCloseSesion)
+                .addComponent(btnCloseSesion)
                 .addGap(33, 33, 33))
         );
 
@@ -247,40 +256,49 @@ public class GUIMenuDocente extends javax.swing.JFrame {
 
 
     private void btSubirFormatoAMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btSubirFormatoAMouseClicked
-       showJPanel( new SubirFormatoA());
+       showJPanel( new DatosFormatoA(personaLogueado));
     }//GEN-LAST:event_btSubirFormatoAMouseClicked
 
     private void btRegresarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btRegresarMouseClicked
-       GUIMenuPrincipal ventanaPrincipal = new GUIMenuPrincipal(personaLogueado);
-    ventanaPrincipal.setVisible(true);
-    this.dispose(); 
+
+        GUIMenuPrincipal ventanaPrincipal = new GUIMenuPrincipal(personaLogueado);
+        ventanaPrincipal.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btRegresarMouseClicked
 
-    private void jButtonCloseSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCloseSesionActionPerformed
+    private void btnCloseSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseSesionActionPerformed
         GUILogin login = new GUILogin();
         login.setVisible(true);
         this.setVisible(false);
-    }//GEN-LAST:event_jButtonCloseSesionActionPerformed
+    }//GEN-LAST:event_btnCloseSesionActionPerformed
+
+    private void btRespuestasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btRespuestasMouseClicked
+        // Crear la vista correcta: ListaFormatosA
+        ListaFormatosA vistaDocente = new ListaFormatosA(personaLogueado);
+
+        // Reemplazar el contenido del panel central
+        Contenido.removeAll();
+        Contenido.setLayout(new BorderLayout());
+        Contenido.add(vistaDocente, BorderLayout.CENTER);
+        Contenido.revalidate();
+        Contenido.repaint();
+    }//GEN-LAST:event_btRespuestasMouseClicked
 
     /**
      * @param args the command line arguments
      */
 
-      public static void main(String args[]) {
+    public static void main(String args[]) {
         /* Set the Nimbus look and feel */
        FlatMTMaterialLighterIJTheme.setup();
-       
-      
-
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-
                 new GUIMenuDocente(personaLogueado).setVisible(true);
-
             }
         });
     }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Bakground;
     private javax.swing.JPanel Contenido;
@@ -290,7 +308,7 @@ public class GUIMenuDocente extends javax.swing.JFrame {
     private javax.swing.JButton btRegresar;
     private javax.swing.JButton btRespuestas;
     private javax.swing.JButton btSubirFormatoA;
-    private javax.swing.JButton jButtonCloseSesion;
+    private javax.swing.JButton btnCloseSesion;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }

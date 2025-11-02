@@ -70,7 +70,7 @@ public List<Estudiante> list() {
     try {
         String sql = "SELECT e.idUsuario, p.name, p.lastname, p.phone, p.email, p.password, "
                    + "pr.codPrograma, pr.nombre AS nombrePrograma, "
-                   + "d.codDepartamento, d.nombre AS nombreDepartamento, "
+                   + "d.codDepartamento, d.depNombre AS nombreDepartamento, "
                    + "f.codFacultad, f.nombre AS nombreFacultad "
                    + "FROM Estudiante e "
                    + "JOIN Persona p ON e.idUsuario = p.idUsuario "

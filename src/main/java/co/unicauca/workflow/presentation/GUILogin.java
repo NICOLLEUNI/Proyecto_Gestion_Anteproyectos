@@ -2,12 +2,7 @@
 package co.unicauca.workflow.presentation;
 import java.awt.Color;
 import javax.swing.JOptionPane;
-import co.unicauca.workflow.domain.service.UserService;
-import co.unicauca.workflow.access.IUserRepository;
-import co.unicauca.workflow.access.UserRepository;
 import co.unicauca.workflow.domain.entities.Persona;
-import co.unicauca.workflow.domain.entities.User;
-import co.unicauca.workflow.domain.entities.enumRol;
 import co.unicauca.workflow.domain.service.PersonaService;
 
 //Debemos usar la instancia de factory no crear un nuevo repositorio
@@ -15,11 +10,14 @@ import co.unicauca.workflow.domain.service.PersonaService;
 //DEBES IMPLEMENTAR TODA ESTA LOGICA CON LA CLASE PERSONA
 
 public class GUILogin extends javax.swing.JFrame {
+    
+
 
   private final PersonaService personaService;
     /**
      * Creates new form GUILogin
      */
+  
     public GUILogin() {
          this.personaService = new PersonaService();  
          initComponents();   // <-- Faltaba

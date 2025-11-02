@@ -20,56 +20,71 @@ public class FormatoARepository implements IFormatoARepository {
 
     @Override
     public boolean save(FormatoA newFormatoA) {
+        String sql = "INSERT INTO FormatoA (title, mode, projectManager, projectCoManager, date, generalObjetive, specificObjetives, archivoPDF, cartaLaboral, counter, state, observations) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
         try {
-            if (newFormatoA == null
-                    || newFormatoA.getTitle() == null || newFormatoA.getTitle().isBlank()
-                    || newFormatoA.getMode() == null
-                    || newFormatoA.getArchivoPDF() == null || newFormatoA.getArchivoPDF().isBlank()
-                    || newFormatoA.getProjectManager() == null || newFormatoA.getProjectManager().getIdUsuario() <= 0) {
-                return false;
-            }
+            conn.setAutoCommit(false); // 🔹 iniciar transacción
 
-            String sql = "INSERT INTO FormatoA (title, mode, projectManager, projectCoManager, date, generalObjetive, specificObjetives, archivoPDF, cartaLaboral, counter, state, observations) "
-                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            try (PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+                pstmt.setString(1, newFormatoA.getTitle());
+                pstmt.setString(2, newFormatoA.getMode().name());
+                pstmt.setObject(3, newFormatoA.getProjectManager().getIdUsuario());
+                pstmt.setObject(4, newFormatoA.getProjectCoManager() != null ? newFormatoA.getProjectCoManager().getIdUsuario() : null);
+                pstmt.setString(5, newFormatoA.getDate() != null ? newFormatoA.getDate().toString() : null);
+                pstmt.setString(6, newFormatoA.getGeneralObjetive());
+                pstmt.setString(7, newFormatoA.getSpecificObjetives());
+                pstmt.setString(8, newFormatoA.getArchivoPDF());
+                pstmt.setString(9, newFormatoA.getCartaLaboral());
+                pstmt.setInt(10, newFormatoA.getCounter());
+                pstmt.setString(11, newFormatoA.getState() != null ? newFormatoA.getState().name() : enumEstado.ENTREGADO.name());
+                pstmt.setString(12, newFormatoA.getObservations());
 
-            PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            pstmt.setString(1, newFormatoA.getTitle());
-            pstmt.setString(2, newFormatoA.getMode().name());
-            pstmt.setObject(3, newFormatoA.getProjectManager().getIdUsuario());
-            pstmt.setObject(4, newFormatoA.getProjectCoManager() != null ? newFormatoA.getProjectCoManager().getIdUsuario() : null);
-            pstmt.setString(5, newFormatoA.getDate() != null ? newFormatoA.getDate().toString() : null);
-            pstmt.setString(6, newFormatoA.getGeneralObjetive());
-            pstmt.setString(7, newFormatoA.getSpecificObjetives());
-            pstmt.setString(8, newFormatoA.getArchivoPDF());
-            pstmt.setString(9, newFormatoA.getCartaLaboral());
-            pstmt.setInt(10, newFormatoA.getCounter());
-            pstmt.setString(11, newFormatoA.getState() != null ? newFormatoA.getState().name() : enumEstado.ENTREGADO.name());
-            pstmt.setString(12, newFormatoA.getObservations());
+                int rows = pstmt.executeUpdate();
 
-            int rows = pstmt.executeUpdate();
+                if (rows > 0) {
+                    try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
+                        if (generatedKeys.next()) {
+                            int formatoId = generatedKeys.getInt(1);
 
-            if (rows > 0) {
-                ResultSet generatedKeys = pstmt.getGeneratedKeys();
-                if (generatedKeys.next()) {
-                    int formatoId = generatedKeys.getInt(1);
+                            // 🔥🔥🔥 ESTA ES LA LÍNEA QUE FALTA 🔥🔥🔥
+                            newFormatoA.setId(formatoId); // Asignar el ID al objeto
 
-                    // Guardar estudiantes en tabla intermedia
-                    if (newFormatoA.getEstudiantes() != null) {
-                        for (Estudiante est : newFormatoA.getEstudiantes()) {
-                            String sqlEst = "INSERT INTO FormatoA_Estudiante (formatoA_id, estudiante_id) VALUES (?, ?)";
-                            PreparedStatement pstmtEst = conn.prepareStatement(sqlEst);
-                            pstmtEst.setInt(1, formatoId);
-                            pstmtEst.setInt(2, est.getIdUsuario());
-                            pstmtEst.executeUpdate();
+                            System.out.println("DEBUG - FormatoA ID asignado: " + formatoId);
+
+                            if (newFormatoA.getEstudiantes() != null) {
+                                String sqlEst = "INSERT INTO FormatoA_Estudiante (formatoA_id, estudiante_id) VALUES (?, ?)";
+                                for (Estudiante est : newFormatoA.getEstudiantes()) {
+                                    try (PreparedStatement pstmtEst = conn.prepareStatement(sqlEst)) {
+                                        pstmtEst.setInt(1, formatoId);
+                                        pstmtEst.setInt(2, est.getIdUsuario());
+                                        pstmtEst.executeUpdate();
+                                    }
+                                }
+                            }
                         }
                     }
                 }
-                return true;
             }
 
+            conn.commit(); // 🔹 confirmar transacción
+            return true;
+
         } catch (SQLException ex) {
+            try {
+                conn.rollback(); // 🔹 revertir si falla
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
             Logger.getLogger(FormatoARepository.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                conn.setAutoCommit(true); // 🔹 restaurar
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
+
         return false;
     }
 
@@ -89,7 +104,7 @@ public class FormatoARepository implements IFormatoARepository {
                 
                 //aquí conectamos el formatoA con sus versiones 
                 f.setVersiones(repoVersiones.listByFormatoA(f.getId()));
-                formatos.add(mapFormatoA(rs));
+                formatos.add(f);
             }
 
         } catch (SQLException ex) {
@@ -120,6 +135,39 @@ public class FormatoARepository implements IFormatoARepository {
         }
         return null;
     }
+    
+    @Override
+    public boolean update(FormatoA formato) {
+    String sql = "UPDATE FormatoA SET title = ?, mode = ?, projectManager = ?, projectCoManager = ?, date = ?, "
+               + "generalObjetive = ?, specificObjetives = ?, archivoPDF = ?, cartaLaboral = ?, counter = ?, "
+               + "state = ?, observations = ? WHERE id = ?";
+
+    try (Connection c = ConexionSQLite.getConnection();
+         PreparedStatement ps = c.prepareStatement(sql)) {
+
+        ps.setString(1, formato.getTitle());
+        ps.setString(2, formato.getMode() != null ? formato.getMode().name() : null);
+        ps.setObject(3, formato.getProjectManager() != null ? formato.getProjectManager().getIdUsuario() : null);
+        ps.setObject(4, formato.getProjectCoManager() != null ? formato.getProjectCoManager().getIdUsuario() : null);
+        ps.setString(5, formato.getDate() != null ? formato.getDate().toString() : null);
+        ps.setString(6, formato.getGeneralObjetive());
+        ps.setString(7, formato.getSpecificObjetives());
+        ps.setString(8, formato.getArchivoPDF());
+        ps.setString(9, formato.getCartaLaboral());
+        ps.setInt(10, formato.getCounter());
+        ps.setString(11, formato.getState() != null ? formato.getState().name() : null);
+        ps.setString(12, formato.getObservations());
+        ps.setInt(13, formato.getId());
+
+        int rows = ps.executeUpdate();
+        return rows > 0;
+    } catch (SQLException ex) {
+        Logger.getLogger(FormatoARepository.class.getName()).log(Level.SEVERE, null, ex);
+        return false;
+    }
+    }
+
+
 
 
     private FormatoA mapFormatoA(ResultSet rs) throws SQLException {
@@ -214,6 +262,7 @@ public class FormatoARepository implements IFormatoARepository {
         } catch (SQLException ex) {
             Logger.getLogger(FormatoARepository.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
     }
 
     public void connect() {
@@ -240,19 +289,59 @@ public class FormatoARepository implements IFormatoARepository {
     public Connection getConnection() {
         return conn;
     }
-    public boolean updateEstadoYObservaciones(int id, String estado, String observaciones) {
-    try {
-        String sql = "UPDATE formatoA SET state = ?, observations = ? WHERE id = ?";
-        PreparedStatement ps = conn.prepareStatement(sql);
+   public boolean updateEstadoObservacionesYContador(int id, String estado, String observaciones, int contador) {
+    String sql = "UPDATE formatoA SET state = ?, observations = ?, counter = ? WHERE id = ?";
+    try (PreparedStatement ps = conn.prepareStatement(sql)) {
         ps.setString(1, estado);
         ps.setString(2, observaciones);
-        ps.setInt(3, id);
+        ps.setInt(3, contador);
+        ps.setInt(4, id);
 
         int filas = ps.executeUpdate();
         return filas > 0;
     } catch (SQLException e) {
         e.printStackTrace();
         return false;
+    }
+}
+    @Override
+   public boolean delete(int formatoAId) {
+    String sqlDeleteEstudiantes = "DELETE FROM FormatoA_Estudiante WHERE formatoA_id = ?";
+    String sqlDeleteFormatoA = "DELETE FROM FormatoA WHERE id = ?";
+
+    try {
+        conn.setAutoCommit(false); // 🔹 iniciar transacción
+
+        // 1️⃣ Borrar relaciones con estudiantes
+        try (PreparedStatement psEst = conn.prepareStatement(sqlDeleteEstudiantes)) {
+            psEst.setInt(1, formatoAId);
+            psEst.executeUpdate(); // No importa cuántas filas, solo limpiar
+        }
+
+        // 2️⃣ Borrar FormatoA principal
+        int filasFormatoA;
+        try (PreparedStatement psFormatoA = conn.prepareStatement(sqlDeleteFormatoA)) {
+            psFormatoA.setInt(1, formatoAId);
+            filasFormatoA = psFormatoA.executeUpdate();
+        }
+
+        conn.commit(); // 🔹 confirmar si todo bien
+        return filasFormatoA > 0;
+
+    } catch (SQLException e) {
+        try {
+            conn.rollback(); // 🔹 revertir si algo falla
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        e.printStackTrace();
+        return false;
+    } finally {
+        try {
+            conn.setAutoCommit(true);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
 

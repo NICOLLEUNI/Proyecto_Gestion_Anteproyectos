@@ -159,7 +159,7 @@ public class DocenteRepository implements IDocenteRepository {
             // Facultad
             Facultad facultad = null;
             if (rs.getInt("codFacultad") > 0) {
-                facultad = new Facultad(rs.getString("facNombre"));
+                facultad = new Facultad(rs.getString("nombre"));
                 facultad.setCodFacultad(rs.getInt("codFacultad"));
             }
 

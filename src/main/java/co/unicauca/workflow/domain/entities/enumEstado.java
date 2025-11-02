@@ -14,7 +14,7 @@ public enum enumEstado {
     ENTREGADO("ENTREGADO"),
     APROBADO("APROBADO"),
     RECHAZADO("RECHAZADO"),
-    RECHAZADO_DEFINITIVAMENTE("Rechazado definitivamente");
+    RECHAZADO_DEFINITIVAMENTE("RECHAZADO DEFINITIVAMENTE");
     
     private final String descripcion;
 

@@ -20,7 +20,6 @@ package co.unicauca.workflow.presentation;
 
 import co.unicauca.workflow.domain.service.PersonaService;
 import co.unicauca.workflow.domain.entities.enumRol;
-import co.unicauca.workflow.domain.entities.Persona;
 import co.unicauca.workflow.domain.entities.Programa;
 import co.unicauca.workflow.domain.entities.Departamento;
 import co.unicauca.workflow.domain.entities.Facultad;
@@ -109,7 +108,7 @@ private final PersonaService personaService;
         });
         
         // Listener para CheckBox Coordinador
-        CBECoordinador.addItemListener(new ItemListener() {
+        CBJefeDepartamento.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
                 actualizarEstadoComboBoxes();
@@ -122,7 +121,7 @@ private final PersonaService personaService;
      */
     private void actualizarEstadoComboBoxes() {
         boolean esEstudiante = CBEstudiante1.isSelected();
-        boolean esDocenteOCoordinador = CBDocente1.isSelected() || CBECoordinador.isSelected();
+        boolean esDocenteOCoordinador = CBDocente1.isSelected() || CBJefeDepartamento.isSelected();
         
         // Habilitar ComboBox Programa solo si es estudiante
         ComBoxPrograma1.setEnabled(esEstudiante);
@@ -250,7 +249,7 @@ ComBoxPrograma1.removeAllItems();
         jSeparator2 = new javax.swing.JSeparator();
         txtCelular = new javax.swing.JTextField();
         txtContrasenia = new javax.swing.JPasswordField();
-        CBECoordinador = new javax.swing.JCheckBox();
+        CBJefeDepartamento = new javax.swing.JCheckBox();
         ComBoxDepartamento = new javax.swing.JComboBox<>();
         jSeparator8 = new javax.swing.JSeparator();
         txtNombre = new javax.swing.JTextField();
@@ -267,6 +266,8 @@ ComBoxPrograma1.removeAllItems();
         CBEstudiante1 = new javax.swing.JCheckBox();
         lblPrograma1 = new javax.swing.JLabel();
         ComBoxPrograma1 = new javax.swing.JComboBox<>();
+        CBECoordinador1 = new javax.swing.JCheckBox();
+        CBECoordinador2 = new javax.swing.JCheckBox();
         BgImage = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -392,17 +393,17 @@ ComBoxPrograma1.removeAllItems();
         });
         pnlBack.add(txtContrasenia, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 410, 200, -1));
 
-        CBECoordinador.setBackground(new java.awt.Color(255, 255, 255));
-        CBECoordinador.setFont(new java.awt.Font("Roboto Medium", 0, 12)); // NOI18N
-        CBECoordinador.setForeground(new java.awt.Color(0, 0, 0));
-        CBECoordinador.setText("Coordinador");
-        CBECoordinador.setToolTipText("");
-        CBECoordinador.addActionListener(new java.awt.event.ActionListener() {
+        CBJefeDepartamento.setBackground(new java.awt.Color(255, 255, 255));
+        CBJefeDepartamento.setFont(new java.awt.Font("Roboto Medium", 0, 12)); // NOI18N
+        CBJefeDepartamento.setForeground(new java.awt.Color(0, 0, 0));
+        CBJefeDepartamento.setText("Jefe Departamento");
+        CBJefeDepartamento.setToolTipText("");
+        CBJefeDepartamento.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CBECoordinadorActionPerformed(evt);
+                CBJefeDepartamentoActionPerformed(evt);
             }
         });
-        pnlBack.add(CBECoordinador, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 340, -1, -1));
+        pnlBack.add(CBJefeDepartamento, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 330, -1, -1));
 
         ComBoxDepartamento.setBackground(new java.awt.Color(255, 255, 255));
         ComBoxDepartamento.setFont(new java.awt.Font("Roboto Medium", 0, 12)); // NOI18N
@@ -466,7 +467,7 @@ ComBoxPrograma1.removeAllItems();
         CBDocente1.setFont(new java.awt.Font("Roboto Medium", 0, 12)); // NOI18N
         CBDocente1.setForeground(new java.awt.Color(0, 0, 0));
         CBDocente1.setText("Docente");
-        pnlBack.add(CBDocente1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 320, -1, -1));
+        pnlBack.add(CBDocente1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 330, -1, -1));
 
         CBEstudiante1.setBackground(new java.awt.Color(255, 255, 255));
         CBEstudiante1.setFont(new java.awt.Font("Roboto Medium", 0, 12)); // NOI18N
@@ -489,6 +490,30 @@ ComBoxPrograma1.removeAllItems();
         ComBoxPrograma1.setFont(new java.awt.Font("Roboto Medium", 0, 12)); // NOI18N
         ComBoxPrograma1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Programa", "Ingeniería de Sistemas", "Ingeniería Electrónica y Telecomunicaciones", "Automática industrial", "Tecnología en Telemática" }));
         pnlBack.add(ComBoxPrograma1, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 220, 230, 30));
+
+        CBECoordinador1.setBackground(new java.awt.Color(255, 255, 255));
+        CBECoordinador1.setFont(new java.awt.Font("Roboto Medium", 0, 12)); // NOI18N
+        CBECoordinador1.setForeground(new java.awt.Color(0, 0, 0));
+        CBECoordinador1.setText("Coordinador");
+        CBECoordinador1.setToolTipText("");
+        CBECoordinador1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CBECoordinador1ActionPerformed(evt);
+            }
+        });
+        pnlBack.add(CBECoordinador1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 300, -1, -1));
+
+        CBECoordinador2.setBackground(new java.awt.Color(255, 255, 255));
+        CBECoordinador2.setFont(new java.awt.Font("Roboto Medium", 0, 12)); // NOI18N
+        CBECoordinador2.setForeground(new java.awt.Color(0, 0, 0));
+        CBECoordinador2.setText("Coordinador");
+        CBECoordinador2.setToolTipText("");
+        CBECoordinador2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CBECoordinador2ActionPerformed(evt);
+            }
+        });
+        pnlBack.add(CBECoordinador2, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 300, -1, -1));
 
         BackGround.add(pnlBack, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 20, 640, 470));
 
@@ -598,7 +623,7 @@ ComBoxPrograma1.removeAllItems();
         // 2. Validar roles seleccionados
         EnumSet<enumRol> roles = obtenerRolesSeleccionados();
         if (roles.isEmpty()) {
-            errores.add("• Debe seleccionar al menos un rol (Estudiante, Docente o Coordinador)");
+            errores.add("• Debe seleccionar al menos un rol (Estudiante, Docente, Coordinador, Jefe Departamento )");
         }
         
         // 3. Validar programa si es estudiante
@@ -613,7 +638,7 @@ ComBoxPrograma1.removeAllItems();
         if (roles.contains(enumRol.DOCENTE) || roles.contains(enumRol.COORDINADOR)) {
             String deptSeleccionado = (String) ComBoxDepartamento.getSelectedItem();
             if (deptSeleccionado == null || deptSeleccionado.equals("Seleccione un departamento")) {
-                errores.add("• Debe seleccionar un departamento (requerido para docentes/coordinadores)");
+                errores.add("• Debe seleccionar un departamento (requerido para docentes/coordinadores/ Jefe Departamento)");
             }
         }
         
@@ -730,7 +755,7 @@ try {
         if (CBDocente1.isSelected()) {
             roles.add(enumRol.DOCENTE);
         }
-        if (CBECoordinador.isSelected()) {
+        if (CBJefeDepartamento.isSelected()) {
             roles.add(enumRol.COORDINADOR);
         }
         
@@ -866,9 +891,9 @@ try {
     
     
     
-    private void CBECoordinadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CBECoordinadorActionPerformed
+    private void CBJefeDepartamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CBJefeDepartamentoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_CBECoordinadorActionPerformed
+    }//GEN-LAST:event_CBJefeDepartamentoActionPerformed
 
     private void CBEstudiante1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CBEstudiante1ActionPerformed
         // TODO add your handling code here:
@@ -877,6 +902,14 @@ try {
     private void ComBoxDepartamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ComBoxDepartamentoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_ComBoxDepartamentoActionPerformed
+
+    private void CBECoordinador1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CBECoordinador1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_CBECoordinador1ActionPerformed
+
+    private void CBECoordinador2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CBECoordinador2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_CBECoordinador2ActionPerformed
    
 public void irALogin(){
           GUILogin ventanaLogin = new GUILogin();
@@ -948,8 +981,10 @@ public void irALogin(){
     private javax.swing.JPanel BackGround;
     private javax.swing.JLabel BgImage;
     private javax.swing.JCheckBox CBDocente1;
-    private javax.swing.JCheckBox CBECoordinador;
+    private javax.swing.JCheckBox CBECoordinador1;
+    private javax.swing.JCheckBox CBECoordinador2;
     private javax.swing.JCheckBox CBEstudiante1;
+    private javax.swing.JCheckBox CBJefeDepartamento;
     private javax.swing.JComboBox<String> ComBoxDepartamento;
     private javax.swing.JComboBox<String> ComBoxPrograma1;
     private javax.swing.JSeparator jSeparator1;
