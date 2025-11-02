@@ -174,38 +174,51 @@ public class Observaciones extends javax.swing.JPanel {
 
         Contenido.setBackground(new java.awt.Color(255, 255, 255));
         Contenido.setPreferredSize(new java.awt.Dimension(533, 456));
+        Contenido.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lblTitulo.setFont(new java.awt.Font("Roboto Light", 1, 14)); // NOI18N
         lblTitulo.setForeground(new java.awt.Color(0, 0, 0));
         lblTitulo.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblTitulo.setText("Titulo");
+        Contenido.add(lblTitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 15, 61, -1));
+        Contenido.add(jSeparator9, new org.netbeans.lib.awtextra.AbsoluteConstraints(122, 32, 230, -1));
 
         lblUTitulo.setForeground(new java.awt.Color(51, 51, 51));
         lblUTitulo.setText("Titulo");
+        Contenido.add(lblUTitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(119, 12, 233, -1));
 
         lblEstudiante.setFont(new java.awt.Font("Roboto Light", 1, 14)); // NOI18N
         lblEstudiante.setForeground(new java.awt.Color(0, 0, 0));
         lblEstudiante.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblEstudiante.setText("Estudiante");
+        Contenido.add(lblEstudiante, new org.netbeans.lib.awtextra.AbsoluteConstraints(21, 41, 92, -1));
 
         lblUEstudiante.setForeground(new java.awt.Color(51, 51, 51));
         lblUEstudiante.setText("Estudiante");
+        Contenido.add(lblUEstudiante, new org.netbeans.lib.awtextra.AbsoluteConstraints(119, 41, 233, -1));
+        Contenido.add(jSeparator10, new org.netbeans.lib.awtextra.AbsoluteConstraints(122, 61, 230, -1));
 
         lblDirector.setFont(new java.awt.Font("Roboto Light", 1, 14)); // NOI18N
         lblDirector.setForeground(new java.awt.Color(0, 0, 0));
         lblDirector.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblDirector.setText("Dir.Proyecto");
+        Contenido.add(lblDirector, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 100, -1, -1));
 
         lblUDirector.setForeground(new java.awt.Color(51, 51, 51));
         lblUDirector.setText("Director");
+        Contenido.add(lblUDirector, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 100, 233, -1));
+        Contenido.add(jSeparator11, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 120, 230, -1));
 
         lblModalidad.setFont(new java.awt.Font("Roboto Light", 1, 14)); // NOI18N
         lblModalidad.setForeground(new java.awt.Color(0, 0, 0));
         lblModalidad.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblModalidad.setText("Modalidad");
+        Contenido.add(lblModalidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, -1, -1));
 
         lblUModalidad.setForeground(new java.awt.Color(51, 51, 51));
         lblUModalidad.setText("Modalidad");
+        Contenido.add(lblUModalidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 140, 233, -1));
+        Contenido.add(jSeparator12, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 160, 230, -1));
 
         jPanel1.setBackground(new java.awt.Color(204, 204, 204));
 
@@ -225,10 +238,13 @@ public class Observaciones extends javax.swing.JPanel {
             .addComponent(lblPDF, javax.swing.GroupLayout.DEFAULT_SIZE, 22, Short.MAX_VALUE)
         );
 
+        Contenido.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 190, -1, -1));
+
         lblObservaciones.setFont(new java.awt.Font("Roboto Light", 1, 14)); // NOI18N
         lblObservaciones.setForeground(new java.awt.Color(0, 0, 0));
         lblObservaciones.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblObservaciones.setText("Observaciones");
+        Contenido.add(lblObservaciones, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 230, 125, -1));
 
         CBXAprobado.setText("Aprobado");
         CBXAprobado.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -236,6 +252,7 @@ public class Observaciones extends javax.swing.JPanel {
                 CBXAprobadoMouseClicked(evt);
             }
         });
+        Contenido.add(CBXAprobado, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 330, -1, -1));
 
         CBXRechazado.setText("Rechazado");
         CBXRechazado.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -243,6 +260,7 @@ public class Observaciones extends javax.swing.JPanel {
                 CBXRechazadoMouseClicked(evt);
             }
         });
+        Contenido.add(CBXRechazado, new org.netbeans.lib.awtextra.AbsoluteConstraints(321, 330, -1, -1));
 
         txtObservaciones.setBackground(new java.awt.Color(255, 255, 255));
         txtObservaciones.setColumns(20);
@@ -255,15 +273,21 @@ public class Observaciones extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(txtObservaciones);
 
+        Contenido.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 230, 294, -1));
+
         lblEstudiante2.setFont(new java.awt.Font("Roboto Light", 1, 14)); // NOI18N
         lblEstudiante2.setForeground(new java.awt.Color(0, 0, 0));
         lblEstudiante2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblEstudiante2.setText("Estudiante");
+        Contenido.add(lblEstudiante2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, 92, -1));
 
         lblUEstudiante2.setForeground(new java.awt.Color(51, 51, 51));
         lblUEstudiante2.setText("Estudiante");
+        Contenido.add(lblUEstudiante2, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 70, 233, -1));
+        Contenido.add(jSeparator13, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 90, 230, -1));
 
         Icon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/co/unicauca/workflow/presentation/images/LogoPequeño.png"))); // NOI18N
+        Contenido.add(Icon, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 380, -1, -1));
 
         btEvaluar.setBackground(new java.awt.Color(65, 55, 171));
         btEvaluar.setFont(new java.awt.Font("Roboto Medium", 1, 24)); // NOI18N
@@ -276,121 +300,7 @@ public class Observaciones extends javax.swing.JPanel {
                 btEvaluarMouseClicked(evt);
             }
         });
-
-        javax.swing.GroupLayout ContenidoLayout = new javax.swing.GroupLayout(Contenido);
-        Contenido.setLayout(ContenidoLayout);
-        ContenidoLayout.setHorizontalGroup(
-            ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(ContenidoLayout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(38, 38, 38)
-                .addComponent(lblUTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(ContenidoLayout.createSequentialGroup()
-                .addGap(122, 122, 122)
-                .addComponent(jSeparator9, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(ContenidoLayout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addComponent(lblEstudiante, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(6, 6, 6)
-                .addComponent(lblUEstudiante, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(ContenidoLayout.createSequentialGroup()
-                .addGap(122, 122, 122)
-                .addComponent(jSeparator10, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(ContenidoLayout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(lblEstudiante2, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(8, 8, 8)
-                .addComponent(lblUEstudiante2, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(ContenidoLayout.createSequentialGroup()
-                .addGap(120, 120, 120)
-                .addComponent(jSeparator13, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(ContenidoLayout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(lblDirector)
-                .addGap(18, 18, 18)
-                .addComponent(lblUDirector, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(ContenidoLayout.createSequentialGroup()
-                .addGap(120, 120, 120)
-                .addComponent(jSeparator11, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(ContenidoLayout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(lblModalidad)
-                .addGap(29, 29, 29)
-                .addComponent(lblUModalidad, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(ContenidoLayout.createSequentialGroup()
-                .addGap(120, 120, 120)
-                .addComponent(jSeparator12, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(ContenidoLayout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(ContenidoLayout.createSequentialGroup()
-                .addGap(50, 50, 50)
-                .addComponent(lblObservaciones, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(35, 35, 35)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(ContenidoLayout.createSequentialGroup()
-                .addGap(80, 80, 80)
-                .addComponent(CBXAprobado)
-                .addGap(164, 164, 164)
-                .addComponent(CBXRechazado))
-            .addGroup(ContenidoLayout.createSequentialGroup()
-                .addGap(10, 10, 10)
-                .addComponent(Icon)
-                .addGap(173, 173, 173)
-                .addComponent(btEvaluar))
-        );
-        ContenidoLayout.setVerticalGroup(
-            ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(ContenidoLayout.createSequentialGroup()
-                .addGap(12, 12, 12)
-                .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(ContenidoLayout.createSequentialGroup()
-                        .addGap(3, 3, 3)
-                        .addComponent(lblTitulo))
-                    .addComponent(lblUTitulo))
-                .addComponent(jSeparator9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(6, 6, 6)
-                .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblEstudiante)
-                    .addComponent(lblUEstudiante))
-                .addGap(3, 3, 3)
-                .addComponent(jSeparator10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(6, 6, 6)
-                .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblEstudiante2)
-                    .addComponent(lblUEstudiante2))
-                .addGap(3, 3, 3)
-                .addComponent(jSeparator13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(7, 7, 7)
-                .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblDirector)
-                    .addComponent(lblUDirector))
-                .addGap(3, 3, 3)
-                .addComponent(jSeparator11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(17, 17, 17)
-                .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblModalidad)
-                    .addComponent(lblUModalidad))
-                .addGap(3, 3, 3)
-                .addComponent(jSeparator12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblObservaciones)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(14, 14, 14)
-                .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(CBXRechazado)
-                    .addComponent(CBXAprobado, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(30, 30, 30)
-                .addGroup(ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(Icon)
-                    .addGroup(ContenidoLayout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(btEvaluar))))
-        );
+        Contenido.add(btEvaluar, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 390, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);

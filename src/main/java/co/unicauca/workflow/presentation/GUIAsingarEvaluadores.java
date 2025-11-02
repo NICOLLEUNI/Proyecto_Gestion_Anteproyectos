@@ -4,148 +4,29 @@
  */
 package co.unicauca.workflow.presentation;
 
-//agregar la funcionalidad en los 3 puntos de "volver a la pestaña anterior"
-//añadir logica observer que se va a manejar con una capa de estadisticas 
-
-import co.unicauca.workflow.access.Factory;
-import co.unicauca.workflow.access.IFormatoARepository;
-import co.unicauca.workflow.domain.entities.FormatoA;
-import co.unicauca.workflow.domain.entities.Persona;
-import co.unicauca.workflow.domain.entities.enumEstado;
-import co.unicauca.workflow.domain.exceptions.ValidationException;
-import co.unicauca.workflow.domain.service.FormatoAService;
-import co.unicauca.workflow.presentation.views.GraficoBarras;
-import co.unicauca.workflow.presentation.views.GraficoPastel;
-import co.unicauca.workflow.presentation.views.Observaciones;
-import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMTMaterialLighterIJTheme;
-import java.awt.BorderLayout;
-
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.table.DefaultTableModel;
-
-
 /**
  *
  * @author User
  */
-public class GUIEvaluarAnteproyecto extends javax.swing.JFrame {
+public class GUIAsingarEvaluadores extends javax.swing.JFrame {
 
-    private FormatoAService formatoAService;
-    private static Persona personaLogueado;
-    private IFormatoARepository repoFormatoA = Factory.getInstance().getFormatoARepository("default");
-    
-    private JFrame frameBarras;
-    private JFrame framePastel;
-    
-    //private List<FormatoA> listaFormateada = new ArrayList<>();
-    
-   public GUIEvaluarAnteproyecto(Persona logueado) throws ValidationException {
-       this.formatoAService = new FormatoAService(repoFormatoA);
-        this.personaLogueado=logueado;
+    /**
+     * Creates new form GUIAsingarEvaluadores
+     */
+    public GUIAsingarEvaluadores() {
         initComponents();
-        initContent();
-        cargarDatos();
-        inicializarObservadores();
-         }
-   private void inicializarObservadores() {
-    GraficoPastel graficoPastel = new GraficoPastel(formatoAService);
-    GraficoBarras graficoBarras = new GraficoBarras(formatoAService);
-
-    formatoAService.addObserver(graficoPastel);
-    formatoAService.addObserver(graficoBarras);
-
-    // Coordenadas de la ventana principal
-    int xPrincipal = this.getX();
-    int yPrincipal = this.getY();
-    int anchoPrincipal = this.getWidth();
-
-    // Frame Pastel
-     framePastel = new JFrame("Gráfico Pastel");
-    framePastel.getContentPane().add(graficoPastel);
-    framePastel.pack();
-    framePastel.setLocation(xPrincipal + anchoPrincipal + 10, yPrincipal); // a la derecha
-    framePastel.setVisible(true);
-
-    // Frame Barras (debajo o al lado)
-     frameBarras = new JFrame("Gráfico Barras");
-    frameBarras.getContentPane().add(graficoBarras);
-    frameBarras.pack();
-    frameBarras.setLocation(xPrincipal + anchoPrincipal + 10, 
-                            yPrincipal + framePastel.getHeight() + 30);
-    frameBarras.setVisible(true);
-}
-private void cargarDatos() {
-    List<FormatoA> lista = formatoAService.listFormatoA();
-
-    String[] columnas = {"ID", "Título", "Estado"};
-    DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
-
-    for (FormatoA f : lista) {
-        // Si getState() devuelve enumEstado
-        if (f.getState() == enumEstado.ENTREGADO) {
-            Object[] fila = {
-                f.getId(),
-                f.getTitle(),
-                f.getState().getDescripcion() // Mostramos la descripción legible
-            };
-            modelo.addRow(fila);
-        }
-
     }
 
-    jTable1.setModel(modelo);
-}
-
-    private void cerrarGraficas() {
-    if (framePastel != null) {
-        framePastel.dispose();
-        framePastel = null;
-    }
-    if (frameBarras != null) {
-        frameBarras.dispose();
-        frameBarras = null;
-    }
-}
-
-    private void initStyles(){ }
-    
-    private void showJPanel(JPanel pl){
-     pl.setSize(533,456);
-     pl.setLocation(0, 0);
-     
-     Contenido.removeAll();
-     Contenido.add(pl,BorderLayout.CENTER);
-     Contenido.revalidate();
-     Contenido.repaint(); 
-         
-     }
-    private void initContent(){
-
-     jTable1.getSelectionModel().addListSelectionListener(e -> {
-       if (!e.getValueIsAdjusting() && jTable1.getSelectedRow() != -1) {
-        int fila = jTable1.getSelectedRow();
-        int id = (int) jTable1.getValueAt(fila, 0); // ID está en la columna 0
-
-        // Buscar el FormatoA desde repo
-        FormatoA formato = formatoAService.findById(id); 
-
-        if (formato != null) {
-            Observaciones panelObs = new Observaciones(formatoAService);
-            panelObs.setFormatoA(formato);
-            showJPanel(panelObs);
-        }}
-         });
-         }
-     
-
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollBar1 = new javax.swing.JScrollBar();
         jPanel1 = new javax.swing.JPanel();
         Menu = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -156,19 +37,16 @@ private void cargarDatos() {
         Contenido = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setLocationByPlatform(true);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
         Menu.setBackground(new java.awt.Color(26, 55, 171));
         Menu.setPreferredSize(new java.awt.Dimension(226, 510));
-        Menu.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel2.setFont(new java.awt.Font("Roboto Medium", 1, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("PROYECTOS");
-        Menu.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(73, 14, 206, 28));
+        jLabel2.setText("ANTEPROYECTOS");
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -183,8 +61,6 @@ private void cargarDatos() {
         ));
         jScrollPane1.setViewportView(jTable1);
 
-        Menu.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 54, 353, 450));
-
         btVolver.setBackground(new java.awt.Color(102, 102, 255));
         btVolver.setFont(new java.awt.Font("Wide Latin", 1, 24)); // NOI18N
         btVolver.setForeground(new java.awt.Color(255, 255, 255));
@@ -196,12 +72,37 @@ private void cargarDatos() {
                 btVolverMouseClicked(evt);
             }
         });
-        Menu.add(btVolver, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 50, -1));
+
+        javax.swing.GroupLayout MenuLayout = new javax.swing.GroupLayout(Menu);
+        Menu.setLayout(MenuLayout);
+        MenuLayout.setHorizontalGroup(
+            MenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(MenuLayout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addComponent(btVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(13, 13, 13)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(MenuLayout.createSequentialGroup()
+                .addGap(6, 6, 6)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 353, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        MenuLayout.setVerticalGroup(
+            MenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(MenuLayout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addGroup(MenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btVolver)
+                    .addGroup(MenuLayout.createSequentialGroup()
+                        .addGap(4, 4, 4)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(12, 12, 12)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
 
         jLabel1.setFont(new java.awt.Font("Roboto Medium", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("EVALUAR ANTEPROYECTO");
+        jLabel1.setText("ASIGNAR EVALUADOR");
 
         javax.swing.GroupLayout ContenidoLayout = new javax.swing.GroupLayout(Contenido);
         Contenido.setLayout(ContenidoLayout);
@@ -263,16 +164,32 @@ private void cargarDatos() {
      */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
-        FlatMTMaterialLighterIJTheme.setup();
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(GUIAsingarEvaluadores.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(GUIAsingarEvaluadores.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(GUIAsingarEvaluadores.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(GUIAsingarEvaluadores.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                try {
-                    new GUIEvaluarAnteproyecto(personaLogueado).setVisible(true);
-                } catch (ValidationException ex) {
-                    Logger.getLogger(GUIEvaluarAnteproyecto.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                new GUIAsingarEvaluadores().setVisible(true);
             }
         });
     }
@@ -284,9 +201,8 @@ private void cargarDatos() {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollBar jScrollBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
-
-   
 }

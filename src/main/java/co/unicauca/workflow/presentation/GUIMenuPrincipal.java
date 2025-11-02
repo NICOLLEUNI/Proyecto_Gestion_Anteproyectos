@@ -83,8 +83,9 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
         Icono = new javax.swing.JLabel();
         btEst = new javax.swing.JButton();
         btCoord = new javax.swing.JButton();
-        btDoc = new javax.swing.JButton();
         jButtonCloseSesion = new javax.swing.JButton();
+        btJefe = new javax.swing.JButton();
+        btDoc = new javax.swing.JButton();
         Contenido = new javax.swing.JPanel();
         jSeparator7 = new javax.swing.JSeparator();
 
@@ -129,6 +130,32 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
             }
         });
 
+        jButtonCloseSesion.setBackground(new java.awt.Color(65, 55, 171));
+        jButtonCloseSesion.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonCloseSesion.setText("Cerrar sesión");
+        jButtonCloseSesion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCloseSesionActionPerformed(evt);
+            }
+        });
+
+        btJefe.setBackground(new java.awt.Color(65, 55, 171));
+        btJefe.setFont(new java.awt.Font("Roboto Medium", 0, 20)); // NOI18N
+        btJefe.setForeground(new java.awt.Color(255, 255, 255));
+        btJefe.setIcon(new javax.swing.ImageIcon(getClass().getResource("/co/unicauca/workflow/presentation/images/account-multiple.png"))); // NOI18N
+        btJefe.setText("JEFE DE DEPARTAMENTO");
+        btJefe.setAlignmentY(0.0F);
+        btJefe.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        btJefe.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btJefe.setDefaultCapable(false);
+        btJefe.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btJefe.setIconTextGap(7);
+        btJefe.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btJefeMouseClicked(evt);
+            }
+        });
+
         btDoc.setBackground(new java.awt.Color(65, 55, 171));
         btDoc.setFont(new java.awt.Font("Roboto Medium", 0, 24)); // NOI18N
         btDoc.setForeground(new java.awt.Color(255, 255, 255));
@@ -146,31 +173,20 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
             }
         });
 
-        jButtonCloseSesion.setBackground(new java.awt.Color(65, 55, 171));
-        jButtonCloseSesion.setForeground(new java.awt.Color(255, 255, 255));
-        jButtonCloseSesion.setText("Cerrar sesión");
-        jButtonCloseSesion.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonCloseSesionActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout MenuLayout = new javax.swing.GroupLayout(Menu);
         Menu.setLayout(MenuLayout);
         MenuLayout.setHorizontalGroup(
             MenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(btDoc, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(btEst, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(btCoord, javax.swing.GroupLayout.DEFAULT_SIZE, 270, Short.MAX_VALUE)
             .addGroup(MenuLayout.createSequentialGroup()
-                .addGroup(MenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(MenuLayout.createSequentialGroup()
-                        .addGap(38, 38, 38)
-                        .addComponent(Icono))
-                    .addGroup(MenuLayout.createSequentialGroup()
-                        .addGap(64, 64, 64)
-                        .addComponent(jButtonCloseSesion)))
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(38, 38, 38)
+                .addComponent(Icono))
+            .addComponent(btDoc, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(btEst, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(btCoord, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(btJefe, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(MenuLayout.createSequentialGroup()
+                .addGap(64, 64, 64)
+                .addComponent(jButtonCloseSesion))
         );
         MenuLayout.setVerticalGroup(
             MenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -183,9 +199,10 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
                 .addComponent(btEst, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(btCoord, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 113, Short.MAX_VALUE)
-                .addComponent(jButtonCloseSesion)
-                .addGap(36, 36, 36))
+                .addGap(0, 0, 0)
+                .addComponent(btJefe, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(49, 49, 49)
+                .addComponent(jButtonCloseSesion))
         );
 
         Contenido.setBackground(new java.awt.Color(255, 255, 255));
@@ -286,6 +303,10 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
        this.setVisible(false);
     }//GEN-LAST:event_jButtonCloseSesionActionPerformed
 
+    private void btJefeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btJefeMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btJefeMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -311,6 +332,7 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton btCoord;
     private javax.swing.JButton btDoc;
     private javax.swing.JButton btEst;
+    private javax.swing.JButton btJefe;
     private javax.swing.JButton jButtonCloseSesion;
     private javax.swing.JSeparator jSeparator7;
     // End of variables declaration//GEN-END:variables
