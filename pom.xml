@@ -17,12 +17,23 @@
     </description>
     <url>https://github.com/unicauca/PatronesComportamientoEstructurales</url>
 
+    <!-- Repositorio temporal que NetBeans puede haber añadido para jars locales.
+         Si no lo usas, puedes eliminar este bloque. -->
+    <repositories>
+        <repository>
+            <id>unknown-jars-temp-repo</id>
+            <name>A temporary repository created by NetBeans for libraries and jars it could not identify. Please replace the dependencies in this repository with correct ones and delete this repository.</name>
+            <url>file:${project.basedir}/lib</url>
+        </repository>
+    </repositories>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <exec.mainClass>co.edu.unicauca.DesingPatterns.PatronesComportamientoEstructurales</exec.mainClass>
-        <junit.version>5.9.2</junit.version>
+        <!-- Unificamos JUnit a 5.10.3 -->
+        <junit.version>5.10.3</junit.version>
     </properties>
 
     <dependencies>
@@ -33,29 +44,82 @@
             <version>20141113</version>
         </dependency>
 
-        <!-- JUnit 5 Jupiter API - Para escribir tests -->
+        <!-- JDBC SQLite -->
+        <dependency>
+            <groupId>org.xerial</groupId>
+            <artifactId>sqlite-jdbc</artifactId>
+            <version>3.45.1.0</version>
+        </dependency>
+
+        <!-- UI / temas -->
+        <dependency>
+            <groupId>com.formdev</groupId>
+            <artifactId>flatlaf</artifactId>
+            <version>3.6</version>
+        </dependency>
+        <dependency>
+            <groupId>com.formdev</groupId>
+            <artifactId>flatlaf-intellij-themes</artifactId>
+            <version>3.6</version>
+        </dependency>
+
+        <!-- Gráficas -->
+        <dependency>
+            <groupId>org.jfree</groupId>
+            <artifactId>jfreechart</artifactId>
+            <version>1.5.4</version>
+        </dependency>
+
+        <!-- Calendario -->
+        <dependency>
+            <groupId>com.toedter</groupId>
+            <artifactId>jcalendar</artifactId>
+            <version>1.4</version>
+        </dependency>
+
+        <!-- Mockito (tests) -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>5.8.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-junit-jupiter</artifactId>
+            <version>5.8.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- JUnit 5 (unificado por propiedad) -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
-
-        <!-- JUnit 5 Jupiter Engine - Para ejecutar tests -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
-
-        <!-- JUnit 5 Jupiter Params - Para tests parametrizados (opcional) -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-params</artifactId>
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
+
+        <!-- Dependencia placeholder que NetBeans añadió. 
+             Si no tienes este JAR en tu repo local, Maven fallará con "Could not find artifact unknown.binary:AbsoluteLayout".
+             Opciones: instalar localmente el JAR, eliminar la dependencia si no se usa, o colocar el JAR en ./lib (y mantener el repository arriba). -->
+        <dependency>
+            <groupId>unknown.binary</groupId>
+            <artifactId>AbsoluteLayout</artifactId>
+            <version>SNAPSHOT</version>
+        </dependency>
+
     </dependencies>
 
     <build>

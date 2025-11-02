@@ -76,10 +76,11 @@ public class GUIMenuDocente extends javax.swing.JFrame {
         Icon = new javax.swing.JLabel();
         Titulo = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        btRespuestas = new javax.swing.JButton();
-        btSubirFormatoA = new javax.swing.JButton();
         btRegresar = new javax.swing.JButton();
         btnCloseSesion = new javax.swing.JButton();
+        btSubirFormatoA = new javax.swing.JButton();
+        btSubirAnteproyecto = new javax.swing.JButton();
+        btRespuestas = new javax.swing.JButton();
         Contenido = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -89,9 +90,11 @@ public class GUIMenuDocente extends javax.swing.JFrame {
 
         Menu.setBackground(new java.awt.Color(26, 55, 171));
         Menu.setPreferredSize(new java.awt.Dimension(270, 512));
+        Menu.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         Icon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/co/unicauca/workflow/presentation/images/LogoPequeño.png"))); // NOI18N
         Icon.setText("jLabel2");
+        Menu.add(Icon, new org.netbeans.lib.awtextra.AbsoluteConstraints(57, 22, 158, -1));
 
         Titulo.setBackground(new java.awt.Color(204, 204, 204));
 
@@ -144,6 +147,7 @@ public class GUIMenuDocente extends javax.swing.JFrame {
                 btSubirFormatoAMouseClicked(evt);
             }
         });
+        Menu.add(Titulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 110, 270, -1));
 
         btRegresar.setBackground(new java.awt.Color(65, 55, 171));
         btRegresar.setFont(new java.awt.Font("Roboto Medium", 0, 24)); // NOI18N
@@ -160,6 +164,7 @@ public class GUIMenuDocente extends javax.swing.JFrame {
                 btRegresarMouseClicked(evt);
             }
         });
+        Menu.add(btRegresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 380, 270, 64));
 
         btnCloseSesion.setBackground(new java.awt.Color(65, 55, 171));
         btnCloseSesion.setForeground(new java.awt.Color(255, 255, 255));
@@ -169,6 +174,7 @@ public class GUIMenuDocente extends javax.swing.JFrame {
                 btnCloseSesionActionPerformed(evt);
             }
         });
+        Menu.add(btnCloseSesion, new org.netbeans.lib.awtextra.AbsoluteConstraints(78, 469, -1, -1));
 
         javax.swing.GroupLayout MenuLayout = new javax.swing.GroupLayout(Menu);
         Menu.setLayout(MenuLayout);
@@ -206,6 +212,56 @@ public class GUIMenuDocente extends javax.swing.JFrame {
                 .addComponent(btnCloseSesion)
                 .addGap(33, 33, 33))
         );
+        btSubirFormatoA.setBackground(new java.awt.Color(65, 55, 171));
+        btSubirFormatoA.setFont(new java.awt.Font("Roboto Medium", 0, 24)); // NOI18N
+        btSubirFormatoA.setForeground(new java.awt.Color(255, 255, 255));
+        btSubirFormatoA.setIcon(new javax.swing.ImageIcon(getClass().getResource("/co/unicauca/workflow/presentation/images/file-chart.png"))); // NOI18N
+        btSubirFormatoA.setText("Subir FormatoA");
+        btSubirFormatoA.setToolTipText("");
+        btSubirFormatoA.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        btSubirFormatoA.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btSubirFormatoA.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btSubirFormatoA.setIconTextGap(7);
+        btSubirFormatoA.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btSubirFormatoAMouseClicked(evt);
+            }
+        });
+        Menu.add(btSubirFormatoA, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 190, 270, 64));
+
+        btSubirAnteproyecto.setBackground(new java.awt.Color(65, 55, 171));
+        btSubirAnteproyecto.setFont(new java.awt.Font("Roboto Medium", 0, 24)); // NOI18N
+        btSubirAnteproyecto.setForeground(new java.awt.Color(255, 255, 255));
+        btSubirAnteproyecto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/co/unicauca/workflow/presentation/images/file-chart.png"))); // NOI18N
+        btSubirAnteproyecto.setText("Subir Anteproyecto");
+        btSubirAnteproyecto.setToolTipText("");
+        btSubirAnteproyecto.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        btSubirAnteproyecto.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btSubirAnteproyecto.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btSubirAnteproyecto.setIconTextGap(7);
+        btSubirAnteproyecto.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btSubirAnteproyectoMouseClicked(evt);
+            }
+        });
+        Menu.add(btSubirAnteproyecto, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 253, 270, 64));
+
+        btRespuestas.setBackground(new java.awt.Color(65, 55, 171));
+        btRespuestas.setFont(new java.awt.Font("Roboto Medium", 0, 24)); // NOI18N
+        btRespuestas.setForeground(new java.awt.Color(255, 255, 255));
+        btRespuestas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/co/unicauca/workflow/presentation/images/file-chart.png"))); // NOI18N
+        btRespuestas.setText("Respuestas");
+        btRespuestas.setToolTipText("");
+        btRespuestas.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        btRespuestas.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btRespuestas.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btRespuestas.setIconTextGap(7);
+        btRespuestas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btRespuestasMouseClicked(evt);
+            }
+        });
+        Menu.add(btRespuestas, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 317, 270, 64));
 
         Contenido.setBackground(new java.awt.Color(255, 255, 255));
         Contenido.setPreferredSize(new java.awt.Dimension(641, 498));
@@ -284,6 +340,10 @@ public class GUIMenuDocente extends javax.swing.JFrame {
         Contenido.repaint();
     }//GEN-LAST:event_btRespuestasMouseClicked
 
+    private void btSubirAnteproyectoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btSubirAnteproyectoMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btSubirAnteproyectoMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -307,6 +367,7 @@ public class GUIMenuDocente extends javax.swing.JFrame {
     private javax.swing.JPanel Titulo;
     private javax.swing.JButton btRegresar;
     private javax.swing.JButton btRespuestas;
+    private javax.swing.JButton btSubirAnteproyecto;
     private javax.swing.JButton btSubirFormatoA;
     private javax.swing.JButton btnCloseSesion;
     private javax.swing.JLabel jLabel1;

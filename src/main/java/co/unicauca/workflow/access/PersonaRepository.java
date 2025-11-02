@@ -6,7 +6,7 @@ package co.unicauca.workflow.access;
 
 import co.unicauca.workflow.domain.entities.Persona;
 import co.unicauca.workflow.domain.entities.enumRol;
-import co.unicauca.workflow.domain.service.UserService;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;

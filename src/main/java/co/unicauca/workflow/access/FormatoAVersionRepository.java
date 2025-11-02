@@ -23,15 +23,14 @@ public class FormatoAVersionRepository implements IFormatoAVersionRepository {
 
     @Override
     public boolean save(FormatoAVersion newVersion) {
-        try {
-            if (newVersion == null || newVersion.getFormatoA() == null) {
-                return false;
-            }
+        if (newVersion == null || newVersion.getFormatoA() == null) {
+            return false;
+        }
 
-            String sql = "INSERT INTO FormatoAVersion (numeroVersion, fecha, title, mode, generalObjetive, specificObjetives, archivoPDF, cartaLaboral, state, observations, formatoA_id) "
-                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO FormatoAVersion (numeroVersion, fecha, title, mode, generalObjetive, specificObjetives, archivoPDF, cartaLaboral, state, observations, formatoA_id) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-            PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+        try (PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setInt(1, newVersion.getNumeroVersion());
             pstmt.setString(2, newVersion.getFecha() != null ? newVersion.getFecha().toString() : null);
             pstmt.setString(3, newVersion.getTitle());
@@ -47,9 +46,10 @@ public class FormatoAVersionRepository implements IFormatoAVersionRepository {
             int rows = pstmt.executeUpdate();
 
             if (rows > 0) {
-                ResultSet generatedKeys = pstmt.getGeneratedKeys();
-                if (generatedKeys.next()) {
-                    newVersion.setIdCopia(generatedKeys.getInt(1));
+                try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        newVersion.setIdCopia(generatedKeys.getInt(1));
+                    }
                 }
                 return true;
             }
@@ -63,10 +63,9 @@ public class FormatoAVersionRepository implements IFormatoAVersionRepository {
     @Override
     public List<FormatoAVersion> list() {
         List<FormatoAVersion> versiones = new ArrayList<>();
-        try {
-            String sql = "SELECT * FROM FormatoAVersion";
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
+        String sql = "SELECT * FROM FormatoAVersion";
+        try (Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
                 versiones.add(mapResultSetToVersion(rs));
@@ -80,50 +79,47 @@ public class FormatoAVersionRepository implements IFormatoAVersionRepository {
 
     @Override
     public FormatoAVersion findById(int id) {
-        try {
-            String sql = "SELECT * FROM FormatoAVersion WHERE idCopia = ?";
-            PreparedStatement pstmt = conn.prepareStatement(sql);
+        String sql = "SELECT * FROM FormatoAVersion WHERE idCopia = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, id);
-            ResultSet rs = pstmt.executeQuery();
-
-            if (rs.next()) {
-                return mapResultSetToVersion(rs);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return mapResultSetToVersion(rs);
+                }
             }
         } catch (SQLException ex) {
             Logger.getLogger(FormatoAVersionRepository.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
-    
+
+    @Override
     public boolean update(FormatoAVersion version) {
-        try {
-            String sql = "UPDATE FormatoAVersion SET state = ?, observations = ? WHERE idCopia = ?";
-            PreparedStatement pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, version.getState().name());
+        String sql = "UPDATE FormatoAVersion SET state = ?, observations = ? WHERE idCopia = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, version.getState() != null ? version.getState().name() : null);
             pstmt.setString(2, version.getObservations());
             pstmt.setInt(3, version.getIdCopia());
 
             return pstmt.executeUpdate() > 0;
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            Logger.getLogger(FormatoAVersionRepository.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
     }
 
-    // 🔹 Nuevo método para cargar las versiones de un FormatoA específico
+    // Nuevo método para cargar las versiones de un FormatoA específico
     @Override
     public List<FormatoAVersion> listByFormatoA(int formatoAId) {
         List<FormatoAVersion> versiones = new ArrayList<>();
-        try {
-            String sql = "SELECT * FROM FormatoAVersion WHERE formatoA_id = ?";
-            PreparedStatement pstmt = conn.prepareStatement(sql);
+        String sql = "SELECT * FROM FormatoAVersion WHERE formatoA_id = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, formatoAId);
-            ResultSet rs = pstmt.executeQuery();
-
-            while (rs.next()) {
-                versiones.add(mapResultSetToVersion(rs));
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    versiones.add(mapResultSetToVersion(rs));
+                }
             }
-
         } catch (SQLException ex) {
             Logger.getLogger(FormatoAVersionRepository.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -168,31 +164,38 @@ public class FormatoAVersionRepository implements IFormatoAVersionRepository {
 
         try {
             this.connect();
-            Statement stmt = conn.createStatement();
-            stmt.execute(sql);
+            try (Statement stmt = conn.createStatement()) {
+                stmt.execute(sql);
+            }
         } catch (SQLException ex) {
             Logger.getLogger(FormatoAVersionRepository.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
     @Override
     public boolean deleteByFormatoAId(int formatoAId) {
-    String sql = "DELETE FROM FormatoAVersion WHERE formatoA_id = ?";
-    try (PreparedStatement ps = conn.prepareStatement(sql)) {
-        ps.setInt(1, formatoAId);
-        ps.executeUpdate();
-        return true;
-    } catch (SQLException e) {
-        e.printStackTrace();
-        return false;
+        String sql = "DELETE FROM FormatoAVersion WHERE formatoA_id = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, formatoAId);
+            ps.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            Logger.getLogger(FormatoAVersionRepository.class.getName()).log(Level.SEVERE, null, e);
+            return false;
+        }
     }
-}
+
     public void connect() {
-        String url = "jdbc:sqlite:" + System.getProperty("user.dir") + "/BD.db";
+        // Se asume que ConexionSQLite.getConnection() maneja la ruta y el driver.
         try {
-            conn =ConexionSQLite.getConnection();
-            System.out.println("Conectado a la BD (FormatoAVersion)");
+            conn = ConexionSQLite.getConnection();
+            if (conn != null) {
+                System.out.println("Conectado a la BD (FormatoAVersion)");
+            } else {
+                Logger.getLogger(FormatoAVersionRepository.class.getName()).log(Level.WARNING, "Conexion devuelta nula.");
+            }
         } catch (SQLException ex) {
-            Logger.getLogger(FormatoAService.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FormatoAVersionRepository.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -203,7 +206,7 @@ public class FormatoAVersionRepository implements IFormatoAVersionRepository {
                 conn = null;
             }
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            Logger.getLogger(FormatoAVersionRepository.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

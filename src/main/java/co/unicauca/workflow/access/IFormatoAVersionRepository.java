@@ -15,9 +15,14 @@ public interface IFormatoAVersionRepository {
     
     boolean save(FormatoAVersion newFormatoAVersion);
 
-    List<FormatoAVersion > list();
+    List<FormatoAVersion> list();
     
-    public FormatoAVersion findById(int id);
-    public boolean deleteByFormatoAId(int formatoAId) ;
-     public List<FormatoAVersion> listByFormatoA(int formatoAId);
+    FormatoAVersion findById(int id);
+
+    // Cargar las versiones de un FormatoA específico
+    List<FormatoAVersion> listByFormatoA(int formatoAId);
+    
+    boolean update(FormatoAVersion version);
+    
+    boolean deleteByFormatoAId(int formatoAId);
 }
